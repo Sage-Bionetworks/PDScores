@@ -785,7 +785,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
 {
   double y;
   int n;
-  double o;
+  double frames;
   double apnd;
   double ndbl;
   double cdiff;
@@ -937,18 +937,18 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   y = (double)x->size[0] / fs;
   if (rtIsNaN(y)) {
     n = 0;
-    o = rtNaN;
+    frames = rtNaN;
     apnd = y;
   } else if (y < 0.0) {
     n = -1;
-    o = 0.0;
+    frames = 0.0;
     apnd = y;
   } else if (rtIsInf(y)) {
     n = 0;
-    o = rtNaN;
+    frames = rtNaN;
     apnd = y;
   } else {
-    o = 0.0;
+    frames = 0.0;
     ndbl = floor(y / 0.02 + 0.5);
     apnd = ndbl * 0.02;
     cdiff = apnd - y;
@@ -974,21 +974,21 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   b_y->size[1] = n + 1;
   emxEnsureCapacity((emxArray__common *)b_y, i15, (int)sizeof(double));
   if (n + 1 > 0) {
-    b_y->data[0] = o;
+    b_y->data[0] = frames;
     if (n + 1 > 1) {
       b_y->data[n] = apnd;
       nm1d2 = (n + (n < 0)) >> 1;
       for (b_cdiff = 1; b_cdiff < nm1d2; b_cdiff++) {
         kd = (double)b_cdiff * 0.02;
-        b_y->data[b_cdiff] = o + kd;
+        b_y->data[b_cdiff] = frames + kd;
         b_y->data[n - b_cdiff] = apnd - kd;
       }
 
       if (nm1d2 << 1 == n) {
-        b_y->data[nm1d2] = (o + apnd) / 2.0;
+        b_y->data[nm1d2] = (frames + apnd) / 2.0;
       } else {
         kd = (double)nm1d2 * 0.02;
-        b_y->data[nm1d2] = o + kd;
+        b_y->data[nm1d2] = frames + kd;
         b_y->data[nm1d2 + 1] = apnd - kd;
       }
     }
@@ -1075,18 +1075,18 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   b_round(logWs);
   if (rtIsNaN(logWs[0]) || rtIsNaN(logWs[1])) {
     n = 0;
-    o = rtNaN;
+    frames = rtNaN;
     apnd = logWs[1];
   } else if (logWs[0] < logWs[1]) {
     n = -1;
-    o = logWs[0];
+    frames = logWs[0];
     apnd = logWs[1];
   } else if (rtIsInf(logWs[0]) || rtIsInf(logWs[1])) {
     n = 0;
-    o = rtNaN;
+    frames = rtNaN;
     apnd = logWs[1];
   } else {
-    o = logWs[0];
+    frames = logWs[0];
     ndbl = floor(-(logWs[1] - logWs[0]) + 0.5);
     apnd = logWs[0] + -ndbl;
     cdiff = logWs[1] - apnd;
@@ -1113,19 +1113,19 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   b_y->size[1] = n + 1;
   emxEnsureCapacity((emxArray__common *)b_y, i15, (int)sizeof(double));
   if (n + 1 > 0) {
-    b_y->data[0] = o;
+    b_y->data[0] = frames;
     if (n + 1 > 1) {
       b_y->data[n] = apnd;
       nm1d2 = (n + (n < 0)) >> 1;
       for (b_cdiff = 1; b_cdiff < nm1d2; b_cdiff++) {
-        b_y->data[b_cdiff] = o + -(double)b_cdiff;
+        b_y->data[b_cdiff] = frames + -(double)b_cdiff;
         b_y->data[n - b_cdiff] = apnd - (-(double)b_cdiff);
       }
 
       if (nm1d2 << 1 == n) {
-        b_y->data[nm1d2] = (o + apnd) / 2.0;
+        b_y->data[nm1d2] = (frames + apnd) / 2.0;
       } else {
-        b_y->data[nm1d2] = o + -(double)nm1d2;
+        b_y->data[nm1d2] = frames + -(double)nm1d2;
         b_y->data[nm1d2 + 1] = apnd - (-(double)nm1d2);
       }
     }
@@ -1176,27 +1176,27 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   }
 
   y = 6.44 * (scalar_log2(229.0 + kd / 4.0) - 7.84);
-  o = 6.44 * (scalar_log2(229.0 + fs / 2.0) - 7.84);
-  if (rtIsNaN(y) || rtIsNaN(o)) {
+  frames = 6.44 * (scalar_log2(229.0 + fs / 2.0) - 7.84);
+  if (rtIsNaN(y) || rtIsNaN(frames)) {
     n = 0;
     y = rtNaN;
-    apnd = o;
-  } else if (o < y) {
+    apnd = frames;
+  } else if (frames < y) {
     n = -1;
-    apnd = o;
-  } else if (rtIsInf(y) || rtIsInf(o)) {
+    apnd = frames;
+  } else if (rtIsInf(y) || rtIsInf(frames)) {
     n = 0;
     y = rtNaN;
-    apnd = o;
+    apnd = frames;
   } else {
-    ndbl = floor((o - y) / 0.1 + 0.5);
+    ndbl = floor((frames - y) / 0.1 + 0.5);
     apnd = y + ndbl * 0.1;
-    cdiff = apnd - o;
+    cdiff = apnd - frames;
     kd = fabs(y);
-    absb = fabs(o);
+    absb = fabs(frames);
     if (fabs(cdiff) < 4.4408920985006262E-16 * fmax(kd, absb)) {
       ndbl++;
-      apnd = o;
+      apnd = frames;
     } else if (cdiff > 0.0) {
       apnd = y + (ndbl - 1.0) * 0.1;
     } else {
@@ -1296,9 +1296,9 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     /*  Hop size */
     /*  Zero pad signal */
     y = ws->data[i] / 2.0;
-    o = ws->data[i] / 2.0;
+    frames = ws->data[i] / 2.0;
     i15 = xzp->size[0];
-    xzp->size[0] = ((int)y + x->size[0]) + (int)(kd + o);
+    xzp->size[0] = ((int)y + x->size[0]) + (int)(kd + frames);
     emxEnsureCapacity((emxArray__common *)xzp, i15, (int)sizeof(double));
     b_ndbl = (int)y;
     for (i15 = 0; i15 < b_ndbl; i15++) {
@@ -1310,7 +1310,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       xzp->data[i15 + (int)y] = x->data[i15];
     }
 
-    b_ndbl = (int)(kd + o);
+    b_ndbl = (int)(kd + frames);
     for (i15 = 0; i15 < b_ndbl; i15++) {
       xzp->data[(i15 + (int)y) + x->size[0]] = 0.0;
     }
@@ -1325,17 +1325,16 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     }
 
     hanning(&w->data[0], ws->data[i]);
-    o = fmax(0.0, rt_roundd_snf(ws->data[i] - kd));
+    kd = fmax(0.0, rt_roundd_snf(ws->data[i] - kd));
 
     /*  Window overlap */
-    kd = ws->data[i] - o;
     y = ws->data[i] / 2.0;
-    kd = (((double)xzp->size[0] + kd) - 1.0) / kd;
+    frames = ((double)xzp->size[0] - kd) / (ws->data[i] - kd);
     i15 = X->size[0] * X->size[1];
     X->size[0] = (int)(y + 1.0);
-    X->size[1] = (int)kd;
+    X->size[1] = (int)frames;
     emxEnsureCapacity((emxArray__common *)X, i15, (int)sizeof(double));
-    b_ndbl = (int)(y + 1.0) * (int)kd;
+    b_ndbl = (int)(y + 1.0) * (int)frames;
     for (i15 = 0; i15 < b_ndbl; i15++) {
       X->data[i15] = 0.0;
     }
@@ -1349,9 +1348,9 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     }
 
     i15 = ti->size[0];
-    ti->size[0] = (int)kd;
+    ti->size[0] = (int)frames;
     emxEnsureCapacity((emxArray__common *)ti, i15, (int)sizeof(double));
-    b_ndbl = (int)kd;
+    b_ndbl = (int)frames;
     for (i15 = 0; i15 < b_ndbl; i15++) {
       ti->data[i15] = 0.0;
     }
@@ -1367,7 +1366,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     }
 
     spectrogram(&X->data[0], &f->data[0], &ti->data[0], &c_xzp->data[0], (double)
-                xzp->size[0], &w->data[0], o, ws->data[i], fs);
+                xzp->size[0], &w->data[0], kd, ws->data[i], fs);
 
     /*  Select candidates that use this window size */
     if (ws->size[1] == 1) {
@@ -2159,10 +2158,10 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     } else {
       if (i + 1 < i - 1) {
         n = -1;
-        o = (double)i - 1.0;
+        frames = (double)i - 1.0;
         b_apnd = i + 1;
       } else {
-        o = (double)i - 1.0;
+        frames = (double)i - 1.0;
         b_ndbl = 2;
         b_apnd = i + 1;
         b_cdiff = (b_apnd - i) - 1;
@@ -2189,14 +2188,14 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       b_y->size[1] = n + 1;
       emxEnsureCapacity((emxArray__common *)b_y, i15, (int)sizeof(double));
       if (n + 1 > 0) {
-        b_y->data[0] = o;
+        b_y->data[0] = frames;
         if (n + 1 > 1) {
           b_y->data[n] = b_apnd;
           nm1d2 = (n + (n < 0)) >> 1;
           if (nm1d2 << 1 == n) {
-            b_y->data[nm1d2] = (o + (double)b_apnd) / 2.0;
+            b_y->data[nm1d2] = (frames + (double)b_apnd) / 2.0;
           } else {
-            b_y->data[nm1d2] = o + (double)nm1d2;
+            b_y->data[nm1d2] = frames + (double)nm1d2;
             b_y->data[nm1d2 + 1] = b_apnd - nm1d2;
           }
         }
@@ -2248,27 +2247,27 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       b_S_data.canFreeData = false;
       b_polyfit(d_xzp, &b_S_data, c);
       y = scalar_log2(pc_data[(int)b_y->data[0] - 1]);
-      o = scalar_log2(pc_data[(int)b_y->data[2] - 1]);
-      if (rtIsNaN(y) || rtIsNaN(o)) {
+      frames = scalar_log2(pc_data[(int)b_y->data[2] - 1]);
+      if (rtIsNaN(y) || rtIsNaN(frames)) {
         n = 0;
         y = rtNaN;
-        apnd = o;
-      } else if (o < y) {
+        apnd = frames;
+      } else if (frames < y) {
         n = -1;
-        apnd = o;
-      } else if (rtIsInf(y) || rtIsInf(o)) {
+        apnd = frames;
+      } else if (rtIsInf(y) || rtIsInf(frames)) {
         n = 0;
         y = rtNaN;
-        apnd = o;
+        apnd = frames;
       } else {
-        ndbl = floor((o - y) / 0.00083333333333333328 + 0.5);
+        ndbl = floor((frames - y) / 0.00083333333333333328 + 0.5);
         apnd = y + ndbl * 0.00083333333333333328;
-        cdiff = apnd - o;
+        cdiff = apnd - frames;
         kd = fabs(y);
-        absb = fabs(o);
+        absb = fabs(frames);
         if (fabs(cdiff) < 4.4408920985006262E-16 * fmax(kd, absb)) {
           ndbl++;
-          apnd = o;
+          apnd = frames;
         } else if (cdiff > 0.0) {
           apnd = y + (ndbl - 1.0) * 0.00083333333333333328;
         } else {
@@ -2376,7 +2375,7 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
 {
   double y;
   int n;
-  double o;
+  double frames;
   double apnd;
   double ndbl;
   double cdiff;
@@ -2526,23 +2525,23 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   y = (double)x->size[0] / fs;
   if (rtIsNaN(dt) || rtIsNaN(y)) {
     n = 0;
-    o = rtNaN;
+    frames = rtNaN;
     apnd = y;
   } else if ((dt == 0.0) || ((0.0 < y) && (dt < 0.0)) || ((y < 0.0) && (dt > 0.0)))
   {
     n = -1;
-    o = 0.0;
+    frames = 0.0;
     apnd = y;
   } else if (rtIsInf(y)) {
     n = 0;
-    o = rtNaN;
+    frames = rtNaN;
     apnd = y;
   } else if (rtIsInf(dt)) {
     n = 0;
-    o = 0.0;
+    frames = 0.0;
     apnd = y;
   } else {
-    o = 0.0;
+    frames = 0.0;
     ndbl = floor(y / dt + 0.5);
     apnd = ndbl * dt;
     if (dt > 0.0) {
@@ -2573,21 +2572,21 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   b_y->size[1] = n + 1;
   emxEnsureCapacity((emxArray__common *)b_y, i28, (int)sizeof(double));
   if (n + 1 > 0) {
-    b_y->data[0] = o;
+    b_y->data[0] = frames;
     if (n + 1 > 1) {
       b_y->data[n] = apnd;
       nm1d2 = (n + (n < 0)) >> 1;
       for (k = 1; k < nm1d2; k++) {
         kd = (double)k * dt;
-        b_y->data[k] = o + kd;
+        b_y->data[k] = frames + kd;
         b_y->data[n - k] = apnd - kd;
       }
 
       if (nm1d2 << 1 == n) {
-        b_y->data[nm1d2] = (o + apnd) / 2.0;
+        b_y->data[nm1d2] = (frames + apnd) / 2.0;
       } else {
         kd = (double)nm1d2 * dt;
-        b_y->data[nm1d2] = o + kd;
+        b_y->data[nm1d2] = frames + kd;
         b_y->data[nm1d2 + 1] = apnd - kd;
       }
     }
@@ -2618,36 +2617,36 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
 
   /*  Define pitch candidates */
   y = scalar_log2(plim[0]);
-  o = scalar_log2(plim[1]);
-  if (rtIsNaN(y) || rtIsNaN(dlog2p) || rtIsNaN(o)) {
+  frames = scalar_log2(plim[1]);
+  if (rtIsNaN(y) || rtIsNaN(dlog2p) || rtIsNaN(frames)) {
     n = 0;
     y = rtNaN;
-    apnd = o;
-  } else if ((dlog2p == 0.0) || ((y < o) && (dlog2p < 0.0)) || ((o < y) &&
-              (dlog2p > 0.0))) {
+    apnd = frames;
+  } else if ((dlog2p == 0.0) || ((y < frames) && (dlog2p < 0.0)) || ((frames < y)
+              && (dlog2p > 0.0))) {
     n = -1;
-    apnd = o;
-  } else if (rtIsInf(y) || rtIsInf(o)) {
+    apnd = frames;
+  } else if (rtIsInf(y) || rtIsInf(frames)) {
     n = 0;
     y = rtNaN;
-    apnd = o;
+    apnd = frames;
   } else if (rtIsInf(dlog2p)) {
     n = 0;
-    apnd = o;
+    apnd = frames;
   } else {
-    ndbl = floor((o - y) / dlog2p + 0.5);
+    ndbl = floor((frames - y) / dlog2p + 0.5);
     apnd = y + ndbl * dlog2p;
     if (dlog2p > 0.0) {
-      cdiff = apnd - o;
+      cdiff = apnd - frames;
     } else {
-      cdiff = o - apnd;
+      cdiff = frames - apnd;
     }
 
     kd = fabs(y);
-    absb = fabs(o);
+    absb = fabs(frames);
     if (fabs(cdiff) < 4.4408920985006262E-16 * fmax(kd, absb)) {
       ndbl++;
-      apnd = o;
+      apnd = frames;
     } else if (cdiff > 0.0) {
       apnd = y + (ndbl - 1.0) * dlog2p;
     } else {
@@ -2718,18 +2717,18 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   b_round(logWs);
   if (rtIsNaN(logWs[0]) || rtIsNaN(logWs[1])) {
     n = 0;
-    o = rtNaN;
+    frames = rtNaN;
     apnd = logWs[1];
   } else if (logWs[0] < logWs[1]) {
     n = -1;
-    o = logWs[0];
+    frames = logWs[0];
     apnd = logWs[1];
   } else if (rtIsInf(logWs[0]) || rtIsInf(logWs[1])) {
     n = 0;
-    o = rtNaN;
+    frames = rtNaN;
     apnd = logWs[1];
   } else {
-    o = logWs[0];
+    frames = logWs[0];
     ndbl = floor(-(logWs[1] - logWs[0]) + 0.5);
     apnd = logWs[0] + -ndbl;
     cdiff = logWs[1] - apnd;
@@ -2756,19 +2755,19 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   b_y->size[1] = n + 1;
   emxEnsureCapacity((emxArray__common *)b_y, i28, (int)sizeof(double));
   if (n + 1 > 0) {
-    b_y->data[0] = o;
+    b_y->data[0] = frames;
     if (n + 1 > 1) {
       b_y->data[n] = apnd;
       nm1d2 = (n + (n < 0)) >> 1;
       for (k = 1; k < nm1d2; k++) {
-        b_y->data[k] = o + -(double)k;
+        b_y->data[k] = frames + -(double)k;
         b_y->data[n - k] = apnd - (-(double)k);
       }
 
       if (nm1d2 << 1 == n) {
-        b_y->data[nm1d2] = (o + apnd) / 2.0;
+        b_y->data[nm1d2] = (frames + apnd) / 2.0;
       } else {
-        b_y->data[nm1d2] = o + -(double)nm1d2;
+        b_y->data[nm1d2] = frames + -(double)nm1d2;
         b_y->data[nm1d2 + 1] = apnd - (-(double)nm1d2);
       }
     }
@@ -2822,36 +2821,36 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   }
 
   y = 6.44 * (scalar_log2(229.0 + kd / 4.0) - 7.84);
-  o = 6.44 * (scalar_log2(229.0 + fs / 2.0) - 7.84);
-  if (rtIsNaN(y) || rtIsNaN(dERBs) || rtIsNaN(o)) {
+  frames = 6.44 * (scalar_log2(229.0 + fs / 2.0) - 7.84);
+  if (rtIsNaN(y) || rtIsNaN(dERBs) || rtIsNaN(frames)) {
     n = 0;
     y = rtNaN;
-    apnd = o;
-  } else if ((dERBs == 0.0) || ((y < o) && (dERBs < 0.0)) || ((o < y) && (dERBs >
-    0.0))) {
+    apnd = frames;
+  } else if ((dERBs == 0.0) || ((y < frames) && (dERBs < 0.0)) || ((frames < y) &&
+              (dERBs > 0.0))) {
     n = -1;
-    apnd = o;
-  } else if (rtIsInf(y) || rtIsInf(o)) {
+    apnd = frames;
+  } else if (rtIsInf(y) || rtIsInf(frames)) {
     n = 0;
     y = rtNaN;
-    apnd = o;
+    apnd = frames;
   } else if (rtIsInf(dERBs)) {
     n = 0;
-    apnd = o;
+    apnd = frames;
   } else {
-    ndbl = floor((o - y) / dERBs + 0.5);
+    ndbl = floor((frames - y) / dERBs + 0.5);
     apnd = y + ndbl * dERBs;
     if (dERBs > 0.0) {
-      cdiff = apnd - o;
+      cdiff = apnd - frames;
     } else {
-      cdiff = o - apnd;
+      cdiff = frames - apnd;
     }
 
     kd = fabs(y);
-    absb = fabs(o);
+    absb = fabs(frames);
     if (fabs(cdiff) < 4.4408920985006262E-16 * fmax(kd, absb)) {
       ndbl++;
-      apnd = o;
+      apnd = frames;
     } else if (cdiff > 0.0) {
       apnd = y + (ndbl - 1.0) * dERBs;
     } else {
@@ -2946,9 +2945,9 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     /*  Hop size */
     /*  Zero pad signal */
     y = ws->data[i] / 2.0;
-    o = ws->data[i] / 2.0;
+    frames = ws->data[i] / 2.0;
     i28 = tc->size[0];
-    tc->size[0] = ((int)y + x->size[0]) + (int)(kd + o);
+    tc->size[0] = ((int)y + x->size[0]) + (int)(kd + frames);
     emxEnsureCapacity((emxArray__common *)tc, i28, (int)sizeof(double));
     ixstart = (int)y;
     for (i28 = 0; i28 < ixstart; i28++) {
@@ -2960,7 +2959,7 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
       tc->data[i28 + (int)y] = x->data[i28];
     }
 
-    ixstart = (int)(kd + o);
+    ixstart = (int)(kd + frames);
     for (i28 = 0; i28 < ixstart; i28++) {
       tc->data[(i28 + (int)y) + x->size[0]] = 0.0;
     }
@@ -2975,17 +2974,16 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     }
 
     hanning(&w->data[0], ws->data[i]);
-    o = fmax(0.0, rt_roundd_snf(ws->data[i] - kd));
+    kd = fmax(0.0, rt_roundd_snf(ws->data[i] - kd));
 
     /*  Window overlap */
-    kd = ws->data[i] - o;
     y = ws->data[i] / 2.0;
-    kd = (((double)tc->size[0] + kd) - 1.0) / kd;
+    frames = ((double)tc->size[0] - kd) / (ws->data[i] - kd);
     i28 = X->size[0] * X->size[1];
     X->size[0] = (int)(y + 1.0);
-    X->size[1] = (int)kd;
+    X->size[1] = (int)frames;
     emxEnsureCapacity((emxArray__common *)X, i28, (int)sizeof(double));
-    ixstart = (int)(y + 1.0) * (int)kd;
+    ixstart = (int)(y + 1.0) * (int)frames;
     for (i28 = 0; i28 < ixstart; i28++) {
       X->data[i28] = 0.0;
     }
@@ -2999,9 +2997,9 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     }
 
     i28 = ti->size[0];
-    ti->size[0] = (int)kd;
+    ti->size[0] = (int)frames;
     emxEnsureCapacity((emxArray__common *)ti, i28, (int)sizeof(double));
-    ixstart = (int)kd;
+    ixstart = (int)frames;
     for (i28 = 0; i28 < ixstart; i28++) {
       ti->data[i28] = 0.0;
     }
@@ -3017,7 +3015,7 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     }
 
     spectrogram(&X->data[0], &f->data[0], &ti->data[0], &xzp->data[0], (double)
-                tc->size[0], &w->data[0], o, ws->data[i], fs);
+                tc->size[0], &w->data[0], kd, ws->data[i], fs);
 
     /*  Select candidates that use this window size */
     if (ws->size[1] == 1) {
@@ -3741,10 +3739,10 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     } else {
       if ((double)idx + 1.0 < (double)idx - 1.0) {
         n = -1;
-        o = (double)idx - 1.0;
+        frames = (double)idx - 1.0;
         apnd = (double)idx + 1.0;
       } else {
-        o = (double)idx - 1.0;
+        frames = (double)idx - 1.0;
         ndbl = floor((((double)idx + 1.0) - ((double)idx - 1.0)) + 0.5);
         apnd = ((double)idx - 1.0) + ndbl;
         cdiff = apnd - ((double)idx + 1.0);
@@ -3776,19 +3774,19 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
       I->size[1] = n + 1;
       emxEnsureCapacity((emxArray__common *)I, i28, (int)sizeof(double));
       if (n + 1 > 0) {
-        I->data[0] = o;
+        I->data[0] = frames;
         if (n + 1 > 1) {
           I->data[n] = apnd;
           nm1d2 = (n + (n < 0)) >> 1;
           for (k = 1; k < nm1d2; k++) {
-            I->data[k] = o + (double)k;
+            I->data[k] = frames + (double)k;
             I->data[n - k] = apnd - (double)k;
           }
 
           if (nm1d2 << 1 == n) {
-            I->data[nm1d2] = (o + apnd) / 2.0;
+            I->data[nm1d2] = (frames + apnd) / 2.0;
           } else {
-            I->data[nm1d2] = o + (double)nm1d2;
+            I->data[nm1d2] = frames + (double)nm1d2;
             I->data[nm1d2 + 1] = apnd - (double)nm1d2;
           }
         }
@@ -3823,27 +3821,27 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
 
       b_polyfit(c_w, c_S, c);
       y = scalar_log2(pc->data[(int)I->data[0] - 1]);
-      o = scalar_log2(pc->data[(int)I->data[2] - 1]);
-      if (rtIsNaN(y) || rtIsNaN(o)) {
+      frames = scalar_log2(pc->data[(int)I->data[2] - 1]);
+      if (rtIsNaN(y) || rtIsNaN(frames)) {
         n = 0;
         y = rtNaN;
-        apnd = o;
-      } else if (o < y) {
+        apnd = frames;
+      } else if (frames < y) {
         n = -1;
-        apnd = o;
-      } else if (rtIsInf(y) || rtIsInf(o)) {
+        apnd = frames;
+      } else if (rtIsInf(y) || rtIsInf(frames)) {
         n = 0;
         y = rtNaN;
-        apnd = o;
+        apnd = frames;
       } else {
-        ndbl = floor((o - y) / 0.00083333333333333328 + 0.5);
+        ndbl = floor((frames - y) / 0.00083333333333333328 + 0.5);
         apnd = y + ndbl * 0.00083333333333333328;
-        cdiff = apnd - o;
+        cdiff = apnd - frames;
         kd = fabs(y);
-        absb = fabs(o);
+        absb = fabs(frames);
         if (fabs(cdiff) < 4.4408920985006262E-16 * fmax(kd, absb)) {
           ndbl++;
-          apnd = o;
+          apnd = frames;
         } else if (cdiff > 0.0) {
           apnd = y + (ndbl - 1.0) * 0.00083333333333333328;
         } else {

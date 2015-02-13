@@ -8,17 +8,21 @@
 
 #include "signalprocessing.h"
 #include <Accelerate/Accelerate.h>
+#include <string.h>
 
 void hanning(double *outBuf, unsigned long windowSize)
 {
-    vDSP_hann_windowD(outBuf, windowSize, vDSP_HANN_DENORM);
+    unsigned long n = windowSize + 1;
+    double tempBuf[n];
+    vDSP_hann_windowD(tempBuf, n, vDSP_HANN_DENORM);
+    memcpy(outBuf, tempBuf + 1, windowSize * sizeof(double));
 }
 
 void spectrogram(double *outFourierTransform, double *outFrequencies, double *outTimes, double *inSignal, unsigned long signalSize, double *window, unsigned long overlap, unsigned long windowSize, double samplingRate)
 {
     unsigned long fftSize = windowSize;					// sample size
     unsigned long fftSizeOver2 = fftSize/2;
-    unsigned long log2n = log2f(fftSize);			// bins
+    unsigned long log2n = ceil(log2(fftSize));          // bins
     
     double *in_real = (double *) malloc(fftSize * sizeof(double));
     DOUBLE_COMPLEX_SPLIT split_data;
@@ -28,13 +32,13 @@ void spectrogram(double *outFourierTransform, double *outFrequencies, double *ou
     FFTSetupD fftSetup = vDSP_create_fftsetupD(log2n, FFT_RADIX2);
     
     unsigned long framestep = windowSize - overlap;
-    unsigned long frames = (signalSize + framestep - 1) / framestep;
+    unsigned long frames = (signalSize - overlap) / framestep;
     
     double frameDuration = (double)framestep / samplingRate;
-    double frameTime = frameDuration / 2.0;
+    double frameTime = 0.0;
     
     double frequencyStep = samplingRate / fftSize;
-    double frequencyForBin = 0; // DC
+    double frequencyForBin = 0.0; // DC
     for (unsigned long bin = 0; bin <= fftSizeOver2; ++bin) {
         outFrequencies[bin] = frequencyForBin;
         frequencyForBin += frequencyStep;
@@ -55,8 +59,11 @@ void spectrogram(double *outFourierTransform, double *outFrequencies, double *ou
         // convert back to interleaved complex format
         vDSP_ztocD(&split_data, 1, (DOUBLE_COMPLEX *) in_real, 2, fftSizeOver2);
         
-        // TODO: Divide all coefficients by 2 due to scaling?
+        // Divide all coefficients by 2 due to scaling
         // https://developer.apple.com/library/ios/documentation/Performance/Conceptual/vDSP_Programming_Guide/UsingFourierTransforms/UsingFourierTransforms.html#//apple_ref/doc/uid/TP40005147-CH202-15952
+        double scaleFactor = 0.5;
+        vDSP_vsmulD(in_real, 1, &scaleFactor, in_real, 1, fftSize);
+        
         unsigned long colSize = fftSizeOver2 + 1;
         double *outColStart = outFourierTransform + frame * colSize;
         cblas_dcopy((int)fftSizeOver2, in_real, 2, outColStart, 1);
@@ -66,4 +73,8 @@ void spectrogram(double *outFourierTransform, double *outFrequencies, double *ou
         frameTime += frameDuration;
     }
     
+    vDSP_destroy_fftsetupD(fftSetup);
+    free(split_data.imagp);
+    free(split_data.realp);
+    free(in_real);
 }
