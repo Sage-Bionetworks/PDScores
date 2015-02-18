@@ -1,0 +1,11 @@
+{
+  "info.json" : {
+    "taskRun" : "5295FF65-9B4B-4580-A24E-C167BF2DA287",
+    "files" : [ {
+      "contentType" : "data",
+      "filename" : "audio_audio.m4a",
+      "timestamp" : "2015-02-05 22:30:56 +0000"
+    } ],
+    "item" : "Voice Activity"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "info.json" : {
+    "uploadTime" : "2015-02-05 13:40:31 PST (Thursday, February 5th, 1:02 PM, Pacific Standard Time)",
+    "appVersion" : "version a22-124-g76720aa-dirty, build 1062",
+    "appName" : "mPower",
+    "phoneInfo" : "Simulator",
+    "taskRun" : "FA88B3C2-B243-4286-B080-9ADD9A0B77E8",
+    "files" : [ {
+      "contentType" : "data",
+      "filename" : "audio_audio.m4a",
+      "timestamp" : "2015-02-05 21:40:26 +0000"
+    } ],
+    "item" : "Voice Activity"
+  }
+}

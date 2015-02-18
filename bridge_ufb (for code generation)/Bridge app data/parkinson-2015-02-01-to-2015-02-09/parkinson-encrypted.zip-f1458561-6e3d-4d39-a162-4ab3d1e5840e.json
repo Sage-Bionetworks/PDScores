@@ -1,0 +1,34 @@
+{
+  "info.json" : {
+    "taskRun" : "72F08F93-6ABA-4B08-868F-C0912054F568",
+    "item" : "Tapping Activity"
+  },
+  "NoName.json" : {
+    "TappingSamples" : [ {
+      "TapCoordinate" : "{225, 413.5}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 0
+    }, {
+      "TapCoordinate" : "{70, 409.5}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0.746720496999842
+    }, {
+      "TapCoordinate" : "{164, 487}",
+      "TappedButtonId" : "TappedButtonNone",
+      "TapTimeStamp" : 1.478415191999829
+    }, {
+      "TapCoordinate" : "{162, 489.5}",
+      "TappedButtonId" : "TappedButtonNone",
+      "TapTimeStamp" : 2.006888675000027
+    }, {
+      "TapCoordinate" : "{155, 500}",
+      "TappedButtonId" : "TappedButtonNone",
+      "TapTimeStamp" : 3.886098030000085
+    } ],
+    "TappingViewSize" : "{320, 504}",
+    "endDate" : "2015-02-01 19:15:18 +0000",
+    "startDate" : "2015-02-01 19:14:41 +0000",
+    "ButtonRectLeft" : "{{44, 364}, {104, 104}}",
+    "ButtonRectRight" : "{{172, 364}, {104, 104}}"
+  }
+}

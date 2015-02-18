@@ -41,13 +41,13 @@
 #include "signalprocessing.h"
 
 /* Function Declarations */
-static void pitchStrengthAllCandidates(const emxArray_real_T *f, const
+/*static*/ void pitchStrengthAllCandidates(const emxArray_real_T *f, const
   emxArray_real_T *L, const emxArray_real_T *pc, emxArray_real_T *S);
-static void pitchStrengthOneCandidate(const emxArray_real_T *f, const
+/*static*/ void pitchStrengthOneCandidate(const emxArray_real_T *f, const
   emxArray_real_T *NL, double pc, emxArray_real_T *S);
 
 /* Function Definitions */
-static void pitchStrengthAllCandidates(const emxArray_real_T *f, const
+/*static*/ void pitchStrengthAllCandidates(const emxArray_real_T *f, const
   emxArray_real_T *L, const emxArray_real_T *pc, emxArray_real_T *S)
 {
   int u1;
@@ -449,11 +449,11 @@ static void pitchStrengthAllCandidates(const emxArray_real_T *f, const
   emxFree_real_T(&k);
 }
 
-static void pitchStrengthOneCandidate(const emxArray_real_T *f, const
+/*static*/ void pitchStrengthOneCandidate(const emxArray_real_T *f, const
   emxArray_real_T *NL, double pc, emxArray_real_T *S)
 {
   double n;
-  int i19;
+  int i17;
   emxArray_real_T *k;
   unsigned int idx;
   int ar;
@@ -483,20 +483,20 @@ static void pitchStrengthOneCandidate(const emxArray_real_T *f, const
 
   /*  Number of harmonics */
   if (n == 0.0) {
-    i19 = S->size[0] * S->size[1];
+    i17 = S->size[0] * S->size[1];
     S->size[0] = 1;
     S->size[1] = 1;
-    emxEnsureCapacity((emxArray__common *)S, i19, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)S, i17, (int)sizeof(double));
     S->data[0] = rtNaN;
   } else {
     b_emxInit_real_T(&k, 1);
     idx = (unsigned int)f->size[0];
-    i19 = k->size[0];
+    i17 = k->size[0];
     k->size[0] = (int)idx;
-    emxEnsureCapacity((emxArray__common *)k, i19, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)k, i17, (int)sizeof(double));
     ar = (int)idx;
-    for (i19 = 0; i19 < ar; i19++) {
-      k->data[i19] = 0.0;
+    for (i17 = 0; i17 < ar; i17++) {
+      k->data[i17] = 0.0;
     }
 
     b_emxInit_real_T(&q, 1);
@@ -522,48 +522,48 @@ static void pitchStrengthOneCandidate(const emxArray_real_T *f, const
     emxInit_int32_T(&r24, 1);
     b_emxInit_real_T(&b_q, 1);
     while (((int)idx <= numPrimes) && (i <= n)) {
-      i19 = b_q->size[0];
+      i17 = b_q->size[0];
       b_q->size[0] = q->size[0];
-      emxEnsureCapacity((emxArray__common *)b_q, i19, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_q, i17, (int)sizeof(double));
       ar = q->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        b_q->data[i19] = q->data[i19] - i;
+      for (i17 = 0; i17 < ar; i17++) {
+        b_q->data[i17] = q->data[i17] - i;
       }
 
       b_abs(b_q, a);
 
       /*  Peak's weigth */
-      i19 = p->size[0];
+      i17 = p->size[0];
       p->size[0] = a->size[0];
-      emxEnsureCapacity((emxArray__common *)p, i19, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)p, i17, (int)sizeof(boolean_T));
       ar = a->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        p->data[i19] = (a->data[i19] < 0.25);
+      for (i17 = 0; i17 < ar; i17++) {
+        p->data[i17] = (a->data[i17] < 0.25);
       }
 
       eml_li_find(p, r23);
       eml_li_find(p, r24);
-      i19 = b->size[0];
+      i17 = b->size[0];
       b->size[0] = r24->size[0];
-      emxEnsureCapacity((emxArray__common *)b, i19, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b, i17, (int)sizeof(double));
       ar = r24->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        b->data[i19] = q->data[r24->data[i19] - 1];
+      for (i17 = 0; i17 < ar; i17++) {
+        b->data[i17] = q->data[r24->data[i17] - 1];
       }
 
-      i19 = b->size[0];
-      emxEnsureCapacity((emxArray__common *)b, i19, (int)sizeof(double));
+      i17 = b->size[0];
+      emxEnsureCapacity((emxArray__common *)b, i17, (int)sizeof(double));
       ar = b->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        b->data[i19] *= 6.2831853071795862;
+      for (i17 = 0; i17 < ar; i17++) {
+        b->data[i17] *= 6.2831853071795862;
       }
 
-      i19 = r22->size[0];
+      i17 = r22->size[0];
       r22->size[0] = b->size[0];
-      emxEnsureCapacity((emxArray__common *)r22, i19, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)r22, i17, (int)sizeof(double));
       ar = b->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        r22->data[i19] = b->data[i19];
+      for (i17 = 0; i17 < ar; i17++) {
+        r22->data[i17] = b->data[i17];
       }
 
       for (b_k = 0; b_k < b->size[0]; b_k++) {
@@ -571,50 +571,50 @@ static void pitchStrengthOneCandidate(const emxArray_real_T *f, const
       }
 
       ar = r22->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        k->data[r23->data[i19] - 1] = r22->data[i19];
+      for (i17 = 0; i17 < ar; i17++) {
+        k->data[r23->data[i17] - 1] = r22->data[i17];
       }
 
       /*  Valleys' weights */
-      i19 = p->size[0];
+      i17 = p->size[0];
       p->size[0] = a->size[0];
-      emxEnsureCapacity((emxArray__common *)p, i19, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)p, i17, (int)sizeof(boolean_T));
       ar = a->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        p->data[i19] = ((0.25 < a->data[i19]) && (a->data[i19] < 0.75));
+      for (i17 = 0; i17 < ar; i17++) {
+        p->data[i17] = ((0.25 < a->data[i17]) && (a->data[i17] < 0.75));
       }
 
       eml_li_find(p, r23);
-      i19 = r22->size[0];
+      i17 = r22->size[0];
       r22->size[0] = r23->size[0];
-      emxEnsureCapacity((emxArray__common *)r22, i19, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)r22, i17, (int)sizeof(double));
       ar = r23->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        r22->data[i19] = k->data[r23->data[i19] - 1];
+      for (i17 = 0; i17 < ar; i17++) {
+        r22->data[i17] = k->data[r23->data[i17] - 1];
       }
 
       eml_li_find(p, r23);
-      i19 = b->size[0];
+      i17 = b->size[0];
       b->size[0] = r23->size[0];
-      emxEnsureCapacity((emxArray__common *)b, i19, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b, i17, (int)sizeof(double));
       ar = r23->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        b->data[i19] = q->data[r23->data[i19] - 1];
+      for (i17 = 0; i17 < ar; i17++) {
+        b->data[i17] = q->data[r23->data[i17] - 1];
       }
 
-      i19 = b->size[0];
-      emxEnsureCapacity((emxArray__common *)b, i19, (int)sizeof(double));
+      i17 = b->size[0];
+      emxEnsureCapacity((emxArray__common *)b, i17, (int)sizeof(double));
       ar = b->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        b->data[i19] *= 6.2831853071795862;
+      for (i17 = 0; i17 < ar; i17++) {
+        b->data[i17] *= 6.2831853071795862;
       }
 
-      i19 = x->size[0];
+      i17 = x->size[0];
       x->size[0] = b->size[0];
-      emxEnsureCapacity((emxArray__common *)x, i19, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)x, i17, (int)sizeof(double));
       ar = b->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        x->data[i19] = b->data[i19];
+      for (i17 = 0; i17 < ar; i17++) {
+        x->data[i17] = b->data[i17];
       }
 
       for (b_k = 0; b_k < b->size[0]; b_k++) {
@@ -624,8 +624,8 @@ static void pitchStrengthOneCandidate(const emxArray_real_T *f, const
       eml_li_find(p, r23);
       rdivide(x, 2.0, a);
       ar = r22->size[0];
-      for (i19 = 0; i19 < ar; i19++) {
-        k->data[r23->data[i19] - 1] = r22->data[i19] + a->data[i19];
+      for (i17 = 0; i17 < ar; i17++) {
+        k->data[r23->data[i17] - 1] = r22->data[i17] + a->data[i17];
       }
 
       idx++;
@@ -642,33 +642,33 @@ static void pitchStrengthOneCandidate(const emxArray_real_T *f, const
     /*  Apply envelope */
     g_rdivide(f, r22);
     b_sqrt(r22);
-    i19 = k->size[0];
-    emxEnsureCapacity((emxArray__common *)k, i19, (int)sizeof(double));
+    i17 = k->size[0];
+    emxEnsureCapacity((emxArray__common *)k, i17, (int)sizeof(double));
     ar = k->size[0];
-    for (i19 = 0; i19 < ar; i19++) {
-      k->data[i19] *= r22->data[i19];
+    for (i17 = 0; i17 < ar; i17++) {
+      k->data[i17] *= r22->data[i17];
     }
 
     emxFree_real_T(&r22);
     emxInit_boolean_T(&c_k, 1);
 
     /*  K+-normalize kernel */
-    i19 = c_k->size[0];
+    i17 = c_k->size[0];
     c_k->size[0] = k->size[0];
-    emxEnsureCapacity((emxArray__common *)c_k, i19, (int)sizeof(boolean_T));
+    emxEnsureCapacity((emxArray__common *)c_k, i17, (int)sizeof(boolean_T));
     ar = k->size[0];
-    for (i19 = 0; i19 < ar; i19++) {
-      c_k->data[i19] = (k->data[i19] > 0.0);
+    for (i17 = 0; i17 < ar; i17++) {
+      c_k->data[i17] = (k->data[i17] > 0.0);
     }
 
     eml_li_find(c_k, r23);
-    i19 = x->size[0];
+    i17 = x->size[0];
     x->size[0] = r23->size[0];
-    emxEnsureCapacity((emxArray__common *)x, i19, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)x, i17, (int)sizeof(double));
     ar = r23->size[0];
     emxFree_boolean_T(&c_k);
-    for (i19 = 0; i19 < ar; i19++) {
-      x->data[i19] = k->data[r23->data[i19] - 1];
+    for (i17 = 0; i17 < ar; i17++) {
+      x->data[i17] = k->data[r23->data[i17] - 1];
     }
 
     emxFree_int32_T(&r23);
@@ -695,56 +695,56 @@ static void pitchStrengthOneCandidate(const emxArray_real_T *f, const
 
     emxFree_real_T(&x);
     b_emxInit_real_T(&d_k, 1);
-    i19 = d_k->size[0];
+    i17 = d_k->size[0];
     d_k->size[0] = k->size[0];
-    emxEnsureCapacity((emxArray__common *)d_k, i19, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)d_k, i17, (int)sizeof(double));
     ar = k->size[0];
-    for (i19 = 0; i19 < ar; i19++) {
-      d_k->data[i19] = k->data[i19];
+    for (i17 = 0; i17 < ar; i17++) {
+      d_k->data[i17] = k->data[i17];
     }
 
     emxInit_real_T(&b_a, 2);
     rdivide(d_k, n, k);
 
     /*  Compute pitch strength */
-    i19 = b_a->size[0] * b_a->size[1];
+    i17 = b_a->size[0] * b_a->size[1];
     b_a->size[0] = 1;
     b_a->size[1] = k->size[0];
-    emxEnsureCapacity((emxArray__common *)b_a, i19, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)b_a, i17, (int)sizeof(double));
     ar = k->size[0];
     emxFree_real_T(&d_k);
-    for (i19 = 0; i19 < ar; i19++) {
-      b_a->data[b_a->size[0] * i19] = k->data[i19];
+    for (i17 = 0; i17 < ar; i17++) {
+      b_a->data[b_a->size[0] * i17] = k->data[i17];
     }
 
     emxFree_real_T(&k);
     if ((b_a->size[1] == 1) || (NL->size[0] == 1)) {
-      i19 = S->size[0] * S->size[1];
+      i17 = S->size[0] * S->size[1];
       S->size[0] = 1;
       S->size[1] = NL->size[1];
-      emxEnsureCapacity((emxArray__common *)S, i19, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)S, i17, (int)sizeof(double));
       ar = NL->size[1];
-      for (i19 = 0; i19 < ar; i19++) {
-        S->data[S->size[0] * i19] = 0.0;
+      for (i17 = 0; i17 < ar; i17++) {
+        S->data[S->size[0] * i17] = 0.0;
         numPrimes = b_a->size[1];
         for (br = 0; br < numPrimes; br++) {
-          S->data[S->size[0] * i19] += b_a->data[b_a->size[0] * br] * NL->
-            data[br + NL->size[0] * i19];
+          S->data[S->size[0] * i17] += b_a->data[b_a->size[0] * br] * NL->
+            data[br + NL->size[0] * i17];
         }
       }
     } else {
       b_k = b_a->size[1];
       idx = (unsigned int)NL->size[1];
       b_n = NL->size[1] - 1;
-      i19 = S->size[0] * S->size[1];
+      i17 = S->size[0] * S->size[1];
       S->size[0] = 1;
-      emxEnsureCapacity((emxArray__common *)S, i19, (int)sizeof(double));
-      i19 = S->size[0] * S->size[1];
+      emxEnsureCapacity((emxArray__common *)S, i17, (int)sizeof(double));
+      i17 = S->size[0] * S->size[1];
       S->size[1] = (int)idx;
-      emxEnsureCapacity((emxArray__common *)S, i19, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)S, i17, (int)sizeof(double));
       ar = (int)idx;
-      for (i19 = 0; i19 < ar; i19++) {
-        S->data[i19] = 0.0;
+      for (i17 = 0; i17 < ar; i17++) {
+        S->data[i17] = 0.0;
       }
 
       if (NL->size[1] == 0) {
@@ -758,8 +758,8 @@ static void pitchStrengthOneCandidate(const emxArray_real_T *f, const
         br = 0;
         for (numPrimes = 0; numPrimes <= b_n; numPrimes++) {
           ar = 0;
-          i19 = br + b_k;
-          for (ib = br; ib + 1 <= i19; ib++) {
+          i17 = br + b_k;
+          for (ib = br; ib + 1 <= i17; ib++) {
             if (NL->data[ib] != 0.0) {
               ia = ar;
               for (ic = numPrimes; ic + 1 <= numPrimes + 1; ic++) {
@@ -790,7 +790,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   double ndbl;
   double cdiff;
   emxArray_real_T *b_y;
-  int i15;
+  int i13;
   int nm1d2;
   int b_cdiff;
   double kd;
@@ -820,7 +820,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   emxArray_real_T *fERBs;
   int i;
   emxArray_real_T *w;
-  emxArray_real_T *X;
+  emxArray_creal_T *X;
   emxArray_real_T *f;
   emxArray_real_T *ti;
   emxArray_real_T *L;
@@ -833,6 +833,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   emxArray_real_T *r18;
   emxArray_boolean_T *c_x;
   emxArray_boolean_T *d_x;
+  emxArray_real_T *varargin_2;
   emxArray_int32_T *ii;
   emxArray_real_T *r19;
   emxArray_real_T *log2pc;
@@ -969,10 +970,10 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   }
 
   emxInit_real_T(&b_y, 2);
-  i15 = b_y->size[0] * b_y->size[1];
+  i13 = b_y->size[0] * b_y->size[1];
   b_y->size[0] = 1;
   b_y->size[1] = n + 1;
-  emxEnsureCapacity((emxArray__common *)b_y, i15, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_y, i13, (int)sizeof(double));
   if (n + 1 > 0) {
     b_y->data[0] = frames;
     if (n + 1 > 1) {
@@ -994,32 +995,32 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     }
   }
 
-  i15 = t->size[0];
+  i13 = t->size[0];
   t->size[0] = b_y->size[1];
-  emxEnsureCapacity((emxArray__common *)t, i15, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)t, i13, (int)sizeof(double));
   b_ndbl = b_y->size[1];
-  for (i15 = 0; i15 < b_ndbl; i15++) {
-    t->data[i15] = b_y->data[b_y->size[0] * i15];
+  for (i13 = 0; i13 < b_ndbl; i13++) {
+    t->data[i13] = b_y->data[b_y->size[0] * i13];
   }
 
   /*  Times */
   if (primetable->size[1] == 0) {
     primes(tmp_data, tmp_size);
-    i15 = primetable->size[0] * primetable->size[1];
+    i13 = primetable->size[0] * primetable->size[1];
     primetable->size[0] = 1;
     primetable->size[1] = 1 + tmp_size[1];
-    emxEnsureCapacity((emxArray__common *)primetable, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)primetable, i13, (int)sizeof(double));
     primetable->data[0] = 1.0;
     b_ndbl = tmp_size[1];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      primetable->data[primetable->size[0] * (i15 + 1)] = tmp_data[tmp_size[0] *
-        i15];
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      primetable->data[primetable->size[0] * (i13 + 1)] = tmp_data[tmp_size[0] *
+        i13];
     }
   }
 
   /*  Define pitch candidates */
-  for (i15 = 0; i15 < 2; i15++) {
-    y_size[i15] = uv2[i15];
+  for (i13 = 0; i13 < 2; i13++) {
+    y_size[i13] = uv2[i13];
   }
 
   y_data[0] = 5.6438561897747244;
@@ -1034,8 +1035,8 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   y_data[80] = 7.31052285644139;
   log2pc_size[0] = y_size[1];
   b_ndbl = y_size[1];
-  for (i15 = 0; i15 < b_ndbl; i15++) {
-    log2pc_data[i15] = y_data[y_size[0] * i15];
+  for (i13 = 0; i13 < b_ndbl; i13++) {
+    log2pc_data[i13] = y_data[y_size[0] * i13];
   }
 
   b_emxInit_real_T(&xzp, 1);
@@ -1047,28 +1048,28 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   e_power(&b_log2pc_data, xzp);
   pc_size_idx_0 = xzp->size[0];
   b_ndbl = xzp->size[0];
-  for (i15 = 0; i15 < b_ndbl; i15++) {
-    pc_data[i15] = xzp->data[i15];
+  for (i13 = 0; i13 < b_ndbl; i13++) {
+    pc_data[i13] = xzp->data[i13];
   }
 
   emxInit_real_T(&S, 2);
-  i15 = S->size[0] * S->size[1];
+  i13 = S->size[0] * S->size[1];
   S->size[0] = pc_size_idx_0;
-  emxEnsureCapacity((emxArray__common *)S, i15, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)S, i13, (int)sizeof(double));
   nm1d2 = t->size[0];
-  i15 = S->size[0] * S->size[1];
+  i13 = S->size[0] * S->size[1];
   S->size[1] = nm1d2;
-  emxEnsureCapacity((emxArray__common *)S, i15, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)S, i13, (int)sizeof(double));
   b_ndbl = pc_size_idx_0 * t->size[0];
-  for (i15 = 0; i15 < b_ndbl; i15++) {
-    S->data[i15] = 0.0;
+  for (i13 = 0; i13 < b_ndbl; i13++) {
+    S->data[i13] = 0.0;
   }
 
   /*  Pitch strength matrix */
   /*  Determine P2-WSs */
   kd = 8.0 * fs;
-  for (i15 = 0; i15 < 2; i15++) {
-    b_x[i15] = kd / (50.0 + 450.0 * (double)i15);
+  for (i13 = 0; i13 < 2; i13++) {
+    b_x[i13] = kd / (50.0 + 450.0 * (double)i13);
   }
 
   b_log2(b_x, logWs);
@@ -1108,10 +1109,10 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     }
   }
 
-  i15 = b_y->size[0] * b_y->size[1];
+  i13 = b_y->size[0] * b_y->size[1];
   b_y->size[0] = 1;
   b_y->size[1] = n + 1;
-  emxEnsureCapacity((emxArray__common *)b_y, i15, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_y, i13, (int)sizeof(double));
   if (n + 1 > 0) {
     b_y->data[0] = frames;
     if (n + 1 > 1) {
@@ -1142,8 +1143,8 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   /*  Determine window sizes used by each pitch candidate */
   y = scalar_log2(b_rdivide(8.0 * fs, ws->data[0]));
   b_ndbl = log2pc_size[0];
-  for (i15 = 0; i15 < b_ndbl; i15++) {
-    log2pc_data[i15] = (1.0 + log2pc_data[i15]) - y;
+  for (i13 = 0; i13 < b_ndbl; i13++) {
+    log2pc_data[i13] = (1.0 + log2pc_data[i13]) - y;
   }
 
   /*  Create ERB-scale uniformly-spaced frequencies (in Hertz) */
@@ -1210,10 +1211,10 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     }
   }
 
-  i15 = b_y->size[0] * b_y->size[1];
+  i13 = b_y->size[0] * b_y->size[1];
   b_y->size[0] = 1;
   b_y->size[1] = n + 1;
-  emxEnsureCapacity((emxArray__common *)b_y, i15, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_y, i13, (int)sizeof(double));
   if (n + 1 > 0) {
     b_y->data[0] = y;
     if (n + 1 > 1) {
@@ -1236,38 +1237,38 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   }
 
   b_emxInit_real_T(&c_y, 1);
-  i15 = c_y->size[0];
+  i13 = c_y->size[0];
   c_y->size[0] = b_y->size[1];
-  emxEnsureCapacity((emxArray__common *)c_y, i15, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)c_y, i13, (int)sizeof(double));
   b_ndbl = b_y->size[1];
-  for (i15 = 0; i15 < b_ndbl; i15++) {
-    c_y->data[i15] = b_y->data[b_y->size[0] * i15];
+  for (i13 = 0; i13 < b_ndbl; i13++) {
+    c_y->data[i13] = b_y->data[b_y->size[0] * i13];
   }
 
   b_emxInit_real_T(&b_xzp, 1);
   rdivide(c_y, 6.44, xzp);
-  i15 = b_xzp->size[0];
+  i13 = b_xzp->size[0];
   b_xzp->size[0] = xzp->size[0];
-  emxEnsureCapacity((emxArray__common *)b_xzp, i15, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_xzp, i13, (int)sizeof(double));
   b_ndbl = xzp->size[0];
   emxFree_real_T(&c_y);
-  for (i15 = 0; i15 < b_ndbl; i15++) {
-    b_xzp->data[i15] = xzp->data[i15] + 7.84;
+  for (i13 = 0; i13 < b_ndbl; i13++) {
+    b_xzp->data[i13] = xzp->data[i13] + 7.84;
   }
 
   b_emxInit_real_T(&fERBs, 1);
   e_power(b_xzp, fERBs);
-  i15 = fERBs->size[0];
-  emxEnsureCapacity((emxArray__common *)fERBs, i15, (int)sizeof(double));
+  i13 = fERBs->size[0];
+  emxEnsureCapacity((emxArray__common *)fERBs, i13, (int)sizeof(double));
   b_ndbl = fERBs->size[0];
   emxFree_real_T(&b_xzp);
-  for (i15 = 0; i15 < b_ndbl; i15++) {
-    fERBs->data[i15] -= 229.0;
+  for (i13 = 0; i13 < b_ndbl; i13++) {
+    fERBs->data[i13] -= 229.0;
   }
 
   i = 0;
   b_emxInit_real_T(&w, 1);
-  emxInit_real_T(&X, 2);
+  emxInit_creal_T(&X, 2);
   b_emxInit_real_T(&f, 1);
   b_emxInit_real_T(&ti, 1);
   emxInit_real_T(&L, 2);
@@ -1280,6 +1281,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   emxInit_real_T(&r18, 2);
   emxInit_boolean_T(&c_x, 1);
   b_emxInit_boolean_T(&d_x, 2);
+  emxInit_real_T(&varargin_2, 2);
   emxInit_int32_T(&ii, 1);
   emxInit_real_T(&r19, 2);
   emxInit_real_T(&log2pc, 2);
@@ -1297,31 +1299,31 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     /*  Zero pad signal */
     y = ws->data[i] / 2.0;
     frames = ws->data[i] / 2.0;
-    i15 = xzp->size[0];
+    i13 = xzp->size[0];
     xzp->size[0] = ((int)y + x->size[0]) + (int)(kd + frames);
-    emxEnsureCapacity((emxArray__common *)xzp, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)xzp, i13, (int)sizeof(double));
     b_ndbl = (int)y;
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      xzp->data[i15] = 0.0;
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      xzp->data[i13] = 0.0;
     }
 
     b_ndbl = x->size[0];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      xzp->data[i15 + (int)y] = x->data[i15];
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      xzp->data[i13 + (int)y] = x->data[i13];
     }
 
     b_ndbl = (int)(kd + frames);
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      xzp->data[(i15 + (int)y) + x->size[0]] = 0.0;
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      xzp->data[(i13 + (int)y) + x->size[0]] = 0.0;
     }
 
     /*  Compute spectrum */
-    i15 = w->size[0];
+    i13 = w->size[0];
     w->size[0] = (int)ws->data[i];
-    emxEnsureCapacity((emxArray__common *)w, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)w, i13, (int)sizeof(double));
     b_ndbl = (int)ws->data[i];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      w->data[i15] = 0.0;
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      w->data[i13] = 0.0;
     }
 
     hanning(&w->data[0], ws->data[i]);
@@ -1330,39 +1332,40 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     /*  Window overlap */
     y = ws->data[i] / 2.0;
     frames = ((double)xzp->size[0] - kd) / (ws->data[i] - kd);
-    i15 = X->size[0] * X->size[1];
+    i13 = X->size[0] * X->size[1];
     X->size[0] = (int)(y + 1.0);
     X->size[1] = (int)frames;
-    emxEnsureCapacity((emxArray__common *)X, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)X, i13, (int)sizeof(creal_T));
     b_ndbl = (int)(y + 1.0) * (int)frames;
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      X->data[i15] = 0.0;
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      X->data[i13].re = 0.0;
+      X->data[i13].im = 0.0;
     }
 
-    i15 = f->size[0];
+    i13 = f->size[0];
     f->size[0] = (int)(y + 1.0);
-    emxEnsureCapacity((emxArray__common *)f, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)f, i13, (int)sizeof(double));
     b_ndbl = (int)(y + 1.0);
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      f->data[i15] = 0.0;
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      f->data[i13] = 0.0;
     }
 
-    i15 = ti->size[0];
+    i13 = ti->size[0];
     ti->size[0] = (int)frames;
-    emxEnsureCapacity((emxArray__common *)ti, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)ti, i13, (int)sizeof(double));
     b_ndbl = (int)frames;
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      ti->data[i15] = 0.0;
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      ti->data[i13] = 0.0;
     }
 
     /*  use argument order of newer spectrogram function, for which we */
     /*  have documentation */
-    i15 = c_xzp->size[0];
+    i13 = c_xzp->size[0];
     c_xzp->size[0] = xzp->size[0];
-    emxEnsureCapacity((emxArray__common *)c_xzp, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)c_xzp, i13, (int)sizeof(double));
     b_ndbl = xzp->size[0];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      c_xzp->data[i15] = xzp->data[i15];
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      c_xzp->data[i13] = xzp->data[i13];
     }
 
     spectrogram(&X->data[0], &f->data[0], &ti->data[0], &c_xzp->data[0], (double)
@@ -1370,31 +1373,31 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
 
     /*  Select candidates that use this window size */
     if (ws->size[1] == 1) {
-      i15 = j->size[0] * j->size[1];
+      i13 = j->size[0] * j->size[1];
       j->size[0] = 1;
       j->size[1] = pc_size_idx_0;
-      emxEnsureCapacity((emxArray__common *)j, i15, (int)sizeof(double));
-      for (i15 = 0; i15 < pc_size_idx_0; i15++) {
-        j->data[j->size[0] * i15] = pc_data[i15];
+      emxEnsureCapacity((emxArray__common *)j, i13, (int)sizeof(double));
+      for (i13 = 0; i13 < pc_size_idx_0; i13++) {
+        j->data[j->size[0] * i13] = pc_data[i13];
       }
 
-      i15 = k->size[0] * k->size[1];
+      i13 = k->size[0] * k->size[1];
       k->size[0] = 0;
       k->size[1] = 0;
-      emxEnsureCapacity((emxArray__common *)k, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)k, i13, (int)sizeof(double));
     } else if (1 + i == ws->size[1]) {
-      i15 = c_x->size[0];
+      i13 = c_x->size[0];
       c_x->size[0] = log2pc_size[0];
-      emxEnsureCapacity((emxArray__common *)c_x, i15, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)c_x, i13, (int)sizeof(boolean_T));
       b_ndbl = log2pc_size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        c_x->data[i15] = (log2pc_data[i15] - (1.0 + (double)i) > -1.0);
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        c_x->data[i13] = (log2pc_data[i13] - (1.0 + (double)i) > -1.0);
       }
 
       b_ndbl = 0;
-      i15 = ii->size[0];
+      i13 = ii->size[0];
       ii->size[0] = 160;
-      emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
       ixstart = 1;
       exitg8 = false;
       while ((!exitg8) && (ixstart <= 160)) {
@@ -1416,56 +1419,56 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
         }
       }
 
-      i15 = ii->size[0];
+      i13 = ii->size[0];
       if (1 > b_ndbl) {
         ii->size[0] = 0;
       } else {
         ii->size[0] = b_ndbl;
       }
 
-      emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
-      i15 = xzp->size[0];
+      emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
+      i13 = xzp->size[0];
       xzp->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)xzp, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)xzp, i13, (int)sizeof(double));
       b_ndbl = ii->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        xzp->data[i15] = ii->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        xzp->data[i13] = ii->data[i13];
       }
 
       ixstart = ii->size[0];
       b_ndbl = ii->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        b_tmp_data[i15] = ii->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        b_tmp_data[i13] = ii->data[i13];
       }
 
       nm1d2 = xzp->size[0];
-      i15 = j->size[0] * j->size[1];
+      i13 = j->size[0] * j->size[1];
       j->size[0] = nm1d2;
-      emxEnsureCapacity((emxArray__common *)j, i15, (int)sizeof(double));
-      i15 = j->size[0] * j->size[1];
+      emxEnsureCapacity((emxArray__common *)j, i13, (int)sizeof(double));
+      i13 = j->size[0] * j->size[1];
       j->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)j, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)j, i13, (int)sizeof(double));
       b_ndbl = xzp->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        j->data[i15] = xzp->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        j->data[i13] = xzp->data[i13];
       }
 
-      i15 = d_x->size[0] * d_x->size[1];
+      i13 = d_x->size[0] * d_x->size[1];
       d_x->size[0] = ixstart;
-      emxEnsureCapacity((emxArray__common *)d_x, i15, (int)sizeof(boolean_T));
-      i15 = d_x->size[0] * d_x->size[1];
+      emxEnsureCapacity((emxArray__common *)d_x, i13, (int)sizeof(boolean_T));
+      i13 = d_x->size[0] * d_x->size[1];
       d_x->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)d_x, i15, (int)sizeof(boolean_T));
-      for (i15 = 0; i15 < ixstart; i15++) {
-        d_x->data[i15] = (log2pc_data[b_tmp_data[i15] - 1] - (1.0 + (double)i) <
+      emxEnsureCapacity((emxArray__common *)d_x, i13, (int)sizeof(boolean_T));
+      for (i13 = 0; i13 < ixstart; i13++) {
+        d_x->data[i13] = (log2pc_data[b_tmp_data[i13] - 1] - (1.0 + (double)i) <
                           0.0);
       }
 
       nm1d2 = d_x->size[0];
       b_ndbl = 0;
-      i15 = ii->size[0];
+      i13 = ii->size[0];
       ii->size[0] = d_x->size[0];
-      emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
       ixstart = 1;
       exitg7 = false;
       while ((!exitg7) && (ixstart <= nm1d2)) {
@@ -1489,53 +1492,53 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
 
       if (d_x->size[0] == 1) {
         if (b_ndbl == 0) {
-          i15 = ii->size[0];
+          i13 = ii->size[0];
           ii->size[0] = 0;
-          emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+          emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
         }
       } else {
-        i15 = ii->size[0];
+        i13 = ii->size[0];
         if (1 > b_ndbl) {
           ii->size[0] = 0;
         } else {
           ii->size[0] = b_ndbl;
         }
 
-        emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+        emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
       }
 
-      i15 = xzp->size[0];
+      i13 = xzp->size[0];
       xzp->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)xzp, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)xzp, i13, (int)sizeof(double));
       b_ndbl = ii->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        xzp->data[i15] = ii->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        xzp->data[i13] = ii->data[i13];
       }
 
       nm1d2 = xzp->size[0];
-      i15 = k->size[0] * k->size[1];
+      i13 = k->size[0] * k->size[1];
       k->size[0] = nm1d2;
-      emxEnsureCapacity((emxArray__common *)k, i15, (int)sizeof(double));
-      i15 = k->size[0] * k->size[1];
+      emxEnsureCapacity((emxArray__common *)k, i13, (int)sizeof(double));
+      i13 = k->size[0] * k->size[1];
       k->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)k, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)k, i13, (int)sizeof(double));
       b_ndbl = xzp->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        k->data[i15] = xzp->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        k->data[i13] = xzp->data[i13];
       }
     } else if (1 + i == 1) {
-      i15 = c_x->size[0];
+      i13 = c_x->size[0];
       c_x->size[0] = log2pc_size[0];
-      emxEnsureCapacity((emxArray__common *)c_x, i15, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)c_x, i13, (int)sizeof(boolean_T));
       b_ndbl = log2pc_size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        c_x->data[i15] = (log2pc_data[i15] - 1.0 < 1.0);
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        c_x->data[i13] = (log2pc_data[i13] - 1.0 < 1.0);
       }
 
       b_ndbl = 0;
-      i15 = ii->size[0];
+      i13 = ii->size[0];
       ii->size[0] = 160;
-      emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
       ixstart = 1;
       exitg6 = false;
       while ((!exitg6) && (ixstart <= 160)) {
@@ -1557,55 +1560,55 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
         }
       }
 
-      i15 = ii->size[0];
+      i13 = ii->size[0];
       if (1 > b_ndbl) {
         ii->size[0] = 0;
       } else {
         ii->size[0] = b_ndbl;
       }
 
-      emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
-      i15 = xzp->size[0];
+      emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
+      i13 = xzp->size[0];
       xzp->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)xzp, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)xzp, i13, (int)sizeof(double));
       b_ndbl = ii->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        xzp->data[i15] = ii->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        xzp->data[i13] = ii->data[i13];
       }
 
       ixstart = ii->size[0];
       b_ndbl = ii->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        b_tmp_data[i15] = ii->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        b_tmp_data[i13] = ii->data[i13];
       }
 
       nm1d2 = xzp->size[0];
-      i15 = j->size[0] * j->size[1];
+      i13 = j->size[0] * j->size[1];
       j->size[0] = nm1d2;
-      emxEnsureCapacity((emxArray__common *)j, i15, (int)sizeof(double));
-      i15 = j->size[0] * j->size[1];
+      emxEnsureCapacity((emxArray__common *)j, i13, (int)sizeof(double));
+      i13 = j->size[0] * j->size[1];
       j->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)j, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)j, i13, (int)sizeof(double));
       b_ndbl = xzp->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        j->data[i15] = xzp->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        j->data[i13] = xzp->data[i13];
       }
 
-      i15 = d_x->size[0] * d_x->size[1];
+      i13 = d_x->size[0] * d_x->size[1];
       d_x->size[0] = ixstart;
-      emxEnsureCapacity((emxArray__common *)d_x, i15, (int)sizeof(boolean_T));
-      i15 = d_x->size[0] * d_x->size[1];
+      emxEnsureCapacity((emxArray__common *)d_x, i13, (int)sizeof(boolean_T));
+      i13 = d_x->size[0] * d_x->size[1];
       d_x->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)d_x, i15, (int)sizeof(boolean_T));
-      for (i15 = 0; i15 < ixstart; i15++) {
-        d_x->data[i15] = (log2pc_data[b_tmp_data[i15] - 1] - 1.0 > 0.0);
+      emxEnsureCapacity((emxArray__common *)d_x, i13, (int)sizeof(boolean_T));
+      for (i13 = 0; i13 < ixstart; i13++) {
+        d_x->data[i13] = (log2pc_data[b_tmp_data[i13] - 1] - 1.0 > 0.0);
       }
 
       nm1d2 = d_x->size[0];
       b_ndbl = 0;
-      i15 = ii->size[0];
+      i13 = ii->size[0];
       ii->size[0] = d_x->size[0];
-      emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
       ixstart = 1;
       exitg5 = false;
       while ((!exitg5) && (ixstart <= nm1d2)) {
@@ -1629,45 +1632,45 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
 
       if (d_x->size[0] == 1) {
         if (b_ndbl == 0) {
-          i15 = ii->size[0];
+          i13 = ii->size[0];
           ii->size[0] = 0;
-          emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+          emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
         }
       } else {
-        i15 = ii->size[0];
+        i13 = ii->size[0];
         if (1 > b_ndbl) {
           ii->size[0] = 0;
         } else {
           ii->size[0] = b_ndbl;
         }
 
-        emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+        emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
       }
 
-      i15 = xzp->size[0];
+      i13 = xzp->size[0];
       xzp->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)xzp, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)xzp, i13, (int)sizeof(double));
       b_ndbl = ii->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        xzp->data[i15] = ii->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        xzp->data[i13] = ii->data[i13];
       }
 
       nm1d2 = xzp->size[0];
-      i15 = k->size[0] * k->size[1];
+      i13 = k->size[0] * k->size[1];
       k->size[0] = nm1d2;
-      emxEnsureCapacity((emxArray__common *)k, i15, (int)sizeof(double));
-      i15 = k->size[0] * k->size[1];
+      emxEnsureCapacity((emxArray__common *)k, i13, (int)sizeof(double));
+      i13 = k->size[0] * k->size[1];
       k->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)k, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)k, i13, (int)sizeof(double));
       b_ndbl = xzp->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        k->data[i15] = xzp->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        k->data[i13] = xzp->data[i13];
       }
     } else {
       b_log2pc_size[0] = log2pc_size[0];
       b_ndbl = log2pc_size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        c_log2pc_data[i15] = log2pc_data[i15] - (1.0 + (double)i);
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        c_log2pc_data[i13] = log2pc_data[i13] - (1.0 + (double)i);
       }
 
       d_log2pc_data.data = (double *)&c_log2pc_data;
@@ -1676,19 +1679,19 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       d_log2pc_data.numDimensions = 1;
       d_log2pc_data.canFreeData = false;
       b_abs(&d_log2pc_data, xzp);
-      i15 = c_x->size[0];
+      i13 = c_x->size[0];
       c_x->size[0] = xzp->size[0];
-      emxEnsureCapacity((emxArray__common *)c_x, i15, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)c_x, i13, (int)sizeof(boolean_T));
       b_ndbl = xzp->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        c_x->data[i15] = (xzp->data[i15] < 1.0);
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        c_x->data[i13] = (xzp->data[i13] < 1.0);
       }
 
       nm1d2 = c_x->size[0];
       b_ndbl = 0;
-      i15 = ii->size[0];
+      i13 = ii->size[0];
       ii->size[0] = c_x->size[0];
-      emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
       ixstart = 1;
       exitg4 = false;
       while ((!exitg4) && (ixstart <= nm1d2)) {
@@ -1712,39 +1715,39 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
 
       if (c_x->size[0] == 1) {
         if (b_ndbl == 0) {
-          i15 = ii->size[0];
+          i13 = ii->size[0];
           ii->size[0] = 0;
-          emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+          emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
         }
       } else {
-        i15 = ii->size[0];
+        i13 = ii->size[0];
         if (1 > b_ndbl) {
           ii->size[0] = 0;
         } else {
           ii->size[0] = b_ndbl;
         }
 
-        emxEnsureCapacity((emxArray__common *)ii, i15, (int)sizeof(int));
+        emxEnsureCapacity((emxArray__common *)ii, i13, (int)sizeof(int));
       }
 
-      i15 = xzp->size[0];
+      i13 = xzp->size[0];
       xzp->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)xzp, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)xzp, i13, (int)sizeof(double));
       b_ndbl = ii->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        xzp->data[i15] = ii->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        xzp->data[i13] = ii->data[i13];
       }
 
       nm1d2 = xzp->size[0];
-      i15 = j->size[0] * j->size[1];
+      i13 = j->size[0] * j->size[1];
       j->size[0] = nm1d2;
-      emxEnsureCapacity((emxArray__common *)j, i15, (int)sizeof(double));
-      i15 = j->size[0] * j->size[1];
+      emxEnsureCapacity((emxArray__common *)j, i13, (int)sizeof(double));
+      i13 = j->size[0] * j->size[1];
       j->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)j, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)j, i13, (int)sizeof(double));
       b_ndbl = xzp->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        j->data[i15] = xzp->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        j->data[i13] = xzp->data[i13];
       }
 
       nm1d2 = j->size[0];
@@ -1778,10 +1781,10 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
         n = b_ndbl - 1;
       }
 
-      i15 = b_y->size[0] * b_y->size[1];
+      i13 = b_y->size[0] * b_y->size[1];
       b_y->size[0] = 1;
       b_y->size[1] = n + 1;
-      emxEnsureCapacity((emxArray__common *)b_y, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_y, i13, (int)sizeof(double));
       if (n + 1 > 0) {
         b_y->data[0] = 1.0;
         if (n + 1 > 1) {
@@ -1801,24 +1804,24 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
         }
       }
 
-      i15 = k->size[0] * k->size[1];
+      i13 = k->size[0] * k->size[1];
       k->size[0] = 1;
       k->size[1] = b_y->size[1];
-      emxEnsureCapacity((emxArray__common *)k, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)k, i13, (int)sizeof(double));
       b_ndbl = b_y->size[0] * b_y->size[1];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        k->data[i15] = b_y->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        k->data[i13] = b_y->data[i13];
       }
     }
 
     /*  Compute loudness at ERBs uniformly-spaced frequencies */
     y = pc_data[(int)j->data[0] - 1] / 4.0;
-    i15 = c_x->size[0];
+    i13 = c_x->size[0];
     c_x->size[0] = fERBs->size[0];
-    emxEnsureCapacity((emxArray__common *)c_x, i15, (int)sizeof(boolean_T));
+    emxEnsureCapacity((emxArray__common *)c_x, i13, (int)sizeof(boolean_T));
     b_ndbl = fERBs->size[0];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      c_x->data[i15] = (fERBs->data[i15] > y);
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      c_x->data[i13] = (fERBs->data[i13] > y);
     }
 
     if (1 <= c_x->size[0]) {
@@ -1850,140 +1853,140 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       b_cdiff = 1;
     }
 
-    i15 = 0;
-    while (i15 <= b_cdiff - 1) {
+    i13 = 0;
+    while (i13 <= b_cdiff - 1) {
       found_data[0] = ii_data[0];
-      i15 = 1;
+      i13 = 1;
     }
 
     if (found_data[0] > fERBs->size[0]) {
-      i15 = 0;
+      i13 = 0;
       b_cdiff = 0;
     } else {
-      i15 = found_data[0] - 1;
+      i13 = found_data[0] - 1;
       b_cdiff = fERBs->size[0];
     }
 
     nm1d2 = b_fERBs->size[0];
-    b_fERBs->size[0] = b_cdiff - i15;
+    b_fERBs->size[0] = b_cdiff - i13;
     emxEnsureCapacity((emxArray__common *)b_fERBs, nm1d2, (int)sizeof(double));
-    b_ndbl = b_cdiff - i15;
+    b_ndbl = b_cdiff - i13;
     for (b_cdiff = 0; b_cdiff < b_ndbl; b_cdiff++) {
-      b_fERBs->data[b_cdiff] = fERBs->data[i15 + b_cdiff];
+      b_fERBs->data[b_cdiff] = fERBs->data[i13 + b_cdiff];
     }
 
-    i15 = fERBs->size[0];
+    i13 = fERBs->size[0];
     fERBs->size[0] = b_fERBs->size[0];
-    emxEnsureCapacity((emxArray__common *)fERBs, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)fERBs, i13, (int)sizeof(double));
     b_ndbl = b_fERBs->size[0];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      fERBs->data[i15] = b_fERBs->data[i15];
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      fERBs->data[i13] = b_fERBs->data[i13];
     }
 
     c_abs(X, r19);
-    interp1(f, r19, fERBs, X);
-    for (i15 = 0; i15 < 2; i15++) {
-      logWs[i15] = X->size[i15];
+    interp1(f, r19, fERBs, varargin_2);
+    for (i13 = 0; i13 < 2; i13++) {
+      logWs[i13] = varargin_2->size[i13];
     }
 
-    i15 = L->size[0] * L->size[1];
+    i13 = L->size[0] * L->size[1];
     L->size[0] = (int)logWs[0];
     L->size[1] = (int)logWs[1];
-    emxEnsureCapacity((emxArray__common *)L, i15, (int)sizeof(double));
-    i15 = (int)logWs[0] * (int)logWs[1];
-    for (b_cdiff = 0; b_cdiff + 1 <= i15; b_cdiff++) {
-      L->data[b_cdiff] = fmax(0.0, X->data[b_cdiff]);
+    emxEnsureCapacity((emxArray__common *)L, i13, (int)sizeof(double));
+    i13 = (int)logWs[0] * (int)logWs[1];
+    for (b_cdiff = 0; b_cdiff + 1 <= i13; b_cdiff++) {
+      L->data[b_cdiff] = fmax(0.0, varargin_2->data[b_cdiff]);
     }
 
     c_sqrt(L);
 
     /*  Compute pitch strength */
-    i15 = pc->size[0] * pc->size[1];
+    i13 = pc->size[0] * pc->size[1];
     pc->size[0] = j->size[0];
     pc->size[1] = j->size[1];
-    emxEnsureCapacity((emxArray__common *)pc, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)pc, i13, (int)sizeof(double));
     b_ndbl = j->size[0] * j->size[1];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      pc->data[i15] = pc_data[(int)j->data[i15] - 1];
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      pc->data[i13] = pc_data[(int)j->data[i13] - 1];
     }
 
     pitchStrengthAllCandidates(fERBs, L, pc, r19);
-    i15 = Si->size[0] * Si->size[1];
+    i13 = Si->size[0] * Si->size[1];
     Si->size[0] = r19->size[0];
     Si->size[1] = r19->size[1];
-    emxEnsureCapacity((emxArray__common *)Si, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)Si, i13, (int)sizeof(double));
     b_ndbl = r19->size[0] * r19->size[1];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      Si->data[i15] = r19->data[i15];
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      Si->data[i13] = r19->data[i13];
     }
 
     /*  Interpolate pitch strength at desired times */
     if (Si->size[1] > 1) {
-      i15 = d_Si->size[0] * d_Si->size[1];
+      i13 = d_Si->size[0] * d_Si->size[1];
       d_Si->size[0] = Si->size[1];
       d_Si->size[1] = Si->size[0];
-      emxEnsureCapacity((emxArray__common *)d_Si, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)d_Si, i13, (int)sizeof(double));
       b_ndbl = Si->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
+      for (i13 = 0; i13 < b_ndbl; i13++) {
         nm1d2 = Si->size[1];
         for (b_cdiff = 0; b_cdiff < nm1d2; b_cdiff++) {
-          d_Si->data[b_cdiff + d_Si->size[0] * i15] = Si->data[i15 + Si->size[0]
+          d_Si->data[b_cdiff + d_Si->size[0] * i13] = Si->data[i13 + Si->size[0]
             * b_cdiff];
         }
       }
 
       b_interp1(ti, d_Si, t, r19);
-      i15 = c_Si->size[0] * c_Si->size[1];
+      i13 = c_Si->size[0] * c_Si->size[1];
       c_Si->size[0] = Si->size[1];
       c_Si->size[1] = Si->size[0];
-      emxEnsureCapacity((emxArray__common *)c_Si, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)c_Si, i13, (int)sizeof(double));
       b_ndbl = Si->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
+      for (i13 = 0; i13 < b_ndbl; i13++) {
         nm1d2 = Si->size[1];
         for (b_cdiff = 0; b_cdiff < nm1d2; b_cdiff++) {
-          c_Si->data[b_cdiff + c_Si->size[0] * i15] = Si->data[i15 + Si->size[0]
+          c_Si->data[b_cdiff + c_Si->size[0] * i13] = Si->data[i13 + Si->size[0]
             * b_cdiff];
         }
       }
 
-      b_interp1(ti, c_Si, t, X);
-      i15 = b_Si->size[0] * b_Si->size[1];
+      b_interp1(ti, c_Si, t, varargin_2);
+      i13 = b_Si->size[0] * b_Si->size[1];
       b_Si->size[0] = Si->size[1];
       b_Si->size[1] = Si->size[0];
-      emxEnsureCapacity((emxArray__common *)b_Si, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_Si, i13, (int)sizeof(double));
       b_ndbl = Si->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
+      for (i13 = 0; i13 < b_ndbl; i13++) {
         nm1d2 = Si->size[1];
         for (b_cdiff = 0; b_cdiff < nm1d2; b_cdiff++) {
-          b_Si->data[b_cdiff + b_Si->size[0] * i15] = Si->data[i15 + Si->size[0]
+          b_Si->data[b_cdiff + b_Si->size[0] * i13] = Si->data[i13 + Si->size[0]
             * b_cdiff];
         }
       }
 
       b_interp1(ti, b_Si, t, L);
-      i15 = b_L->size[0] * b_L->size[1];
+      i13 = b_L->size[0] * b_L->size[1];
       b_L->size[0] = L->size[1];
       b_L->size[1] = L->size[0];
-      emxEnsureCapacity((emxArray__common *)b_L, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_L, i13, (int)sizeof(double));
       b_ndbl = L->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
+      for (i13 = 0; i13 < b_ndbl; i13++) {
         nm1d2 = L->size[1];
         for (b_cdiff = 0; b_cdiff < nm1d2; b_cdiff++) {
-          b_L->data[b_cdiff + b_L->size[0] * i15] = L->data[i15 + L->size[0] *
+          b_L->data[b_cdiff + b_L->size[0] * i13] = L->data[i13 + L->size[0] *
             b_cdiff];
         }
       }
 
       nm1d2 = r19->size[1];
-      ixstart = X->size[0];
-      i15 = Si->size[0] * Si->size[1];
+      ixstart = varargin_2->size[0];
+      i13 = Si->size[0] * Si->size[1];
       Si->size[0] = nm1d2;
       Si->size[1] = ixstart;
-      emxEnsureCapacity((emxArray__common *)Si, i15, (int)sizeof(double));
-      for (i15 = 0; i15 < ixstart; i15++) {
+      emxEnsureCapacity((emxArray__common *)Si, i13, (int)sizeof(double));
+      for (i13 = 0; i13 < ixstart; i13++) {
         for (b_cdiff = 0; b_cdiff < nm1d2; b_cdiff++) {
-          Si->data[b_cdiff + Si->size[0] * i15] = b_L->data[b_cdiff + nm1d2 *
-            i15];
+          Si->data[b_cdiff + Si->size[0] * i13] = b_L->data[b_cdiff + nm1d2 *
+            i13];
         }
       }
     } else {
@@ -1998,87 +2001,87 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       }
 
       d_repmat(ixstart, t->size[0], r19);
-      i15 = Si->size[0] * Si->size[1];
+      i13 = Si->size[0] * Si->size[1];
       Si->size[0] = r19->size[0];
       Si->size[1] = r19->size[1];
-      emxEnsureCapacity((emxArray__common *)Si, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)Si, i13, (int)sizeof(double));
       b_ndbl = r19->size[0] * r19->size[1];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        Si->data[i15] = r19->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        Si->data[i13] = r19->data[i13];
       }
     }
 
     /*  Add pitch strength to combination */
-    for (i15 = 0; i15 < 2; i15++) {
-      logWs[i15] = j->size[i15];
+    for (i13 = 0; i13 < 2; i13++) {
+      logWs[i13] = j->size[i13];
     }
 
-    i15 = mu->size[0] * mu->size[1];
+    i13 = mu->size[0] * mu->size[1];
     mu->size[0] = (int)logWs[0];
-    emxEnsureCapacity((emxArray__common *)mu, i15, (int)sizeof(double));
-    i15 = mu->size[0] * mu->size[1];
+    emxEnsureCapacity((emxArray__common *)mu, i13, (int)sizeof(double));
+    i13 = mu->size[0] * mu->size[1];
     mu->size[1] = (int)logWs[1];
-    emxEnsureCapacity((emxArray__common *)mu, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)mu, i13, (int)sizeof(double));
     b_ndbl = (int)logWs[0] * (int)logWs[1];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      mu->data[i15] = 1.0;
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      mu->data[i13] = 1.0;
     }
 
-    i15 = log2pc->size[0] * log2pc->size[1];
+    i13 = log2pc->size[0] * log2pc->size[1];
     log2pc->size[0] = k->size[0];
     log2pc->size[1] = k->size[1];
-    emxEnsureCapacity((emxArray__common *)log2pc, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)log2pc, i13, (int)sizeof(double));
     b_ndbl = k->size[0] * k->size[1];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      log2pc->data[i15] = log2pc_data[(int)j->data[(int)k->data[i15] - 1] - 1] -
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      log2pc->data[i13] = log2pc_data[(int)j->data[(int)k->data[i13] - 1] - 1] -
         (1.0 + (double)i);
     }
 
-    c_abs(log2pc, r19);
-    i15 = r17->size[0] * r17->size[1];
+    d_abs(log2pc, r19);
+    i13 = r17->size[0] * r17->size[1];
     r17->size[0] = r19->size[0];
     r17->size[1] = r19->size[1];
-    emxEnsureCapacity((emxArray__common *)r17, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)r17, i13, (int)sizeof(double));
     b_ndbl = r19->size[0] * r19->size[1];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      r17->data[i15] = r19->data[i15];
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      r17->data[i13] = r19->data[i13];
     }
 
     b_ndbl = r17->size[0] * r17->size[1];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      mu->data[(int)k->data[i15] - 1] = 1.0 - r17->data[i15];
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      mu->data[(int)k->data[i13] - 1] = 1.0 - r17->data[i13];
     }
 
     e_repmat(mu, Si->size[1], r19);
-    i15 = r18->size[0] * r18->size[1];
+    i13 = r18->size[0] * r18->size[1];
     r18->size[0] = r19->size[0];
     r18->size[1] = r19->size[1];
-    emxEnsureCapacity((emxArray__common *)r18, i15, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)r18, i13, (int)sizeof(double));
     b_ndbl = r19->size[0] * r19->size[1];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
-      r18->data[i15] = r19->data[i15];
+    for (i13 = 0; i13 < b_ndbl; i13++) {
+      r18->data[i13] = r19->data[i13];
     }
 
     nm1d2 = j->size[0] * j->size[1];
     ixstart = S->size[1];
-    i15 = b_S->size[0] * b_S->size[1];
+    i13 = b_S->size[0] * b_S->size[1];
     b_S->size[0] = nm1d2;
     b_S->size[1] = ixstart;
-    emxEnsureCapacity((emxArray__common *)b_S, i15, (int)sizeof(double));
-    for (i15 = 0; i15 < ixstart; i15++) {
+    emxEnsureCapacity((emxArray__common *)b_S, i13, (int)sizeof(double));
+    for (i13 = 0; i13 < ixstart; i13++) {
       for (b_cdiff = 0; b_cdiff < nm1d2; b_cdiff++) {
-        b_S->data[b_cdiff + b_S->size[0] * i15] = S->data[((int)j->data[b_cdiff]
-          + S->size[0] * i15) - 1] + r18->data[b_cdiff + r18->size[0] * i15] *
-          Si->data[b_cdiff + Si->size[0] * i15];
+        b_S->data[b_cdiff + b_S->size[0] * i13] = S->data[((int)j->data[b_cdiff]
+          + S->size[0] * i13) - 1] + r18->data[b_cdiff + r18->size[0] * i13] *
+          Si->data[b_cdiff + Si->size[0] * i13];
       }
     }
 
     b_ndbl = b_S->size[1];
-    for (i15 = 0; i15 < b_ndbl; i15++) {
+    for (i13 = 0; i13 < b_ndbl; i13++) {
       nm1d2 = b_S->size[0];
       for (b_cdiff = 0; b_cdiff < nm1d2; b_cdiff++) {
-        S->data[((int)j->data[b_cdiff] + S->size[0] * i15) - 1] = b_S->
-          data[b_cdiff + b_S->size[0] * i15];
+        S->data[((int)j->data[b_cdiff] + S->size[0] * i13) - 1] = b_S->
+          data[b_cdiff + b_S->size[0] * i13];
       }
     }
 
@@ -2095,6 +2098,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   emxFree_real_T(&log2pc);
   emxFree_real_T(&r19);
   emxFree_int32_T(&ii);
+  emxFree_real_T(&varargin_2);
   emxFree_boolean_T(&d_x);
   emxFree_boolean_T(&c_x);
   emxFree_real_T(&r18);
@@ -2107,7 +2111,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   emxFree_real_T(&L);
   emxFree_real_T(&ti);
   emxFree_real_T(&f);
-  emxFree_real_T(&X);
+  emxFree_creal_T(&X);
   emxFree_real_T(&w);
   emxFree_real_T(&fERBs);
 
@@ -2122,8 +2126,8 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     n = S->size[0];
     kd = S->data[S->size[0] * b_j];
     i = 1;
-    i15 = S->size[0];
-    if (i15 > 1) {
+    i13 = S->size[0];
+    if (i13 > 1) {
       if (rtIsNaN(kd)) {
         nm1d2 = 2;
         exitg2 = false;
@@ -2139,8 +2143,8 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
         }
       }
 
-      i15 = S->size[0];
-      if (ixstart < i15) {
+      i13 = S->size[0];
+      if (ixstart < i13) {
         while (ixstart + 1 <= n) {
           if (S->data[ixstart + S->size[0] * b_j] > kd) {
             kd = S->data[ixstart + S->size[0] * b_j];
@@ -2183,10 +2187,10 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
         n = b_ndbl - 1;
       }
 
-      i15 = b_y->size[0] * b_y->size[1];
+      i13 = b_y->size[0] * b_y->size[1];
       b_y->size[0] = 1;
       b_y->size[1] = n + 1;
-      emxEnsureCapacity((emxArray__common *)b_y, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_y, i13, (int)sizeof(double));
       if (n + 1 > 0) {
         b_y->data[0] = frames;
         if (n + 1 > 1) {
@@ -2203,8 +2207,8 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
 
       pc_size[0] = b_y->size[1];
       b_ndbl = b_y->size[1];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        b_pc_data[i15] = pc_data[(int)b_y->data[b_y->size[0] * i15] - 1];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        b_pc_data[i13] = pc_data[(int)b_y->data[b_y->size[0] * i13] - 1];
       }
 
       c_pc_data.data = (double *)&b_pc_data;
@@ -2215,8 +2219,8 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       g_rdivide(&c_pc_data, xzp);
       tc_size[0] = xzp->size[0];
       b_ndbl = xzp->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        tc_data[i15] = xzp->data[i15];
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        tc_data[i13] = xzp->data[i13];
       }
 
       b_tc_data.data = (double *)&tc_data;
@@ -2225,18 +2229,18 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       b_tc_data.numDimensions = 1;
       b_tc_data.canFreeData = false;
       rdivide(&b_tc_data, tc_data[1], xzp);
-      i15 = d_xzp->size[0];
+      i13 = d_xzp->size[0];
       d_xzp->size[0] = xzp->size[0];
-      emxEnsureCapacity((emxArray__common *)d_xzp, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)d_xzp, i13, (int)sizeof(double));
       b_ndbl = xzp->size[0];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        d_xzp->data[i15] = (xzp->data[i15] - 1.0) * 2.0 * 3.1415926535897931;
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        d_xzp->data[i13] = (xzp->data[i13] - 1.0) * 2.0 * 3.1415926535897931;
       }
 
       S_size[0] = b_y->size[1];
       b_ndbl = b_y->size[1];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        S_data[i15] = S->data[((int)b_y->data[b_y->size[0] * i15] + S->size[0] *
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        S_data[i13] = S->data[((int)b_y->data[b_y->size[0] * i13] + S->size[0] *
           b_j) - 1];
       }
 
@@ -2281,10 +2285,10 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
         }
       }
 
-      i15 = ws->size[0] * ws->size[1];
+      i13 = ws->size[0] * ws->size[1];
       ws->size[0] = 1;
       ws->size[1] = n + 1;
-      emxEnsureCapacity((emxArray__common *)ws, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)ws, i13, (int)sizeof(double));
       if (n + 1 > 0) {
         ws->data[0] = y;
         if (n + 1 > 1) {
@@ -2309,13 +2313,13 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       f_power(ws, pO);
       f_rdivide(1.0, pO, ws);
       c_rdivide(ws, tc_data[1], pO);
-      i15 = b_pO->size[0] * b_pO->size[1];
+      i13 = b_pO->size[0] * b_pO->size[1];
       b_pO->size[0] = 1;
       b_pO->size[1] = pO->size[1];
-      emxEnsureCapacity((emxArray__common *)b_pO, i15, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_pO, i13, (int)sizeof(double));
       b_ndbl = pO->size[0] * pO->size[1];
-      for (i15 = 0; i15 < b_ndbl; i15++) {
-        b_pO->data[i15] = (pO->data[i15] - 1.0) * 2.0 * 3.1415926535897931;
+      for (i13 = 0; i13 < b_ndbl; i13++) {
+        b_pO->data[i13] = (pO->data[i13] - 1.0) * 2.0 * 3.1415926535897931;
       }
 
       polyval(c, b_pO, ws);
@@ -2380,7 +2384,7 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   double ndbl;
   double cdiff;
   emxArray_real_T *b_y;
-  int i28;
+  int i27;
   int nm1d2;
   int k;
   double kd;
@@ -2401,11 +2405,12 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   emxArray_real_T *b_w;
   emxArray_real_T *fERBs;
   int i;
-  emxArray_real_T *X;
+  emxArray_creal_T *X;
   emxArray_real_T *f;
   emxArray_real_T *ti;
   emxArray_real_T *L;
   emxArray_real_T *Si;
+  emxArray_real_T *mu;
   emxArray_real_T *tc;
   emxArray_real_T *j;
   emxArray_real_T *b_k;
@@ -2567,10 +2572,10 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   }
 
   emxInit_real_T(&b_y, 2);
-  i28 = b_y->size[0] * b_y->size[1];
+  i27 = b_y->size[0] * b_y->size[1];
   b_y->size[0] = 1;
   b_y->size[1] = n + 1;
-  emxEnsureCapacity((emxArray__common *)b_y, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_y, i27, (int)sizeof(double));
   if (n + 1 > 0) {
     b_y->data[0] = frames;
     if (n + 1 > 1) {
@@ -2592,26 +2597,26 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     }
   }
 
-  i28 = t->size[0];
+  i27 = t->size[0];
   t->size[0] = b_y->size[1];
-  emxEnsureCapacity((emxArray__common *)t, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)t, i27, (int)sizeof(double));
   ixstart = b_y->size[1];
-  for (i28 = 0; i28 < ixstart; i28++) {
-    t->data[i28] = b_y->data[b_y->size[0] * i28];
+  for (i27 = 0; i27 < ixstart; i27++) {
+    t->data[i27] = b_y->data[b_y->size[0] * i27];
   }
 
   /*  Times */
   if (primetable->size[1] == 0) {
     primes(tmp_data, tmp_size);
-    i28 = primetable->size[0] * primetable->size[1];
+    i27 = primetable->size[0] * primetable->size[1];
     primetable->size[0] = 1;
     primetable->size[1] = 1 + tmp_size[1];
-    emxEnsureCapacity((emxArray__common *)primetable, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)primetable, i27, (int)sizeof(double));
     primetable->data[0] = 1.0;
     ixstart = tmp_size[1];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      primetable->data[primetable->size[0] * (i28 + 1)] = tmp_data[tmp_size[0] *
-        i28];
+    for (i27 = 0; i27 < ixstart; i27++) {
+      primetable->data[primetable->size[0] * (i27 + 1)] = tmp_data[tmp_size[0] *
+        i27];
     }
   }
 
@@ -2660,10 +2665,10 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     }
   }
 
-  i28 = b_y->size[0] * b_y->size[1];
+  i27 = b_y->size[0] * b_y->size[1];
   b_y->size[0] = 1;
   b_y->size[1] = n + 1;
-  emxEnsureCapacity((emxArray__common *)b_y, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_y, i27, (int)sizeof(double));
   if (n + 1 > 0) {
     b_y->data[0] = y;
     if (n + 1 > 1) {
@@ -2686,28 +2691,28 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   }
 
   b_emxInit_real_T(&log2pc, 1);
-  i28 = log2pc->size[0];
+  i27 = log2pc->size[0];
   log2pc->size[0] = b_y->size[1];
-  emxEnsureCapacity((emxArray__common *)log2pc, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)log2pc, i27, (int)sizeof(double));
   ixstart = b_y->size[1];
-  for (i28 = 0; i28 < ixstart; i28++) {
-    log2pc->data[i28] = b_y->data[b_y->size[0] * i28];
+  for (i27 = 0; i27 < ixstart; i27++) {
+    log2pc->data[i27] = b_y->data[b_y->size[0] * i27];
   }
 
   b_emxInit_real_T(&pc, 1);
   emxInit_real_T(&S, 2);
   e_power(log2pc, pc);
   nm1d2 = pc->size[0];
-  i28 = S->size[0] * S->size[1];
+  i27 = S->size[0] * S->size[1];
   S->size[0] = nm1d2;
-  emxEnsureCapacity((emxArray__common *)S, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)S, i27, (int)sizeof(double));
   nm1d2 = t->size[0];
-  i28 = S->size[0] * S->size[1];
+  i27 = S->size[0] * S->size[1];
   S->size[1] = nm1d2;
-  emxEnsureCapacity((emxArray__common *)S, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)S, i27, (int)sizeof(double));
   ixstart = pc->size[0] * t->size[0];
-  for (i28 = 0; i28 < ixstart; i28++) {
-    S->data[i28] = 0.0;
+  for (i27 = 0; i27 < ixstart; i27++) {
+    S->data[i27] = 0.0;
   }
 
   /*  Pitch strength matrix */
@@ -2750,10 +2755,10 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     }
   }
 
-  i28 = b_y->size[0] * b_y->size[1];
+  i27 = b_y->size[0] * b_y->size[1];
   b_y->size[0] = 1;
   b_y->size[1] = n + 1;
-  emxEnsureCapacity((emxArray__common *)b_y, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_y, i27, (int)sizeof(double));
   if (n + 1 > 0) {
     b_y->data[0] = frames;
     if (n + 1 > 1) {
@@ -2783,11 +2788,11 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   /*  Optimal pitches for P2-WSs */
   /*  Determine window sizes used by each pitch candidate */
   y = scalar_log2(b_rdivide(8.0 * fs, ws->data[0]));
-  i28 = log2pc->size[0];
-  emxEnsureCapacity((emxArray__common *)log2pc, i28, (int)sizeof(double));
+  i27 = log2pc->size[0];
+  emxEnsureCapacity((emxArray__common *)log2pc, i27, (int)sizeof(double));
   ixstart = log2pc->size[0];
-  for (i28 = 0; i28 < ixstart; i28++) {
-    log2pc->data[i28] = (1.0 + log2pc->data[i28]) - y;
+  for (i27 = 0; i27 < ixstart; i27++) {
+    log2pc->data[i27] = (1.0 + log2pc->data[i27]) - y;
   }
 
   /*  Create ERB-scale uniformly-spaced frequencies (in Hertz) */
@@ -2864,10 +2869,10 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     }
   }
 
-  i28 = b_y->size[0] * b_y->size[1];
+  i27 = b_y->size[0] * b_y->size[1];
   b_y->size[0] = 1;
   b_y->size[1] = n + 1;
-  emxEnsureCapacity((emxArray__common *)b_y, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_y, i27, (int)sizeof(double));
   if (n + 1 > 0) {
     b_y->data[0] = y;
     if (n + 1 > 1) {
@@ -2890,42 +2895,43 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   }
 
   b_emxInit_real_T(&c_y, 1);
-  i28 = c_y->size[0];
+  i27 = c_y->size[0];
   c_y->size[0] = b_y->size[1];
-  emxEnsureCapacity((emxArray__common *)c_y, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)c_y, i27, (int)sizeof(double));
   ixstart = b_y->size[1];
-  for (i28 = 0; i28 < ixstart; i28++) {
-    c_y->data[i28] = b_y->data[b_y->size[0] * i28];
+  for (i27 = 0; i27 < ixstart; i27++) {
+    c_y->data[i27] = b_y->data[b_y->size[0] * i27];
   }
 
   b_emxInit_real_T(&w, 1);
   b_emxInit_real_T(&b_w, 1);
   rdivide(c_y, 6.44, w);
-  i28 = b_w->size[0];
+  i27 = b_w->size[0];
   b_w->size[0] = w->size[0];
-  emxEnsureCapacity((emxArray__common *)b_w, i28, (int)sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_w, i27, (int)sizeof(double));
   ixstart = w->size[0];
   emxFree_real_T(&c_y);
-  for (i28 = 0; i28 < ixstart; i28++) {
-    b_w->data[i28] = w->data[i28] + 7.84;
+  for (i27 = 0; i27 < ixstart; i27++) {
+    b_w->data[i27] = w->data[i27] + 7.84;
   }
 
   b_emxInit_real_T(&fERBs, 1);
   e_power(b_w, fERBs);
-  i28 = fERBs->size[0];
-  emxEnsureCapacity((emxArray__common *)fERBs, i28, (int)sizeof(double));
+  i27 = fERBs->size[0];
+  emxEnsureCapacity((emxArray__common *)fERBs, i27, (int)sizeof(double));
   ixstart = fERBs->size[0];
   emxFree_real_T(&b_w);
-  for (i28 = 0; i28 < ixstart; i28++) {
-    fERBs->data[i28] -= 229.0;
+  for (i27 = 0; i27 < ixstart; i27++) {
+    fERBs->data[i27] -= 229.0;
   }
 
   i = 0;
-  emxInit_real_T(&X, 2);
+  emxInit_creal_T(&X, 2);
   b_emxInit_real_T(&f, 1);
   b_emxInit_real_T(&ti, 1);
   emxInit_real_T(&L, 2);
   emxInit_real_T(&Si, 2);
+  emxInit_real_T(&mu, 2);
   b_emxInit_real_T(&tc, 1);
   emxInit_real_T(&j, 2);
   emxInit_real_T(&b_k, 2);
@@ -2946,31 +2952,31 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     /*  Zero pad signal */
     y = ws->data[i] / 2.0;
     frames = ws->data[i] / 2.0;
-    i28 = tc->size[0];
+    i27 = tc->size[0];
     tc->size[0] = ((int)y + x->size[0]) + (int)(kd + frames);
-    emxEnsureCapacity((emxArray__common *)tc, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)tc, i27, (int)sizeof(double));
     ixstart = (int)y;
-    for (i28 = 0; i28 < ixstart; i28++) {
-      tc->data[i28] = 0.0;
+    for (i27 = 0; i27 < ixstart; i27++) {
+      tc->data[i27] = 0.0;
     }
 
     ixstart = x->size[0];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      tc->data[i28 + (int)y] = x->data[i28];
+    for (i27 = 0; i27 < ixstart; i27++) {
+      tc->data[i27 + (int)y] = x->data[i27];
     }
 
     ixstart = (int)(kd + frames);
-    for (i28 = 0; i28 < ixstart; i28++) {
-      tc->data[(i28 + (int)y) + x->size[0]] = 0.0;
+    for (i27 = 0; i27 < ixstart; i27++) {
+      tc->data[(i27 + (int)y) + x->size[0]] = 0.0;
     }
 
     /*  Compute spectrum */
-    i28 = w->size[0];
+    i27 = w->size[0];
     w->size[0] = (int)ws->data[i];
-    emxEnsureCapacity((emxArray__common *)w, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)w, i27, (int)sizeof(double));
     ixstart = (int)ws->data[i];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      w->data[i28] = 0.0;
+    for (i27 = 0; i27 < ixstart; i27++) {
+      w->data[i27] = 0.0;
     }
 
     hanning(&w->data[0], ws->data[i]);
@@ -2979,39 +2985,40 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     /*  Window overlap */
     y = ws->data[i] / 2.0;
     frames = ((double)tc->size[0] - kd) / (ws->data[i] - kd);
-    i28 = X->size[0] * X->size[1];
+    i27 = X->size[0] * X->size[1];
     X->size[0] = (int)(y + 1.0);
     X->size[1] = (int)frames;
-    emxEnsureCapacity((emxArray__common *)X, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)X, i27, (int)sizeof(creal_T));
     ixstart = (int)(y + 1.0) * (int)frames;
-    for (i28 = 0; i28 < ixstart; i28++) {
-      X->data[i28] = 0.0;
+    for (i27 = 0; i27 < ixstart; i27++) {
+      X->data[i27].re = 0.0;
+      X->data[i27].im = 0.0;
     }
 
-    i28 = f->size[0];
+    i27 = f->size[0];
     f->size[0] = (int)(y + 1.0);
-    emxEnsureCapacity((emxArray__common *)f, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)f, i27, (int)sizeof(double));
     ixstart = (int)(y + 1.0);
-    for (i28 = 0; i28 < ixstart; i28++) {
-      f->data[i28] = 0.0;
+    for (i27 = 0; i27 < ixstart; i27++) {
+      f->data[i27] = 0.0;
     }
 
-    i28 = ti->size[0];
+    i27 = ti->size[0];
     ti->size[0] = (int)frames;
-    emxEnsureCapacity((emxArray__common *)ti, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)ti, i27, (int)sizeof(double));
     ixstart = (int)frames;
-    for (i28 = 0; i28 < ixstart; i28++) {
-      ti->data[i28] = 0.0;
+    for (i27 = 0; i27 < ixstart; i27++) {
+      ti->data[i27] = 0.0;
     }
 
     /*  use argument order of newer spectrogram function, for which we */
     /*  have documentation */
-    i28 = xzp->size[0];
+    i27 = xzp->size[0];
     xzp->size[0] = tc->size[0];
-    emxEnsureCapacity((emxArray__common *)xzp, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)xzp, i27, (int)sizeof(double));
     ixstart = tc->size[0];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      xzp->data[i28] = tc->data[i28];
+    for (i27 = 0; i27 < ixstart; i27++) {
+      xzp->data[i27] = tc->data[i27];
     }
 
     spectrogram(&X->data[0], &f->data[0], &ti->data[0], &xzp->data[0], (double)
@@ -3019,33 +3026,33 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
 
     /*  Select candidates that use this window size */
     if (ws->size[1] == 1) {
-      i28 = j->size[0] * j->size[1];
+      i27 = j->size[0] * j->size[1];
       j->size[0] = 1;
       j->size[1] = pc->size[0];
-      emxEnsureCapacity((emxArray__common *)j, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)j, i27, (int)sizeof(double));
       ixstart = pc->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        j->data[j->size[0] * i28] = pc->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        j->data[j->size[0] * i27] = pc->data[i27];
       }
 
-      i28 = b_k->size[0] * b_k->size[1];
+      i27 = b_k->size[0] * b_k->size[1];
       b_k->size[0] = 0;
       b_k->size[1] = 0;
-      emxEnsureCapacity((emxArray__common *)b_k, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_k, i27, (int)sizeof(double));
     } else if (1 + i == ws->size[1]) {
-      i28 = b_x->size[0];
+      i27 = b_x->size[0];
       b_x->size[0] = log2pc->size[0];
-      emxEnsureCapacity((emxArray__common *)b_x, i28, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)b_x, i27, (int)sizeof(boolean_T));
       ixstart = log2pc->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        b_x->data[i28] = (log2pc->data[i28] - (1.0 + (double)i) > -1.0);
+      for (i27 = 0; i27 < ixstart; i27++) {
+        b_x->data[i27] = (log2pc->data[i27] - (1.0 + (double)i) > -1.0);
       }
 
       nm1d2 = b_x->size[0];
       idx = 0;
-      i28 = ii->size[0];
+      i27 = ii->size[0];
       ii->size[0] = b_x->size[0];
-      emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       ixstart = 1;
       exitg8 = false;
       while ((!exitg8) && (ixstart <= nm1d2)) {
@@ -3069,59 +3076,59 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
 
       if (b_x->size[0] == 1) {
         if (idx == 0) {
-          i28 = ii->size[0];
+          i27 = ii->size[0];
           ii->size[0] = 0;
-          emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+          emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
         }
       } else {
-        i28 = ii->size[0];
+        i27 = ii->size[0];
         if (1 > idx) {
           ii->size[0] = 0;
         } else {
           ii->size[0] = idx;
         }
 
-        emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+        emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       }
 
-      i28 = w->size[0];
+      i27 = w->size[0];
       w->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)w, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)w, i27, (int)sizeof(double));
       ixstart = ii->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        w->data[i28] = ii->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        w->data[i27] = ii->data[i27];
       }
 
       idx = w->size[0];
-      i28 = j->size[0] * j->size[1];
+      i27 = j->size[0] * j->size[1];
       j->size[0] = idx;
-      emxEnsureCapacity((emxArray__common *)j, i28, (int)sizeof(double));
-      i28 = j->size[0] * j->size[1];
+      emxEnsureCapacity((emxArray__common *)j, i27, (int)sizeof(double));
+      i27 = j->size[0] * j->size[1];
       j->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)j, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)j, i27, (int)sizeof(double));
       ixstart = w->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        j->data[i28] = w->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        j->data[i27] = w->data[i27];
       }
 
       idx = w->size[0];
-      i28 = c_x->size[0] * c_x->size[1];
+      i27 = c_x->size[0] * c_x->size[1];
       c_x->size[0] = idx;
-      emxEnsureCapacity((emxArray__common *)c_x, i28, (int)sizeof(boolean_T));
-      i28 = c_x->size[0] * c_x->size[1];
+      emxEnsureCapacity((emxArray__common *)c_x, i27, (int)sizeof(boolean_T));
+      i27 = c_x->size[0] * c_x->size[1];
       c_x->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)c_x, i28, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)c_x, i27, (int)sizeof(boolean_T));
       ixstart = w->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        c_x->data[i28] = (log2pc->data[(int)w->data[i28] - 1] - (1.0 + (double)i)
+      for (i27 = 0; i27 < ixstart; i27++) {
+        c_x->data[i27] = (log2pc->data[(int)w->data[i27] - 1] - (1.0 + (double)i)
                           < 0.0);
       }
 
       nm1d2 = c_x->size[0];
       idx = 0;
-      i28 = ii->size[0];
+      i27 = ii->size[0];
       ii->size[0] = c_x->size[0];
-      emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       ixstart = 1;
       exitg7 = false;
       while ((!exitg7) && (ixstart <= nm1d2)) {
@@ -3145,54 +3152,54 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
 
       if (c_x->size[0] == 1) {
         if (idx == 0) {
-          i28 = ii->size[0];
+          i27 = ii->size[0];
           ii->size[0] = 0;
-          emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+          emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
         }
       } else {
-        i28 = ii->size[0];
+        i27 = ii->size[0];
         if (1 > idx) {
           ii->size[0] = 0;
         } else {
           ii->size[0] = idx;
         }
 
-        emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+        emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       }
 
-      i28 = w->size[0];
+      i27 = w->size[0];
       w->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)w, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)w, i27, (int)sizeof(double));
       ixstart = ii->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        w->data[i28] = ii->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        w->data[i27] = ii->data[i27];
       }
 
       idx = w->size[0];
-      i28 = b_k->size[0] * b_k->size[1];
+      i27 = b_k->size[0] * b_k->size[1];
       b_k->size[0] = idx;
-      emxEnsureCapacity((emxArray__common *)b_k, i28, (int)sizeof(double));
-      i28 = b_k->size[0] * b_k->size[1];
+      emxEnsureCapacity((emxArray__common *)b_k, i27, (int)sizeof(double));
+      i27 = b_k->size[0] * b_k->size[1];
       b_k->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)b_k, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_k, i27, (int)sizeof(double));
       ixstart = w->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        b_k->data[i28] = w->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        b_k->data[i27] = w->data[i27];
       }
     } else if (1 + i == 1) {
-      i28 = b_x->size[0];
+      i27 = b_x->size[0];
       b_x->size[0] = log2pc->size[0];
-      emxEnsureCapacity((emxArray__common *)b_x, i28, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)b_x, i27, (int)sizeof(boolean_T));
       ixstart = log2pc->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        b_x->data[i28] = (log2pc->data[i28] - 1.0 < 1.0);
+      for (i27 = 0; i27 < ixstart; i27++) {
+        b_x->data[i27] = (log2pc->data[i27] - 1.0 < 1.0);
       }
 
       nm1d2 = b_x->size[0];
       idx = 0;
-      i28 = ii->size[0];
+      i27 = ii->size[0];
       ii->size[0] = b_x->size[0];
-      emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       ixstart = 1;
       exitg6 = false;
       while ((!exitg6) && (ixstart <= nm1d2)) {
@@ -3216,58 +3223,58 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
 
       if (b_x->size[0] == 1) {
         if (idx == 0) {
-          i28 = ii->size[0];
+          i27 = ii->size[0];
           ii->size[0] = 0;
-          emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+          emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
         }
       } else {
-        i28 = ii->size[0];
+        i27 = ii->size[0];
         if (1 > idx) {
           ii->size[0] = 0;
         } else {
           ii->size[0] = idx;
         }
 
-        emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+        emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       }
 
-      i28 = w->size[0];
+      i27 = w->size[0];
       w->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)w, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)w, i27, (int)sizeof(double));
       ixstart = ii->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        w->data[i28] = ii->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        w->data[i27] = ii->data[i27];
       }
 
       idx = w->size[0];
-      i28 = j->size[0] * j->size[1];
+      i27 = j->size[0] * j->size[1];
       j->size[0] = idx;
-      emxEnsureCapacity((emxArray__common *)j, i28, (int)sizeof(double));
-      i28 = j->size[0] * j->size[1];
+      emxEnsureCapacity((emxArray__common *)j, i27, (int)sizeof(double));
+      i27 = j->size[0] * j->size[1];
       j->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)j, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)j, i27, (int)sizeof(double));
       ixstart = w->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        j->data[i28] = w->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        j->data[i27] = w->data[i27];
       }
 
       idx = w->size[0];
-      i28 = c_x->size[0] * c_x->size[1];
+      i27 = c_x->size[0] * c_x->size[1];
       c_x->size[0] = idx;
-      emxEnsureCapacity((emxArray__common *)c_x, i28, (int)sizeof(boolean_T));
-      i28 = c_x->size[0] * c_x->size[1];
+      emxEnsureCapacity((emxArray__common *)c_x, i27, (int)sizeof(boolean_T));
+      i27 = c_x->size[0] * c_x->size[1];
       c_x->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)c_x, i28, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)c_x, i27, (int)sizeof(boolean_T));
       ixstart = w->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        c_x->data[i28] = (log2pc->data[(int)w->data[i28] - 1] - 1.0 > 0.0);
+      for (i27 = 0; i27 < ixstart; i27++) {
+        c_x->data[i27] = (log2pc->data[(int)w->data[i27] - 1] - 1.0 > 0.0);
       }
 
       nm1d2 = c_x->size[0];
       idx = 0;
-      i28 = ii->size[0];
+      i27 = ii->size[0];
       ii->size[0] = c_x->size[0];
-      emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       ixstart = 1;
       exitg5 = false;
       while ((!exitg5) && (ixstart <= nm1d2)) {
@@ -3291,63 +3298,63 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
 
       if (c_x->size[0] == 1) {
         if (idx == 0) {
-          i28 = ii->size[0];
+          i27 = ii->size[0];
           ii->size[0] = 0;
-          emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+          emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
         }
       } else {
-        i28 = ii->size[0];
+        i27 = ii->size[0];
         if (1 > idx) {
           ii->size[0] = 0;
         } else {
           ii->size[0] = idx;
         }
 
-        emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+        emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       }
 
-      i28 = w->size[0];
+      i27 = w->size[0];
       w->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)w, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)w, i27, (int)sizeof(double));
       ixstart = ii->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        w->data[i28] = ii->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        w->data[i27] = ii->data[i27];
       }
 
       idx = w->size[0];
-      i28 = b_k->size[0] * b_k->size[1];
+      i27 = b_k->size[0] * b_k->size[1];
       b_k->size[0] = idx;
-      emxEnsureCapacity((emxArray__common *)b_k, i28, (int)sizeof(double));
-      i28 = b_k->size[0] * b_k->size[1];
+      emxEnsureCapacity((emxArray__common *)b_k, i27, (int)sizeof(double));
+      i27 = b_k->size[0] * b_k->size[1];
       b_k->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)b_k, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_k, i27, (int)sizeof(double));
       ixstart = w->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        b_k->data[i28] = w->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        b_k->data[i27] = w->data[i27];
       }
     } else {
-      i28 = c_log2pc->size[0];
+      i27 = c_log2pc->size[0];
       c_log2pc->size[0] = log2pc->size[0];
-      emxEnsureCapacity((emxArray__common *)c_log2pc, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)c_log2pc, i27, (int)sizeof(double));
       ixstart = log2pc->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        c_log2pc->data[i28] = log2pc->data[i28] - (1.0 + (double)i);
+      for (i27 = 0; i27 < ixstart; i27++) {
+        c_log2pc->data[i27] = log2pc->data[i27] - (1.0 + (double)i);
       }
 
       b_abs(c_log2pc, w);
-      i28 = b_x->size[0];
+      i27 = b_x->size[0];
       b_x->size[0] = w->size[0];
-      emxEnsureCapacity((emxArray__common *)b_x, i28, (int)sizeof(boolean_T));
+      emxEnsureCapacity((emxArray__common *)b_x, i27, (int)sizeof(boolean_T));
       ixstart = w->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        b_x->data[i28] = (w->data[i28] < 1.0);
+      for (i27 = 0; i27 < ixstart; i27++) {
+        b_x->data[i27] = (w->data[i27] < 1.0);
       }
 
       nm1d2 = b_x->size[0];
       idx = 0;
-      i28 = ii->size[0];
+      i27 = ii->size[0];
       ii->size[0] = b_x->size[0];
-      emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       ixstart = 1;
       exitg4 = false;
       while ((!exitg4) && (ixstart <= nm1d2)) {
@@ -3371,39 +3378,39 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
 
       if (b_x->size[0] == 1) {
         if (idx == 0) {
-          i28 = ii->size[0];
+          i27 = ii->size[0];
           ii->size[0] = 0;
-          emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+          emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
         }
       } else {
-        i28 = ii->size[0];
+        i27 = ii->size[0];
         if (1 > idx) {
           ii->size[0] = 0;
         } else {
           ii->size[0] = idx;
         }
 
-        emxEnsureCapacity((emxArray__common *)ii, i28, (int)sizeof(int));
+        emxEnsureCapacity((emxArray__common *)ii, i27, (int)sizeof(int));
       }
 
-      i28 = w->size[0];
+      i27 = w->size[0];
       w->size[0] = ii->size[0];
-      emxEnsureCapacity((emxArray__common *)w, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)w, i27, (int)sizeof(double));
       ixstart = ii->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        w->data[i28] = ii->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        w->data[i27] = ii->data[i27];
       }
 
       idx = w->size[0];
-      i28 = j->size[0] * j->size[1];
+      i27 = j->size[0] * j->size[1];
       j->size[0] = idx;
-      emxEnsureCapacity((emxArray__common *)j, i28, (int)sizeof(double));
-      i28 = j->size[0] * j->size[1];
+      emxEnsureCapacity((emxArray__common *)j, i27, (int)sizeof(double));
+      i27 = j->size[0] * j->size[1];
       j->size[1] = 1;
-      emxEnsureCapacity((emxArray__common *)j, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)j, i27, (int)sizeof(double));
       ixstart = w->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        j->data[i28] = w->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        j->data[i27] = w->data[i27];
       }
 
       idx = w->size[0];
@@ -3437,10 +3444,10 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
         n = nm1d2 - 1;
       }
 
-      i28 = b_y->size[0] * b_y->size[1];
+      i27 = b_y->size[0] * b_y->size[1];
       b_y->size[0] = 1;
       b_y->size[1] = n + 1;
-      emxEnsureCapacity((emxArray__common *)b_y, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_y, i27, (int)sizeof(double));
       if (n + 1 > 0) {
         b_y->data[0] = 1.0;
         if (n + 1 > 1) {
@@ -3460,24 +3467,24 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
         }
       }
 
-      i28 = b_k->size[0] * b_k->size[1];
+      i27 = b_k->size[0] * b_k->size[1];
       b_k->size[0] = 1;
       b_k->size[1] = b_y->size[1];
-      emxEnsureCapacity((emxArray__common *)b_k, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_k, i27, (int)sizeof(double));
       ixstart = b_y->size[0] * b_y->size[1];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        b_k->data[i28] = b_y->data[i28];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        b_k->data[i27] = b_y->data[i27];
       }
     }
 
     /*  Compute loudness at ERBs uniformly-spaced frequencies */
     y = pc->data[(int)j->data[0] - 1] / 4.0;
-    i28 = b_x->size[0];
+    i27 = b_x->size[0];
     b_x->size[0] = fERBs->size[0];
-    emxEnsureCapacity((emxArray__common *)b_x, i28, (int)sizeof(boolean_T));
+    emxEnsureCapacity((emxArray__common *)b_x, i27, (int)sizeof(boolean_T));
     ixstart = fERBs->size[0];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      b_x->data[i28] = (fERBs->data[i28] > y);
+    for (i27 = 0; i27 < ixstart; i27++) {
+      b_x->data[i27] = (fERBs->data[i27] > y);
     }
 
     if (1 <= b_x->size[0]) {
@@ -3509,90 +3516,90 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
       k = 1;
     }
 
-    i28 = 0;
-    while (i28 <= k - 1) {
+    i27 = 0;
+    while (i27 <= k - 1) {
       found_data[0] = ii_data[0];
-      i28 = 1;
+      i27 = 1;
     }
 
     if (found_data[0] > fERBs->size[0]) {
-      i28 = 0;
+      i27 = 0;
       idx = 0;
     } else {
-      i28 = found_data[0] - 1;
+      i27 = found_data[0] - 1;
       idx = fERBs->size[0];
     }
 
     nm1d2 = b_fERBs->size[0];
-    b_fERBs->size[0] = idx - i28;
+    b_fERBs->size[0] = idx - i27;
     emxEnsureCapacity((emxArray__common *)b_fERBs, nm1d2, (int)sizeof(double));
-    ixstart = idx - i28;
+    ixstart = idx - i27;
     for (idx = 0; idx < ixstart; idx++) {
-      b_fERBs->data[idx] = fERBs->data[i28 + idx];
+      b_fERBs->data[idx] = fERBs->data[i27 + idx];
     }
 
-    i28 = fERBs->size[0];
+    i27 = fERBs->size[0];
     fERBs->size[0] = b_fERBs->size[0];
-    emxEnsureCapacity((emxArray__common *)fERBs, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)fERBs, i27, (int)sizeof(double));
     ixstart = b_fERBs->size[0];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      fERBs->data[i28] = b_fERBs->data[i28];
+    for (i27 = 0; i27 < ixstart; i27++) {
+      fERBs->data[i27] = b_fERBs->data[i27];
     }
 
     c_abs(X, L);
-    interp1(f, L, fERBs, X);
-    for (i28 = 0; i28 < 2; i28++) {
-      tmp_size[i28] = X->size[i28];
+    interp1(f, L, fERBs, mu);
+    for (i27 = 0; i27 < 2; i27++) {
+      tmp_size[i27] = mu->size[i27];
     }
 
-    i28 = L->size[0] * L->size[1];
+    i27 = L->size[0] * L->size[1];
     L->size[0] = tmp_size[0];
     L->size[1] = tmp_size[1];
-    emxEnsureCapacity((emxArray__common *)L, i28, (int)sizeof(double));
-    i28 = tmp_size[0] * tmp_size[1];
-    for (k = 0; k + 1 <= i28; k++) {
-      L->data[k] = fmax(0.0, X->data[k]);
+    emxEnsureCapacity((emxArray__common *)L, i27, (int)sizeof(double));
+    i27 = tmp_size[0] * tmp_size[1];
+    for (k = 0; k + 1 <= i27; k++) {
+      L->data[k] = fmax(0.0, mu->data[k]);
     }
 
     c_sqrt(L);
 
     /*  Compute pitch strength */
-    i28 = b_pc->size[0] * b_pc->size[1];
+    i27 = b_pc->size[0] * b_pc->size[1];
     b_pc->size[0] = j->size[0];
     b_pc->size[1] = j->size[1];
-    emxEnsureCapacity((emxArray__common *)b_pc, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)b_pc, i27, (int)sizeof(double));
     ixstart = j->size[0] * j->size[1];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      b_pc->data[i28] = pc->data[(int)j->data[i28] - 1];
+    for (i27 = 0; i27 < ixstart; i27++) {
+      b_pc->data[i27] = pc->data[(int)j->data[i27] - 1];
     }
 
     pitchStrengthAllCandidates(fERBs, L, b_pc, Si);
 
     /*  Interpolate pitch strength at desired times */
     if (Si->size[1] > 1) {
-      i28 = b_Si->size[0] * b_Si->size[1];
+      i27 = b_Si->size[0] * b_Si->size[1];
       b_Si->size[0] = Si->size[1];
       b_Si->size[1] = Si->size[0];
-      emxEnsureCapacity((emxArray__common *)b_Si, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_Si, i27, (int)sizeof(double));
       ixstart = Si->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
+      for (i27 = 0; i27 < ixstart; i27++) {
         nm1d2 = Si->size[1];
         for (idx = 0; idx < nm1d2; idx++) {
-          b_Si->data[idx + b_Si->size[0] * i28] = Si->data[i28 + Si->size[0] *
+          b_Si->data[idx + b_Si->size[0] * i27] = Si->data[i27 + Si->size[0] *
             idx];
         }
       }
 
       b_interp1(ti, b_Si, t, L);
-      i28 = Si->size[0] * Si->size[1];
+      i27 = Si->size[0] * Si->size[1];
       Si->size[0] = L->size[1];
       Si->size[1] = L->size[0];
-      emxEnsureCapacity((emxArray__common *)Si, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)Si, i27, (int)sizeof(double));
       ixstart = L->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
+      for (i27 = 0; i27 < ixstart; i27++) {
         nm1d2 = L->size[1];
         for (idx = 0; idx < nm1d2; idx++) {
-          Si->data[idx + Si->size[0] * i28] = L->data[i28 + L->size[0] * idx];
+          Si->data[idx + Si->size[0] * i27] = L->data[i27 + L->size[0] * idx];
         }
       }
     } else {
@@ -3610,58 +3617,58 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     }
 
     /*  Add pitch strength to combination */
-    for (i28 = 0; i28 < 2; i28++) {
-      tmp_size[i28] = j->size[i28];
+    for (i27 = 0; i27 < 2; i27++) {
+      tmp_size[i27] = j->size[i27];
     }
 
-    i28 = X->size[0] * X->size[1];
-    X->size[0] = tmp_size[0];
-    emxEnsureCapacity((emxArray__common *)X, i28, (int)sizeof(double));
-    i28 = X->size[0] * X->size[1];
-    X->size[1] = tmp_size[1];
-    emxEnsureCapacity((emxArray__common *)X, i28, (int)sizeof(double));
+    i27 = mu->size[0] * mu->size[1];
+    mu->size[0] = tmp_size[0];
+    emxEnsureCapacity((emxArray__common *)mu, i27, (int)sizeof(double));
+    i27 = mu->size[0] * mu->size[1];
+    mu->size[1] = tmp_size[1];
+    emxEnsureCapacity((emxArray__common *)mu, i27, (int)sizeof(double));
     ixstart = tmp_size[0] * tmp_size[1];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      X->data[i28] = 1.0;
+    for (i27 = 0; i27 < ixstart; i27++) {
+      mu->data[i27] = 1.0;
     }
 
-    i28 = b_log2pc->size[0] * b_log2pc->size[1];
+    i27 = b_log2pc->size[0] * b_log2pc->size[1];
     b_log2pc->size[0] = b_k->size[0];
     b_log2pc->size[1] = b_k->size[1];
-    emxEnsureCapacity((emxArray__common *)b_log2pc, i28, (int)sizeof(double));
+    emxEnsureCapacity((emxArray__common *)b_log2pc, i27, (int)sizeof(double));
     ixstart = b_k->size[0] * b_k->size[1];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      b_log2pc->data[i28] = log2pc->data[(int)j->data[(int)b_k->data[i28] - 1] -
+    for (i27 = 0; i27 < ixstart; i27++) {
+      b_log2pc->data[i27] = log2pc->data[(int)j->data[(int)b_k->data[i27] - 1] -
         1] - (1.0 + (double)i);
     }
 
-    c_abs(b_log2pc, L);
+    d_abs(b_log2pc, L);
     ixstart = L->size[0] * L->size[1];
-    for (i28 = 0; i28 < ixstart; i28++) {
-      X->data[(int)b_k->data[i28] - 1] = 1.0 - L->data[i28];
+    for (i27 = 0; i27 < ixstart; i27++) {
+      mu->data[(int)b_k->data[i27] - 1] = 1.0 - L->data[i27];
     }
 
-    e_repmat(X, Si->size[1], L);
+    e_repmat(mu, Si->size[1], L);
     nm1d2 = j->size[0] * j->size[1];
     ixstart = S->size[1];
-    i28 = b_S->size[0] * b_S->size[1];
+    i27 = b_S->size[0] * b_S->size[1];
     b_S->size[0] = nm1d2;
     b_S->size[1] = ixstart;
-    emxEnsureCapacity((emxArray__common *)b_S, i28, (int)sizeof(double));
-    for (i28 = 0; i28 < ixstart; i28++) {
+    emxEnsureCapacity((emxArray__common *)b_S, i27, (int)sizeof(double));
+    for (i27 = 0; i27 < ixstart; i27++) {
       for (idx = 0; idx < nm1d2; idx++) {
-        b_S->data[idx + b_S->size[0] * i28] = S->data[((int)j->data[idx] +
-          S->size[0] * i28) - 1] + L->data[idx + L->size[0] * i28] * Si->
-          data[idx + Si->size[0] * i28];
+        b_S->data[idx + b_S->size[0] * i27] = S->data[((int)j->data[idx] +
+          S->size[0] * i27) - 1] + L->data[idx + L->size[0] * i27] * Si->
+          data[idx + Si->size[0] * i27];
       }
     }
 
     ixstart = b_S->size[1];
-    for (i28 = 0; i28 < ixstart; i28++) {
+    for (i27 = 0; i27 < ixstart; i27++) {
       nm1d2 = b_S->size[0];
       for (idx = 0; idx < nm1d2; idx++) {
-        S->data[((int)j->data[idx] + S->size[0] * i28) - 1] = b_S->data[idx +
-          b_S->size[0] * i28];
+        S->data[((int)j->data[idx] + S->size[0] * i27) - 1] = b_S->data[idx +
+          b_S->size[0] * i27];
       }
     }
 
@@ -3680,11 +3687,12 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
   emxFree_real_T(&xzp);
   emxFree_real_T(&b_k);
   emxFree_real_T(&j);
+  emxFree_real_T(&mu);
   emxFree_real_T(&Si);
   emxFree_real_T(&L);
   emxFree_real_T(&ti);
   emxFree_real_T(&f);
-  emxFree_real_T(&X);
+  emxFree_creal_T(&X);
   emxFree_real_T(&fERBs);
   emxFree_real_T(&log2pc);
 
@@ -3702,8 +3710,8 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     n = S->size[0];
     kd = S->data[S->size[0] * b_apnd];
     idx = 1;
-    i28 = S->size[0];
-    if (i28 > 1) {
+    i27 = S->size[0];
+    if (i27 > 1) {
       if (rtIsNaN(kd)) {
         nm1d2 = 2;
         exitg2 = false;
@@ -3719,8 +3727,8 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
         }
       }
 
-      i28 = S->size[0];
-      if (ixstart < i28) {
+      i27 = S->size[0];
+      if (ixstart < i27) {
         while (ixstart + 1 <= n) {
           if (S->data[ixstart + S->size[0] * b_apnd] > kd) {
             kd = S->data[ixstart + S->size[0] * b_apnd];
@@ -3769,10 +3777,10 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
         }
       }
 
-      i28 = I->size[0] * I->size[1];
+      i27 = I->size[0] * I->size[1];
       I->size[0] = 1;
       I->size[1] = n + 1;
-      emxEnsureCapacity((emxArray__common *)I, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)I, i27, (int)sizeof(double));
       if (n + 1 > 0) {
         I->data[0] = frames;
         if (n + 1 > 1) {
@@ -3792,30 +3800,30 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
         }
       }
 
-      i28 = c_pc->size[0];
+      i27 = c_pc->size[0];
       c_pc->size[0] = I->size[1];
-      emxEnsureCapacity((emxArray__common *)c_pc, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)c_pc, i27, (int)sizeof(double));
       ixstart = I->size[1];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        c_pc->data[i28] = pc->data[(int)I->data[I->size[0] * i28] - 1];
+      for (i27 = 0; i27 < ixstart; i27++) {
+        c_pc->data[i27] = pc->data[(int)I->data[I->size[0] * i27] - 1];
       }
 
       g_rdivide(c_pc, tc);
       rdivide(tc, tc->data[1], w);
-      i28 = c_w->size[0];
+      i27 = c_w->size[0];
       c_w->size[0] = w->size[0];
-      emxEnsureCapacity((emxArray__common *)c_w, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)c_w, i27, (int)sizeof(double));
       ixstart = w->size[0];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        c_w->data[i28] = (w->data[i28] - 1.0) * 2.0 * 3.1415926535897931;
+      for (i27 = 0; i27 < ixstart; i27++) {
+        c_w->data[i27] = (w->data[i27] - 1.0) * 2.0 * 3.1415926535897931;
       }
 
-      i28 = c_S->size[0];
+      i27 = c_S->size[0];
       c_S->size[0] = I->size[1];
-      emxEnsureCapacity((emxArray__common *)c_S, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)c_S, i27, (int)sizeof(double));
       ixstart = I->size[1];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        c_S->data[i28] = S->data[((int)I->data[I->size[0] * i28] + S->size[0] *
+      for (i27 = 0; i27 < ixstart; i27++) {
+        c_S->data[i27] = S->data[((int)I->data[I->size[0] * i27] + S->size[0] *
           b_apnd) - 1];
       }
 
@@ -3855,10 +3863,10 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
         }
       }
 
-      i28 = b_y->size[0] * b_y->size[1];
+      i27 = b_y->size[0] * b_y->size[1];
       b_y->size[0] = 1;
       b_y->size[1] = n + 1;
-      emxEnsureCapacity((emxArray__common *)b_y, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_y, i27, (int)sizeof(double));
       if (n + 1 > 0) {
         b_y->data[0] = y;
         if (n + 1 > 1) {
@@ -3883,13 +3891,13 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
       f_power(b_y, pO);
       f_rdivide(1.0, pO, ws);
       c_rdivide(ws, tc->data[1], pO);
-      i28 = b_pO->size[0] * b_pO->size[1];
+      i27 = b_pO->size[0] * b_pO->size[1];
       b_pO->size[0] = 1;
       b_pO->size[1] = pO->size[1];
-      emxEnsureCapacity((emxArray__common *)b_pO, i28, (int)sizeof(double));
+      emxEnsureCapacity((emxArray__common *)b_pO, i27, (int)sizeof(double));
       ixstart = pO->size[0] * pO->size[1];
-      for (i28 = 0; i28 < ixstart; i28++) {
-        b_pO->data[i28] = (pO->data[i28] - 1.0) * 2.0 * 3.1415926535897931;
+      for (i27 = 0; i27 < ixstart; i27++) {
+        b_pO->data[i27] = (pO->data[i27] - 1.0) * 2.0 * 3.1415926535897931;
       }
 
       polyval(c, b_pO, ws);

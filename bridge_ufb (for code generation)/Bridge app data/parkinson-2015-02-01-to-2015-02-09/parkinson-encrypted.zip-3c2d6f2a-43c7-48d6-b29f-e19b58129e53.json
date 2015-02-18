@@ -1,0 +1,23 @@
+{
+  "info.json" : {
+    "taskRun" : "49D9F423-12A8-43A9-96D2-95BED7A25CD3",
+    "files" : [ {
+      "contentType" : "data",
+      "filename" : "accel_tapping-20150203143601",
+      "timestamp" : "2015-02-03 22:36:01 +0000"
+    } ],
+    "item" : "Tapping Activity"
+  },
+  "NoName.json" : {
+    "TappingSamples" : [ {
+      "TapCoordinate" : "{77.5, 485.5}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0
+    } ],
+    "TappingViewSize" : "{375, 603}",
+    "endDate" : "2015-02-03 22:36:01 +0000",
+    "startDate" : "2015-02-03 22:35:28 +0000",
+    "ButtonRectLeft" : "{{71.5, 463}, {104, 104}}",
+    "ButtonRectRight" : "{{199.5, 463}, {104, 104}}"
+  }
+}

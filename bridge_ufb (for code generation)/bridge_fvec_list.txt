@@ -1,0 +1,32 @@
+Voice
+ 1. Median F0, 50 to 500Hz
+ 2. Mean jitter, 0 to 450/0.02=22500
+ 3. Median jitter, 0 to 22500
+ 4. Mean shimmer, 0 to 1/0.05=20
+ 5. Median shimmer, 0 to 20
+ 6. MFCC band 1
+ 7. MFCC band 2
+ 8. MFCC band 3
+ 9. MFCC band 4
+10. MFCC jitter band 1 (+ve)
+11. MFCC jitter band 2 (+ve)
+12. MFCC jitter band 3 (+ve)
+13. MFCC jitter band 4 (+ve)
+
+Gait
+14. 95% force (/10, +ve)
+15. Average kinetic power (/10,000, +ve)
+16. Median zero crossing rate (seconds) (+ve)
+17. IQR zero crossing rate (seconds) (+ve)
+18. Dominant gait frequency (Hz) (+ve)
+19. Dominant gait frequency SNR (+ve)
+20. Dominant gait frequency -log probability (+ve)
+
+Posture
+21. 95% force (/10, +ve)
+22. Average kinetic power (/10,000, +ve)
+23. DFA scaling exponent (+ve)
+
+Tapping
+24. Median tapping interval (seconds) (+ve)
+25. IQR tapping interval (seconds) (+ve)

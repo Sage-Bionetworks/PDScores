@@ -1,0 +1,329 @@
+{
+  "dressing.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:06:35 +0000",
+    "endDate" : "2015-02-09 23:06:45 +0000",
+    "item" : "dressing"
+  },
+  "wakefulness.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:06:02 +0000",
+    "endDate" : "2015-02-09 23:06:17 +0000",
+    "item" : "wakefulness"
+  },
+  "7-day-hopeless.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Never\n)",
+    "startDate" : "2015-02-09 23:05:31 +0000",
+    "endDate" : "2015-02-09 23:05:32 +0000",
+    "item" : "7-day-hopeless"
+  },
+  "info.json" : {
+    "taskRun" : "EAD54F3F-CCE5-4ACD-862E-170ECAD507EC",
+    "files" : [ {
+      "contentType" : "application/json",
+      "filename" : "feeling.json",
+      "timestamp" : "2015-02-09 23:02:26 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "strenuous-exersize.json",
+      "timestamp" : "2015-02-09 23:02:37 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "moderate-exersize.json",
+      "timestamp" : "2015-02-09 23:02:45 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "mild-exersize.json",
+      "timestamp" : "2015-02-09 23:04:10 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "leisure-time.json",
+      "timestamp" : "2015-02-09 23:04:16 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "memory.json",
+      "timestamp" : "2015-02-09 23:04:43 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "emotions.json",
+      "timestamp" : "2015-02-09 23:05:23 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "7-day-workthless.json",
+      "timestamp" : "2015-02-09 23:05:27 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "7-day-helpless.json",
+      "timestamp" : "2015-02-09 23:05:29 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "7-day-depressed.json",
+      "timestamp" : "2015-02-09 23:05:31 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "7-day-hopeless.json",
+      "timestamp" : "2015-02-09 23:05:32 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "7-day-failure.json",
+      "timestamp" : "2015-02-09 23:05:34 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "7-day-unhappy.json",
+      "timestamp" : "2015-02-09 23:05:36 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "7-day-nothing-to-look-forward-to.json",
+      "timestamp" : "2015-02-09 23:05:38 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "7-day-nothing-to-cheer-me-up.json",
+      "timestamp" : "2015-02-09 23:05:42 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "anxiety.json",
+      "timestamp" : "2015-02-09 23:05:49 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "social-activities.json",
+      "timestamp" : "2015-02-09 23:05:57 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "sleeping.json",
+      "timestamp" : "2015-02-09 23:06:02 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "wakefulness.json",
+      "timestamp" : "2015-02-09 23:06:17 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "speech.json",
+      "timestamp" : "2015-02-09 23:06:23 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "eating.json",
+      "timestamp" : "2015-02-09 23:06:35 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "dressing.json",
+      "timestamp" : "2015-02-09 23:06:45 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "washing.json",
+      "timestamp" : "2015-02-09 23:06:52 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "handwriting.json",
+      "timestamp" : "2015-02-09 23:06:56 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "hobbies.json",
+      "timestamp" : "2015-02-09 23:07:02 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "turning-over-in-bed.json",
+      "timestamp" : "2015-02-09 23:07:07 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "tremors.json",
+      "timestamp" : "2015-02-09 23:07:11 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "balance.json",
+      "timestamp" : "2015-02-09 23:07:15 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "walking.json",
+      "timestamp" : "2015-02-09 23:07:26 +0000"
+    } ],
+    "item" : "parkinson-weekly"
+  },
+  "7-day-workthless.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Never\n)",
+    "startDate" : "2015-02-09 23:05:23 +0000",
+    "endDate" : "2015-02-09 23:05:27 +0000",
+    "item" : "7-day-workthless"
+  },
+  "moderate-exersize.json" : {
+    "questionType" : "Integer",
+    "item" : "moderate-exersize",
+    "endDate" : "2015-02-09 23:02:45 +0000",
+    "startDate" : "2015-02-09 23:02:37 +0000",
+    "unit" : "<null>",
+    "numericAnswer" : 5
+  },
+  "7-day-failure.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Never\n)",
+    "startDate" : "2015-02-09 23:05:32 +0000",
+    "endDate" : "2015-02-09 23:05:34 +0000",
+    "item" : "7-day-failure"
+  },
+  "social-activities.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:05:49 +0000",
+    "endDate" : "2015-02-09 23:05:57 +0000",
+    "item" : "social-activities"
+  },
+  "eating.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:06:23 +0000",
+    "endDate" : "2015-02-09 23:06:35 +0000",
+    "item" : "eating"
+  },
+  "7-day-nothing-to-look-forward-to.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Never\n)",
+    "startDate" : "2015-02-09 23:05:36 +0000",
+    "endDate" : "2015-02-09 23:05:38 +0000",
+    "item" : "7-day-nothing-to-look-forward-to"
+  },
+  "7-day-depressed.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Never\n)",
+    "startDate" : "2015-02-09 23:05:29 +0000",
+    "endDate" : "2015-02-09 23:05:31 +0000",
+    "item" : "7-day-depressed"
+  },
+  "tremors.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:07:07 +0000",
+    "endDate" : "2015-02-09 23:07:11 +0000",
+    "item" : "tremors"
+  },
+  "leisure-time.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Sometimes\n)",
+    "startDate" : "2015-02-09 23:04:10 +0000",
+    "endDate" : "2015-02-09 23:04:16 +0000",
+    "item" : "leisure-time"
+  },
+  "washing.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:06:45 +0000",
+    "endDate" : "2015-02-09 23:06:52 +0000",
+    "item" : "washing"
+  },
+  "handwriting.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:06:52 +0000",
+    "endDate" : "2015-02-09 23:06:56 +0000",
+    "item" : "handwriting"
+  },
+  "sleeping.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:05:57 +0000",
+    "endDate" : "2015-02-09 23:06:02 +0000",
+    "item" : "sleeping"
+  },
+  "strenuous-exersize.json" : {
+    "questionType" : "Integer",
+    "item" : "strenuous-exersize",
+    "endDate" : "2015-02-09 23:02:37 +0000",
+    "startDate" : "2015-02-09 23:02:26 +0000",
+    "unit" : "<null>",
+    "numericAnswer" : 0
+  },
+  "emotions.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:04:43 +0000",
+    "endDate" : "2015-02-09 23:05:23 +0000",
+    "item" : "emotions"
+  },
+  "speech.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:06:17 +0000",
+    "endDate" : "2015-02-09 23:06:23 +0000",
+    "item" : "speech"
+  },
+  "mild-exersize.json" : {
+    "questionType" : "Integer",
+    "item" : "mild-exersize",
+    "endDate" : "2015-02-09 23:04:10 +0000",
+    "startDate" : "2015-02-09 23:02:45 +0000",
+    "unit" : "<null>",
+    "numericAnswer" : "<null>"
+  },
+  "walking.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:07:15 +0000",
+    "endDate" : "2015-02-09 23:07:26 +0000",
+    "item" : "walking"
+  },
+  "memory.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:04:16 +0000",
+    "endDate" : "2015-02-09 23:04:43 +0000",
+    "item" : "memory"
+  },
+  "balance.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:07:11 +0000",
+    "endDate" : "2015-02-09 23:07:15 +0000",
+    "item" : "balance"
+  },
+  "7-day-unhappy.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Never\n)",
+    "startDate" : "2015-02-09 23:05:34 +0000",
+    "endDate" : "2015-02-09 23:05:36 +0000",
+    "item" : "7-day-unhappy"
+  },
+  "7-day-nothing-to-cheer-me-up.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Never\n)",
+    "startDate" : "2015-02-09 23:05:38 +0000",
+    "endDate" : "2015-02-09 23:05:42 +0000",
+    "item" : "7-day-nothing-to-cheer-me-up"
+  },
+  "anxiety.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:05:42 +0000",
+    "endDate" : "2015-02-09 23:05:49 +0000",
+    "item" : "anxiety"
+  },
+  "hobbies.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:06:56 +0000",
+    "endDate" : "2015-02-09 23:07:02 +0000",
+    "item" : "hobbies"
+  },
+  "turning-over-in-bed.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    0\n)",
+    "startDate" : "2015-02-09 23:07:02 +0000",
+    "endDate" : "2015-02-09 23:07:07 +0000",
+    "item" : "turning-over-in-bed"
+  },
+  "feeling.json" : {
+    "questionType" : "Scale",
+    "scaleAnswer" : 80,
+    "item" : "feeling",
+    "startDate" : "2015-02-09 23:02:19 +0000",
+    "endDate" : "2015-02-09 23:02:26 +0000"
+  },
+  "7-day-helpless.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Never\n)",
+    "startDate" : "2015-02-09 23:05:27 +0000",
+    "endDate" : "2015-02-09 23:05:29 +0000",
+    "item" : "7-day-helpless"
+  }
+}

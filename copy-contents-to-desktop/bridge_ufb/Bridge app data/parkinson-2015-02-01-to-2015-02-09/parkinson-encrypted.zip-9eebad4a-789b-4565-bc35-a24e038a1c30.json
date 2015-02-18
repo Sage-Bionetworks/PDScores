@@ -1,0 +1,107 @@
+{
+  "info.json" : {
+    "taskRun" : "947907FD-842C-421A-B434-7ADE1F4FC969",
+    "files" : [ {
+      "contentType" : "data",
+      "filename" : "accel_tapping-20150202183826",
+      "timestamp" : "2015-02-03 02:38:26 +0000"
+    } ],
+    "item" : "Tapping Activity"
+  },
+  "NoName.json" : {
+    "TappingSamples" : [ {
+      "TapCoordinate" : "{192.33332824707031, 564}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0
+    }, {
+      "TapCoordinate" : "{312.66665649414062, 591.33331298828125}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 0.3964520416666346
+    }, {
+      "TapCoordinate" : "{140.66667175292969, 592.33331298828125}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0.730962499999805
+    }, {
+      "TapCoordinate" : "{259.66665649414062, 584}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 0.9788320000006934
+    }, {
+      "TapCoordinate" : "{154, 588}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 1.245282916666838
+    }, {
+      "TapCoordinate" : "{111.66665649414062, 586.33331298828125}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 4.564135708333197
+    }, {
+      "TapCoordinate" : "{275.66665649414062, 611}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 4.746468791667212
+    }, {
+      "TapCoordinate" : "{120, 583}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 4.963253875001101
+    }, {
+      "TapCoordinate" : "{236.33332824707031, 580}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 5.1626706666666
+    }, {
+      "TapCoordinate" : "{136, 575.66668701171875}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 5.362832083334069
+    }, {
+      "TapCoordinate" : "{260.33334350585938, 600.33331298828125}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 5.562842166666087
+    }, {
+      "TapCoordinate" : "{174, 570}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 5.796629624999696
+    }, {
+      "TapCoordinate" : "{274, 587}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 6.046357249999346
+    }, {
+      "TapCoordinate" : "{132, 575}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 6.296359916666916
+    }, {
+      "TapCoordinate" : "{284.66665649414062, 605}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 6.563118666666924
+    }, {
+      "TapCoordinate" : "{120.33332824707031, 578}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 6.762945374999617
+    }, {
+      "TapCoordinate" : "{283.66665649414062, 613.66668701171875}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 7.063507208333249
+    }, {
+      "TapCoordinate" : "{137.33332824707031, 585.33331298828125}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 12.28167437500088
+    }, {
+      "TapCoordinate" : "{270.33334350585938, 589.66668701171875}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 12.49847029166631
+    }, {
+      "TapCoordinate" : "{129.66667175292969, 566}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 12.67997937499968
+    }, {
+      "TapCoordinate" : "{274.66665649414062, 596.33331298828125}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 12.947062166666
+    }, {
+      "TapCoordinate" : "{135.66667175292969, 580.66668701171875}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 13.21368245833401
+    } ],
+    "TappingViewSize" : "{414, 672}",
+    "endDate" : "2015-02-03 02:38:26 +0000",
+    "startDate" : "2015-02-03 02:38:05 +0000",
+    "ButtonRectLeft" : "{{91, 532}, {104, 104}}",
+    "ButtonRectRight" : "{{219, 532}, {104, 104}}"
+  }
+}

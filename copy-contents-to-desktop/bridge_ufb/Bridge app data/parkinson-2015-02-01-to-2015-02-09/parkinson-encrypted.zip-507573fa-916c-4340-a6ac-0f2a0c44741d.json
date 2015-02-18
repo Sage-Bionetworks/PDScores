@@ -1,0 +1,67 @@
+{
+  "info.json" : {
+    "taskRun" : "17C795DA-153E-4F7C-9401-31642FD04B27",
+    "files" : [ {
+      "contentType" : "data",
+      "filename" : "accel_tapping-20150208233532",
+      "timestamp" : "2015-02-09 07:35:32 +0000"
+    } ],
+    "item" : "Tapping Activity"
+  },
+  "NoName.json" : {
+    "TappingSamples" : [ {
+      "TapCoordinate" : "{193.66667175292969, 569.66668701171875}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0
+    }, {
+      "TapCoordinate" : "{141.66667175292969, 579}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0.2654018749890383
+    }, {
+      "TapCoordinate" : "{281, 591.66668701171875}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 0.482228083332302
+    }, {
+      "TapCoordinate" : "{152, 575.33331298828125}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0.6822306249814574
+    }, {
+      "TapCoordinate" : "{262, 601.33331298828125}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 0.8833738333196379
+    }, {
+      "TapCoordinate" : "{171, 590}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 1.083357666648226
+    }, {
+      "TapCoordinate" : "{252, 601.66668701171875}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 1.267067583336029
+    }, {
+      "TapCoordinate" : "{163.66667175292969, 576.33331298828125}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 1.484598624985665
+    }, {
+      "TapCoordinate" : "{252.33332824707031, 571.66668701171875}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 1.71687795832986
+    }, {
+      "TapCoordinate" : "{175.66667175292969, 577.66668701171875}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 1.933627374994103
+    }, {
+      "TapCoordinate" : "{273.66665649414062, 592.66668701171875}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 2.117969958315371
+    }, {
+      "TapCoordinate" : "{186.66667175292969, 547.33331298828125}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 2.267356666648993
+    } ],
+    "TappingViewSize" : "{414, 672}",
+    "endDate" : "2015-02-09 07:35:32 +0000",
+    "startDate" : "2015-02-09 07:35:11 +0000",
+    "ButtonRectLeft" : "{{91, 532}, {104, 104}}",
+    "ButtonRectRight" : "{{219, 532}, {104, 104}}"
+  }
+}

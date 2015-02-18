@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "+[PDScores scoreFromTappingTest:]:PDScores.m">
+      </ContextState>
+      <ContextState
+         contextName = "+[PDScores scoreFromPostureTest:]:PDScores.m">
+      </ContextState>
+      <ContextState
+         contextName = "features_bpa:features_bpa.c">
+      </ContextState>
+      <ContextState
+         contextName = "b_swipep:swipep.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "*(double(*)[38])(pc-&gt;data)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "+[PDScores scoreFromGaitTest:]:PDScores.m">
+      </ContextState>
+      <ContextState
+         contextName = "+[PDScores scoreFromPhonationTest:]:PDScores.m">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

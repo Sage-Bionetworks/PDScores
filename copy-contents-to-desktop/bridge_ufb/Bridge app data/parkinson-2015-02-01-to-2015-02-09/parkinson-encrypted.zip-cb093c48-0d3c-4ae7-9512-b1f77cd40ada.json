@@ -1,0 +1,332 @@
+{
+  "medical-usage.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    yes\n)",
+    "startDate" : "2015-02-02 18:53:55 +0000",
+    "endDate" : "2015-02-02 18:53:59 +0000",
+    "item" : "medical-usage"
+  },
+  "state.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    CA\n)",
+    "startDate" : "2015-02-02 18:53:10 +0000",
+    "endDate" : "2015-02-02 18:53:16 +0000",
+    "item" : "state"
+  },
+  "last-smoked.json" : {
+    "timeZone" : "America/Los_Angeles (PST) offset -28800",
+    "endDate" : "2015-02-02 18:55:06 +0000",
+    "startDate" : "2015-02-02 18:55:02 +0000",
+    "dateAnswer" : "2015-02-02 18:55:03 +0000",
+    "questionType" : "Date",
+    "item" : "last-smoked"
+  },
+  "healthcare-provider.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    \"Parkinson Disease/Movement Disorder Specialist\"\n)",
+    "startDate" : "2015-02-02 18:54:28 +0000",
+    "endDate" : "2015-02-02 18:54:33 +0000",
+    "item" : "healthcare-provider"
+  },
+  "medical-usage-yesterday.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    \"dont-know\"\n)",
+    "startDate" : "2015-02-02 18:53:59 +0000",
+    "endDate" : "2015-02-02 18:54:03 +0000",
+    "item" : "medical-usage-yesterday"
+  },
+  "employment.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    \"Employment for wages\"\n)",
+    "startDate" : "2015-02-02 18:53:21 +0000",
+    "endDate" : "2015-02-02 18:53:26 +0000",
+    "item" : "employment"
+  },
+  "gender.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Male\n)",
+    "startDate" : "2015-02-02 18:52:54 +0000",
+    "endDate" : "2015-02-02 18:52:58 +0000",
+    "item" : "gender"
+  },
+  "maritalStatus.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    \"Married or domestic partnership\"\n)",
+    "startDate" : "2015-02-02 18:53:26 +0000",
+    "endDate" : "2015-02-02 18:53:30 +0000",
+    "item" : "maritalStatus"
+  },
+  "phone-usage.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Yes\n)",
+    "startDate" : "2015-02-02 18:53:46 +0000",
+    "endDate" : "2015-02-02 18:53:49 +0000",
+    "item" : "phone-usage"
+  },
+  "years-smoking.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    3\n)",
+    "startDate" : "2015-02-02 18:54:49 +0000",
+    "endDate" : "2015-02-02 18:54:59 +0000",
+    "item" : "years-smoking"
+  },
+  "info.json" : {
+    "taskRun" : "F263F7C7-D300-4978-BD9E-BCD180314161",
+    "files" : [ {
+      "contentType" : "application/json",
+      "filename" : "age.json",
+      "timestamp" : "2015-02-02 18:52:54 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "gender.json",
+      "timestamp" : "2015-02-02 18:52:58 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "race.json",
+      "timestamp" : "2015-02-02 18:53:01 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "residence.json",
+      "timestamp" : "2015-02-02 18:53:10 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "state.json",
+      "timestamp" : "2015-02-02 18:53:16 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "education.json",
+      "timestamp" : "2015-02-02 18:53:21 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "employment.json",
+      "timestamp" : "2015-02-02 18:53:26 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "maritalStatus.json",
+      "timestamp" : "2015-02-02 18:53:30 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "are-caretaker.json",
+      "timestamp" : "2015-02-02 18:53:36 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "past-participation.json",
+      "timestamp" : "2015-02-02 18:53:39 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "smartphone.json",
+      "timestamp" : "2015-02-02 18:53:46 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "phone-usage.json",
+      "timestamp" : "2015-02-02 18:53:49 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "home-usage.json",
+      "timestamp" : "2015-02-02 18:53:55 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "medical-usage.json",
+      "timestamp" : "2015-02-02 18:53:59 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "medical-usage-yesterday.json",
+      "timestamp" : "2015-02-02 18:54:03 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "video-usage.json",
+      "timestamp" : "2015-02-02 18:54:06 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "professional-diagnosis.json",
+      "timestamp" : "2015-02-02 18:54:12 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "onset-year.json",
+      "timestamp" : "2015-02-02 18:54:18 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "diagnosis-year.json",
+      "timestamp" : "2015-02-02 18:54:24 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "medication-start-year.json",
+      "timestamp" : "2015-02-02 18:54:28 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "healthcare-provider.json",
+      "timestamp" : "2015-02-02 18:54:33 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "deep-brain-stimulation.json",
+      "timestamp" : "2015-02-02 18:54:36 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "when-dbs.json",
+      "timestamp" : "2015-02-02 18:54:42 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "surgery.json",
+      "timestamp" : "2015-02-02 18:54:45 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "smoked.json",
+      "timestamp" : "2015-02-02 18:54:49 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "years-smoking.json",
+      "timestamp" : "2015-02-02 18:54:59 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "packs-per-day.json",
+      "timestamp" : "2015-02-02 18:55:03 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "last-smoked.json",
+      "timestamp" : "2015-02-02 18:55:06 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "health-history.json",
+      "timestamp" : "2015-02-02 18:55:16 +0000"
+    } ],
+    "item" : "parkinson-enrollment"
+  },
+  "surgery.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    false\n)",
+    "startDate" : "2015-02-02 18:54:42 +0000",
+    "endDate" : "2015-02-02 18:54:45 +0000",
+    "item" : "surgery"
+  },
+  "deep-brain-stimulation.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    false\n)",
+    "startDate" : "2015-02-02 18:54:33 +0000",
+    "endDate" : "2015-02-02 18:54:36 +0000",
+    "item" : "deep-brain-stimulation"
+  },
+  "medication-start-year.json" : {
+    "questionType" : "Integer",
+    "item" : "medication-start-year",
+    "endDate" : "2015-02-02 18:54:28 +0000",
+    "startDate" : "2015-02-02 18:54:24 +0000",
+    "unit" : "<null>",
+    "numericAnswer" : 1982
+  },
+  "are-caretaker.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    false\n)",
+    "startDate" : "2015-02-02 18:53:30 +0000",
+    "endDate" : "2015-02-02 18:53:36 +0000",
+    "item" : "are-caretaker"
+  },
+  "video-usage.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    true\n)",
+    "startDate" : "2015-02-02 18:54:03 +0000",
+    "endDate" : "2015-02-02 18:54:06 +0000",
+    "item" : "video-usage"
+  },
+  "smoked.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    false\n)",
+    "startDate" : "2015-02-02 18:54:45 +0000",
+    "endDate" : "2015-02-02 18:54:49 +0000",
+    "item" : "smoked"
+  },
+  "smartphone.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    \"Very easy\"\n)",
+    "startDate" : "2015-02-02 18:53:39 +0000",
+    "endDate" : "2015-02-02 18:53:46 +0000",
+    "item" : "smartphone"
+  },
+  "health-history.json" : {
+    "questionType" : "MultipleChoice",
+    "choiceAnswers" : "(\n    \"Acute Myocardial Infarction/Heart Attack\"\n)",
+    "startDate" : "2015-02-02 18:55:06 +0000",
+    "endDate" : "2015-02-02 18:55:16 +0000",
+    "item" : "health-history"
+  },
+  "when-dbs.json" : {
+    "timeZone" : "America/Los_Angeles (PST) offset -28800",
+    "endDate" : "2015-02-02 18:54:42 +0000",
+    "startDate" : "2015-02-02 18:54:36 +0000",
+    "dateAnswer" : "2014-02-02 18:54:36 +0000",
+    "questionType" : "Date",
+    "item" : "when-dbs"
+  },
+  "race.json" : {
+    "questionType" : "MultipleChoice",
+    "choiceAnswers" : "(\n    \"Native American\"\n)",
+    "startDate" : "2015-02-02 18:52:58 +0000",
+    "endDate" : "2015-02-02 18:53:01 +0000",
+    "item" : "race"
+  },
+  "home-usage.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    true\n)",
+    "startDate" : "2015-02-02 18:53:49 +0000",
+    "endDate" : "2015-02-02 18:53:55 +0000",
+    "item" : "home-usage"
+  },
+  "packs-per-day.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    1\n)",
+    "startDate" : "2015-02-02 18:54:59 +0000",
+    "endDate" : "2015-02-02 18:55:03 +0000",
+    "item" : "packs-per-day"
+  },
+  "onset-year.json" : {
+    "questionType" : "Integer",
+    "item" : "onset-year",
+    "endDate" : "2015-02-02 18:54:18 +0000",
+    "startDate" : "2015-02-02 18:54:12 +0000",
+    "unit" : "<null>",
+    "numericAnswer" : 1980
+  },
+  "professional-diagnosis.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    true\n)",
+    "startDate" : "2015-02-02 18:54:06 +0000",
+    "endDate" : "2015-02-02 18:54:12 +0000",
+    "item" : "professional-diagnosis"
+  },
+  "age.json" : {
+    "questionType" : "Integer",
+    "item" : "age",
+    "endDate" : "2015-02-02 18:52:54 +0000",
+    "startDate" : "2015-02-02 18:52:49 +0000",
+    "unit" : "<null>",
+    "numericAnswer" : 20
+  },
+  "education.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    \"Master's Degree\"\n)",
+    "startDate" : "2015-02-02 18:53:16 +0000",
+    "endDate" : "2015-02-02 18:53:21 +0000",
+    "item" : "education"
+  },
+  "diagnosis-year.json" : {
+    "questionType" : "Integer",
+    "item" : "diagnosis-year",
+    "endDate" : "2015-02-02 18:54:24 +0000",
+    "startDate" : "2015-02-02 18:54:18 +0000",
+    "unit" : "<null>",
+    "numericAnswer" : 1981
+  },
+  "residence.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    USA\n)",
+    "startDate" : "2015-02-02 18:53:07 +0000",
+    "endDate" : "2015-02-02 18:53:10 +0000",
+    "item" : "residence"
+  },
+  "past-participation.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    false\n)",
+    "startDate" : "2015-02-02 18:53:36 +0000",
+    "endDate" : "2015-02-02 18:53:39 +0000",
+    "item" : "past-participation"
+  }
+}
