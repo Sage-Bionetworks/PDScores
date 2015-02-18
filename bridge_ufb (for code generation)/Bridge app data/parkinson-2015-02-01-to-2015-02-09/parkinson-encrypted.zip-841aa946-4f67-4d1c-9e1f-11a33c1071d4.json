@@ -1,0 +1,62 @@
+{
+  "info.json" : {
+    "taskRun" : "C9970A59-D47D-4D53-B86B-6B7F5FB6AC88",
+    "item" : "Tapping Activity"
+  },
+  "NoName.json" : {
+    "TappingSamples" : [ {
+      "TapCoordinate" : "{139, 419.5}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0
+    }, {
+      "TapCoordinate" : "{200.5, 421}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 0.3581956659982097
+    }, {
+      "TapCoordinate" : "{118.5, 416}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0.7522020519973012
+    }, {
+      "TapCoordinate" : "{202, 420}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 1.149876285002392
+    }, {
+      "TapCoordinate" : "{129.5, 417}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 1.51696856199851
+    }, {
+      "TapCoordinate" : "{204, 420}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 1.9269695519979
+    }, {
+      "TapCoordinate" : "{120.5, 416}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 2.327131040001404
+    }, {
+      "TapCoordinate" : "{207, 423}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 2.726540215000568
+    }, {
+      "TapCoordinate" : "{110, 420}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 3.1259050439985
+    }, {
+      "TapCoordinate" : "{220.5, 425.5}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 3.519697616000485
+    }, {
+      "TapCoordinate" : "{102.5, 424}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 3.936101273997338
+    }, {
+      "TapCoordinate" : "{199.5, 427.5}",
+      "TappedButtonId" : "TappedButtonRight",
+      "TapTimeStamp" : 4.346003450998978
+    } ],
+    "TappingViewSize" : "{320, 504}",
+    "endDate" : "2015-02-03 06:12:01 +0000",
+    "startDate" : "2015-02-03 06:11:40 +0000",
+    "ButtonRectLeft" : "{{44, 364}, {104, 104}}",
+    "ButtonRectRight" : "{{172, 364}, {104, 104}}"
+  }
+}

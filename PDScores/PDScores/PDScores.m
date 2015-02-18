@@ -57,7 +57,7 @@ const double fbmax = 0.1125;
     static emxArray_real_T ftvec;
     static int sizeOfFtvec[2] = {1, 7};
     static emxArray_real_T wvec;
-    static int sizeOfWvec[1] = {7};
+    static int sizeOfWvec[2] = {7, 1};
     static double wvecData[7] = {
         0.1744,
         -0.0529,
@@ -71,10 +71,10 @@ const double fbmax = 0.1125;
     static int sizeOfIlog[2] = {1, 1};
     static double ilogData[1] = {2};
     static emxArray_real_T ftmin;
-    static int sizeOfFtmin[1] = {7};
+    static int sizeOfFtmin[2] = {7, 1};
     static double ftminData[7] = {0.0144, -3.8249, 0.1433, 0.0475, 0.0156, 0, 10.7954};
     static emxArray_real_T ftmax;
-    static int sizeOfFtmax[1] = {7};
+    static int sizeOfFtmax[2] = {7, 1};
     static double ftmaxData[7] = {1.7500, 2.1518, 1.8985, 2.9557, 3.9239, 2.1887, 208.9349};
     
     static dispatch_once_t onceToken;
@@ -172,7 +172,7 @@ const double fbmax = 0.1125;
     
     // convert to emxArray_real_T for use with MATLAB converted code
     emxArray_real_T audio;
-    int sizeOfAudio[1] = {(int)numFrames};
+    int sizeOfAudio[2] = {(int)numFrames, 1};
     audio.size = sizeOfAudio;
     audio.numDimensions = 1;
     audio.canFreeData = true;
@@ -208,7 +208,7 @@ const double fbmax = 0.1125;
     static emxArray_real_T ftvec;
     static int sizeOfFtvec[2] = {1, 13};
     static emxArray_real_T wvec;
-    static int sizeOfWvec[1] = {13};
+    static int sizeOfWvec[2] = {13, 1};
     static double wvecData[13] = {
         0.2862,
         0.2612,
@@ -228,10 +228,10 @@ const double fbmax = 0.1125;
     static int sizeOfIlog[2] = {1, 7};
     static double ilogData[7] = {2, 3, 4, 10, 11, 12, 13};
     static emxArray_real_T ftmin;
-    static int sizeOfFtmin[1] = {13};
+    static int sizeOfFtmin[2] = {13, 1};
     static double ftminData[13] = {75.8734,  0.9091, 0.7501, -1.2153, 0.0284, -1.1089, -1.7412, -10.3110, -17.7297, 0.7543, 0.6865, 0.8511, 0.7226};
     static emxArray_real_T ftmax;
-    static int sizeOfFtmax[1] = {13};
+    static int sizeOfFtmax[2] = {13, 1};
     static double ftmaxData[13] = {466.9711, 3.5756, 2.2598, 0.1496, 0.9342, 35.4322, 16.9814, 11.8234, 11.5353, 2.2795, 2.0381, 2.0521, 1.9541};
 
     static dispatch_once_t onceToken;
@@ -283,7 +283,7 @@ const double fbmax = 0.1125;
     static emxArray_real_T ftvec;
     static int sizeOfFtvec[2] = {1, 3};
     static emxArray_real_T wvec;
-    static int sizeOfWvec[1] = {3};
+    static int sizeOfWvec[2] = {3, 1};
     static double wvecData[3] = {
         0.3222,
         0.1695,
@@ -293,10 +293,10 @@ const double fbmax = 0.1125;
     static int sizeOfIlog[2] = {1, 2};
     static double ilogData[2] = {1, 2};
     static emxArray_real_T ftmin;
-    static int sizeOfFtmin[1] = {3};
+    static int sizeOfFtmin[2] = {3, 1};
     static double ftminData[3] = {-1.9092, -3.9434, 0.7115};
     static emxArray_real_T ftmax;
-    static int sizeOfFtmax[1] = {3};
+    static int sizeOfFtmax[2] = {3, 1};
     static double ftmaxData[3] = {0.1923, 2.1383, 1.5896};
     
     static dispatch_once_t onceToken;
@@ -341,9 +341,9 @@ const double fbmax = 0.1125;
     }
     
     // get the features array
-    double ft[3];
+    double ft[2];
     features_bta(&tapping, ft);
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 2; ++i) {
         if (isnan(ft[i]))
             return NAN;
     }
@@ -351,7 +351,7 @@ const double fbmax = 0.1125;
     static emxArray_real_T ftvec;
     static int sizeOfFtvec[2] = {1, 2};
     static emxArray_real_T wvec;
-    static int sizeOfWvec[1] = {2};
+    static int sizeOfWvec[2] = {2, 1};
     static double wvecData[2] = {
         0.0980,
         0.2554
@@ -360,10 +360,10 @@ const double fbmax = 0.1125;
     static int sizeOfIlog[2] = {1, 2};
     static double ilogData[2] = {1, 2};
     static emxArray_real_T ftmin;
-    static int sizeOfFtmin[1] = {2};
+    static int sizeOfFtmin[2] = {2, 1};
     static double ftminData[2] = {-1.3010, -2.0000};
     static emxArray_real_T ftmax;
-    static int sizeOfFtmax[1] = {2};
+    static int sizeOfFtmax[2] = {2, 1};
     static double ftmaxData[2] = {0.6781, 0.7158};
     
     static dispatch_once_t onceToken;

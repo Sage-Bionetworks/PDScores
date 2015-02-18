@@ -1,0 +1,502 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		803DC9C31A8F16BF003B58A4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 803DC9C21A8F16BF003B58A4 /* AppDelegate.m */; };
+		803DC9C51A8F16BF003B58A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 803DC9C41A8F16BF003B58A4 /* main.m */; };
+		803DC9C81A8F16BF003B58A4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 803DC9C71A8F16BF003B58A4 /* ViewController.m */; };
+		803DC9CA1A8F16BF003B58A4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 803DC9C91A8F16BF003B58A4 /* Images.xcassets */; };
+		803DC9CD1A8F16C0003B58A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 803DC9CB1A8F16C0003B58A4 /* Main.storyboard */; };
+		803DC9D91A8F16C1003B58A4 /* matlabConversionTestsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 803DC9D81A8F16C1003B58A4 /* matlabConversionTestsTests.m */; };
+		803DCB8C1A8F2CBF003B58A4 /* libPDScoresMac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 803DCB871A8F2CAE003B58A4 /* libPDScoresMac.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		803DC9D31A8F16C1003B58A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 803DC9B41A8F16BF003B58A4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 803DC9BB1A8F16BF003B58A4;
+			remoteInfo = matlabConversionTests;
+		};
+		803DCB861A8F2CAE003B58A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 803DCB811A8F2CAD003B58A4 /* PDScoresMac.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 803DC9FA1A8F2BA6003B58A4;
+			remoteInfo = PDScoresMac;
+		};
+		803DCB881A8F2CAE003B58A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 803DCB811A8F2CAD003B58A4 /* PDScoresMac.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 803DCA051A8F2BA6003B58A4;
+			remoteInfo = PDScoresMacTests;
+		};
+		803DCB8A1A8F2CBA003B58A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 803DCB811A8F2CAD003B58A4 /* PDScoresMac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 803DC9F91A8F2BA6003B58A4;
+			remoteInfo = PDScoresMac;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		803DC9BC1A8F16BF003B58A4 /* matlabConversionTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = matlabConversionTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		803DC9C01A8F16BF003B58A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		803DC9C11A8F16BF003B58A4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		803DC9C21A8F16BF003B58A4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		803DC9C41A8F16BF003B58A4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		803DC9C61A8F16BF003B58A4 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		803DC9C71A8F16BF003B58A4 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		803DC9C91A8F16BF003B58A4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		803DC9CC1A8F16C0003B58A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		803DC9D21A8F16C1003B58A4 /* matlabConversionTestsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = matlabConversionTestsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		803DC9D71A8F16C1003B58A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		803DC9D81A8F16C1003B58A4 /* matlabConversionTestsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = matlabConversionTestsTests.m; sourceTree = "<group>"; };
+		803DCB811A8F2CAD003B58A4 /* PDScoresMac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PDScoresMac.xcodeproj; path = PDScoresMac/PDScoresMac.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		803DC9B91A8F16BF003B58A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				803DCB8C1A8F2CBF003B58A4 /* libPDScoresMac.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		803DC9CF1A8F16C1003B58A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		803DC9B31A8F16BF003B58A4 = {
+			isa = PBXGroup;
+			children = (
+				803DCB811A8F2CAD003B58A4 /* PDScoresMac.xcodeproj */,
+				803DC9BE1A8F16BF003B58A4 /* matlabConversionTests */,
+				803DC9D51A8F16C1003B58A4 /* matlabConversionTestsTests */,
+				803DC9BD1A8F16BF003B58A4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		803DC9BD1A8F16BF003B58A4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				803DC9BC1A8F16BF003B58A4 /* matlabConversionTests.app */,
+				803DC9D21A8F16C1003B58A4 /* matlabConversionTestsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		803DC9BE1A8F16BF003B58A4 /* matlabConversionTests */ = {
+			isa = PBXGroup;
+			children = (
+				803DC9C11A8F16BF003B58A4 /* AppDelegate.h */,
+				803DC9C21A8F16BF003B58A4 /* AppDelegate.m */,
+				803DC9C61A8F16BF003B58A4 /* ViewController.h */,
+				803DC9C71A8F16BF003B58A4 /* ViewController.m */,
+				803DC9C91A8F16BF003B58A4 /* Images.xcassets */,
+				803DC9CB1A8F16C0003B58A4 /* Main.storyboard */,
+				803DC9BF1A8F16BF003B58A4 /* Supporting Files */,
+			);
+			path = matlabConversionTests;
+			sourceTree = "<group>";
+		};
+		803DC9BF1A8F16BF003B58A4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				803DC9C01A8F16BF003B58A4 /* Info.plist */,
+				803DC9C41A8F16BF003B58A4 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		803DC9D51A8F16C1003B58A4 /* matlabConversionTestsTests */ = {
+			isa = PBXGroup;
+			children = (
+				803DC9D81A8F16C1003B58A4 /* matlabConversionTestsTests.m */,
+				803DC9D61A8F16C1003B58A4 /* Supporting Files */,
+			);
+			path = matlabConversionTestsTests;
+			sourceTree = "<group>";
+		};
+		803DC9D61A8F16C1003B58A4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				803DC9D71A8F16C1003B58A4 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		803DCB821A8F2CAD003B58A4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				803DCB871A8F2CAE003B58A4 /* libPDScoresMac.a */,
+				803DCB891A8F2CAE003B58A4 /* PDScoresMacTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		803DC9BB1A8F16BF003B58A4 /* matlabConversionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 803DC9DC1A8F16C1003B58A4 /* Build configuration list for PBXNativeTarget "matlabConversionTests" */;
+			buildPhases = (
+				803DC9B81A8F16BF003B58A4 /* Sources */,
+				803DC9B91A8F16BF003B58A4 /* Frameworks */,
+				803DC9BA1A8F16BF003B58A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				803DCB8B1A8F2CBA003B58A4 /* PBXTargetDependency */,
+			);
+			name = matlabConversionTests;
+			productName = matlabConversionTests;
+			productReference = 803DC9BC1A8F16BF003B58A4 /* matlabConversionTests.app */;
+			productType = "com.apple.product-type.application";
+		};
+		803DC9D11A8F16C1003B58A4 /* matlabConversionTestsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 803DC9DF1A8F16C1003B58A4 /* Build configuration list for PBXNativeTarget "matlabConversionTestsTests" */;
+			buildPhases = (
+				803DC9CE1A8F16C1003B58A4 /* Sources */,
+				803DC9CF1A8F16C1003B58A4 /* Frameworks */,
+				803DC9D01A8F16C1003B58A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				803DC9D41A8F16C1003B58A4 /* PBXTargetDependency */,
+			);
+			name = matlabConversionTestsTests;
+			productName = matlabConversionTestsTests;
+			productReference = 803DC9D21A8F16C1003B58A4 /* matlabConversionTestsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		803DC9B41A8F16BF003B58A4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Sage Bionetworks";
+				TargetAttributes = {
+					803DC9BB1A8F16BF003B58A4 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					803DC9D11A8F16C1003B58A4 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 803DC9BB1A8F16BF003B58A4;
+					};
+				};
+			};
+			buildConfigurationList = 803DC9B71A8F16BF003B58A4 /* Build configuration list for PBXProject "matlabConversionTests" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 803DC9B31A8F16BF003B58A4;
+			productRefGroup = 803DC9BD1A8F16BF003B58A4 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 803DCB821A8F2CAD003B58A4 /* Products */;
+					ProjectRef = 803DCB811A8F2CAD003B58A4 /* PDScoresMac.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				803DC9BB1A8F16BF003B58A4 /* matlabConversionTests */,
+				803DC9D11A8F16C1003B58A4 /* matlabConversionTestsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		803DCB871A8F2CAE003B58A4 /* libPDScoresMac.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libPDScoresMac.a;
+			remoteRef = 803DCB861A8F2CAE003B58A4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		803DCB891A8F2CAE003B58A4 /* PDScoresMacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PDScoresMacTests.xctest;
+			remoteRef = 803DCB881A8F2CAE003B58A4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		803DC9BA1A8F16BF003B58A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				803DC9CA1A8F16BF003B58A4 /* Images.xcassets in Resources */,
+				803DC9CD1A8F16C0003B58A4 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		803DC9D01A8F16C1003B58A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		803DC9B81A8F16BF003B58A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				803DC9C81A8F16BF003B58A4 /* ViewController.m in Sources */,
+				803DC9C51A8F16BF003B58A4 /* main.m in Sources */,
+				803DC9C31A8F16BF003B58A4 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		803DC9CE1A8F16C1003B58A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				803DC9D91A8F16C1003B58A4 /* matlabConversionTestsTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		803DC9D41A8F16C1003B58A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 803DC9BB1A8F16BF003B58A4 /* matlabConversionTests */;
+			targetProxy = 803DC9D31A8F16C1003B58A4 /* PBXContainerItemProxy */;
+		};
+		803DCB8B1A8F2CBA003B58A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PDScoresMac;
+			targetProxy = 803DCB8A1A8F2CBA003B58A4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		803DC9CB1A8F16C0003B58A4 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				803DC9CC1A8F16C0003B58A4 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		803DC9DA1A8F16C1003B58A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		803DC9DB1A8F16C1003B58A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		803DC9DD1A8F16C1003B58A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"../PDScores/PDScores/**",
+				);
+				INFOPLIST_FILE = matlabConversionTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		803DC9DE1A8F16C1003B58A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"../PDScores/PDScores/**",
+				);
+				INFOPLIST_FILE = matlabConversionTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		803DC9E01A8F16C1003B58A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = matlabConversionTestsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/matlabConversionTests.app/Contents/MacOS/matlabConversionTests";
+			};
+			name = Debug;
+		};
+		803DC9E11A8F16C1003B58A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = matlabConversionTestsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/matlabConversionTests.app/Contents/MacOS/matlabConversionTests";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		803DC9B71A8F16BF003B58A4 /* Build configuration list for PBXProject "matlabConversionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				803DC9DA1A8F16C1003B58A4 /* Debug */,
+				803DC9DB1A8F16C1003B58A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		803DC9DC1A8F16C1003B58A4 /* Build configuration list for PBXNativeTarget "matlabConversionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				803DC9DD1A8F16C1003B58A4 /* Debug */,
+				803DC9DE1A8F16C1003B58A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		803DC9DF1A8F16C1003B58A4 /* Build configuration list for PBXNativeTarget "matlabConversionTestsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				803DC9E01A8F16C1003B58A4 /* Debug */,
+				803DC9E11A8F16C1003B58A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 803DC9B41A8F16BF003B58A4 /* Project object */;
+}

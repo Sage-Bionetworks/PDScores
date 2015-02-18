@@ -1,0 +1,14 @@
+{
+  "info.json" : {
+    "files" : [ {
+      "contentType" : "data",
+      "filename" : "audio_audio.m4a",
+      "timestamp" : "2015-02-05 21:43:00 +0000"
+    } ],
+    "appName" : "mPower",
+    "phoneInfo" : "Simulator",
+    "taskRun" : "4815353D-9070-4E6A-B158-DC3A9F3AF4FF",
+    "item" : "Voice Activity",
+    "appVersion" : "version a22-124-g76720aa-dirty, build 1062"
+  }
+}

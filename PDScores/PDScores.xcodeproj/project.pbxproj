@@ -58,7 +58,6 @@
 		801715261A8B150D00CB13EB /* flipud.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017151E1A8B150D00CB13EB /* flipud.c */; };
 		801715271A8B150D00CB13EB /* log10.c in Sources */ = {isa = PBXBuildFile; fileRef = 801715201A8B150D00CB13EB /* log10.c */; };
 		8017152C1A8B17CB00CB13EB /* fastdfa_core_nomex.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017152A1A8B17CB00CB13EB /* fastdfa_core_nomex.c */; };
-		8017152F1A8BCFCB00CB13EB /* sortrows.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017152D1A8BCFCB00CB13EB /* sortrows.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,8 +188,6 @@
 		801715211A8B150D00CB13EB /* log10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = log10.h; sourceTree = "<group>"; };
 		8017152A1A8B17CB00CB13EB /* fastdfa_core_nomex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fastdfa_core_nomex.c; sourceTree = "<group>"; };
 		8017152B1A8B17CB00CB13EB /* fastdfa_core_nomex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fastdfa_core_nomex.h; sourceTree = "<group>"; };
-		8017152D1A8BCFCB00CB13EB /* sortrows.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sortrows.c; sourceTree = "<group>"; };
-		8017152E1A8BCFCB00CB13EB /* sortrows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sortrows.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -354,8 +351,6 @@
 				801714DA1A89AD7600CB13EB /* rtGetNaN.c */,
 				801714DB1A89AD7600CB13EB /* rtGetNaN.h */,
 				801714DD1A89AD7600CB13EB /* rtwtypes.h */,
-				8017152D1A8BCFCB00CB13EB /* sortrows.c */,
-				8017152E1A8BCFCB00CB13EB /* sortrows.h */,
 				801714DE1A89AD7600CB13EB /* spline.c */,
 				801714DF1A89AD7600CB13EB /* spline.h */,
 				801714E01A89AD7600CB13EB /* sqrt.c */,
@@ -464,7 +459,6 @@
 				801715021A89AD7600CB13EB /* lomb.c in Sources */,
 				801715071A89AD7600CB13EB /* polyval.c in Sources */,
 				801715271A8B150D00CB13EB /* log10.c in Sources */,
-				8017152F1A8BCFCB00CB13EB /* sortrows.c in Sources */,
 				801714F71A89AD7600CB13EB /* features_bpa.c in Sources */,
 				801714F21A89AD7600CB13EB /* combine_vector_elements.c in Sources */,
 				801714F01A89AD7600CB13EB /* bridge_ufb_rtwutil.c in Sources */,
@@ -613,6 +607,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 			};
 			name = Debug;
 		};
@@ -622,6 +617,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 			};
 			name = Release;
 		};

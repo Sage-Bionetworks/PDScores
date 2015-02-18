@@ -1,0 +1,117 @@
+{
+  "medications.json" : {
+    "questionType" : "MultipleChoice",
+    "choiceAnswers" : "(\n    \"Carbidopa-levodopa (Sinemet, Sinemet CR)\"\n)",
+    "startDate" : "2015-02-06 21:30:23 +0000",
+    "endDate" : "2015-02-06 21:30:26 +0000",
+    "item" : "medications"
+  },
+  "personal-relationships.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Often\n)",
+    "startDate" : "2015-02-06 21:30:30 +0000",
+    "endDate" : "2015-02-06 21:30:31 +0000",
+    "item" : "personal-relationships"
+  },
+  "info.json" : {
+    "taskRun" : "5385A5FF-4968-4D53-8B7C-F5DB122E5009",
+    "files" : [ {
+      "contentType" : "application/json",
+      "filename" : "medications-change.json",
+      "timestamp" : "2015-02-06 21:30:23 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "medications.json",
+      "timestamp" : "2015-02-06 21:30:26 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "moving.json",
+      "timestamp" : "2015-02-06 21:30:27 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "dressing.json",
+      "timestamp" : "2015-02-06 21:30:28 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "depressed.json",
+      "timestamp" : "2015-02-06 21:30:30 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "personal-relationships.json",
+      "timestamp" : "2015-02-06 21:30:31 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "concentration.json",
+      "timestamp" : "2015-02-06 21:30:32 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "communication.json",
+      "timestamp" : "2015-02-06 21:30:33 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "spasms.json",
+      "timestamp" : "2015-02-06 21:30:34 +0000"
+    }, {
+      "contentType" : "application/json",
+      "filename" : "public-embarrassment.json",
+      "timestamp" : "2015-02-06 21:30:35 +0000"
+    } ],
+    "item" : "parkinson-monthly"
+  },
+  "depressed.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Always\n)",
+    "startDate" : "2015-02-06 21:30:28 +0000",
+    "endDate" : "2015-02-06 21:30:30 +0000",
+    "item" : "depressed"
+  },
+  "dressing.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Always\n)",
+    "startDate" : "2015-02-06 21:30:27 +0000",
+    "endDate" : "2015-02-06 21:30:28 +0000",
+    "item" : "dressing"
+  },
+  "spasms.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Always\n)",
+    "startDate" : "2015-02-06 21:30:33 +0000",
+    "endDate" : "2015-02-06 21:30:34 +0000",
+    "item" : "spasms"
+  },
+  "medications-change.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    true\n)",
+    "startDate" : "2015-02-06 21:30:22 +0000",
+    "endDate" : "2015-02-06 21:30:23 +0000",
+    "item" : "medications-change"
+  },
+  "concentration.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Always\n)",
+    "startDate" : "2015-02-06 21:30:31 +0000",
+    "endDate" : "2015-02-06 21:30:32 +0000",
+    "item" : "concentration"
+  },
+  "public-embarrassment.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Often\n)",
+    "startDate" : "2015-02-06 21:30:34 +0000",
+    "endDate" : "2015-02-06 21:30:35 +0000",
+    "item" : "public-embarrassment"
+  },
+  "moving.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Always\n)",
+    "startDate" : "2015-02-06 21:30:26 +0000",
+    "endDate" : "2015-02-06 21:30:27 +0000",
+    "item" : "moving"
+  },
+  "communication.json" : {
+    "questionType" : "SingleChoice",
+    "choiceAnswers" : "(\n    Always\n)",
+    "startDate" : "2015-02-06 21:30:32 +0000",
+    "endDate" : "2015-02-06 21:30:33 +0000",
+    "item" : "communication"
+  }
+}

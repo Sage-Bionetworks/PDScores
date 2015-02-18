@@ -1,0 +1,39 @@
+{
+  "info.json" : {
+    "taskRun" : "AAF51528-2A5C-49A4-9B29-06F39BF247A3",
+    "files" : [ {
+      "contentType" : "data",
+      "filename" : "pedometer_walking.outbound-20150205152046",
+      "timestamp" : "2015-02-05 23:20:46 +0000"
+    }, {
+      "contentType" : "data",
+      "filename" : "accel_walking.outbound-20150205152046",
+      "timestamp" : "2015-02-05 23:20:46 +0000"
+    }, {
+      "contentType" : "data",
+      "filename" : "deviceMotion_walking.outbound-20150205152046",
+      "timestamp" : "2015-02-05 23:20:46 +0000"
+    }, {
+      "contentType" : "data",
+      "filename" : "pedometer_walking.return-20150205152106",
+      "timestamp" : "2015-02-05 23:21:06 +0000"
+    }, {
+      "contentType" : "data",
+      "filename" : "accel_walking.return-20150205152106",
+      "timestamp" : "2015-02-05 23:21:06 +0000"
+    }, {
+      "contentType" : "data",
+      "filename" : "deviceMotion_walking.return-20150205152106",
+      "timestamp" : "2015-02-05 23:21:06 +0000"
+    }, {
+      "contentType" : "data",
+      "filename" : "accel_walking.rest-20150205152136",
+      "timestamp" : "2015-02-05 23:21:36 +0000"
+    }, {
+      "contentType" : "data",
+      "filename" : "deviceMotion_walking.rest-20150205152137",
+      "timestamp" : "2015-02-05 23:21:37 +0000"
+    } ],
+    "item" : "Walking Activity"
+  }
+}

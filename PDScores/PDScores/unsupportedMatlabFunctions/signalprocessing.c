@@ -9,6 +9,7 @@
 #include "signalprocessing.h"
 #include <Accelerate/Accelerate.h>
 #include <string.h>
+#include <stdlib.h>
 
 void hanning(double *outBuf, unsigned long windowSize)
 {
@@ -18,7 +19,7 @@ void hanning(double *outBuf, unsigned long windowSize)
     memcpy(outBuf, tempBuf + 1, windowSize * sizeof(double));
 }
 
-void spectrogram(double *outFourierTransform, double *outFrequencies, double *outTimes, double *inSignal, unsigned long signalSize, double *window, unsigned long overlap, unsigned long windowSize, double samplingRate)
+void spectrogram(creal_T *outFourierTransform, double *outFrequencies, double *outTimes, double *inSignal, unsigned long signalSize, double *window, unsigned long overlap, unsigned long windowSize, double samplingRate)
 {
     unsigned long fftSize = windowSize;					// sample size
     unsigned long fftSizeOver2 = fftSize/2;
@@ -64,10 +65,16 @@ void spectrogram(double *outFourierTransform, double *outFrequencies, double *ou
         double scaleFactor = 0.5;
         vDSP_vsmulD(in_real, 1, &scaleFactor, in_real, 1, fftSize);
         
+        double nyquist = in_real[1]; // unpack Nyquist value packed into complex part alongside DC value in real part
+        in_real[1] = 0;
+        
         unsigned long colSize = fftSizeOver2 + 1;
-        double *outColStart = outFourierTransform + frame * colSize;
-        cblas_dcopy((int)fftSizeOver2, in_real, 2, outColStart, 1);
-        outColStart[fftSizeOver2] = in_real[1]; // Nyquist value packed in complex part alongside DC value in real part
+        creal_T *outColStart = outFourierTransform + frame * colSize;
+//        cblas_dcopy((int)fftSizeOver2, in_real, 2, outColStart, 1);
+        cblas_zcopy((int)fftSizeOver2, in_real, 1, outColStart, 1);
+        outColStart[fftSizeOver2].re = nyquist;
+        outColStart[fftSizeOver2].im = 0.0;
+//        outColStart[fftSizeOver2] = in_real[1]; // Nyquist value packed in complex part alongside DC value in real part
         
         outTimes[frame] = frameTime;
         frameTime += frameDuration;

@@ -1,0 +1,14 @@
+{
+  "info.json" : {
+    "files" : [ {
+      "contentType" : "data",
+      "filename" : "audio_audio.m4a",
+      "timestamp" : "2015-02-09 16:15:55 +0000"
+    } ],
+    "appName" : "mPower",
+    "phoneInfo" : "iPhone 6",
+    "taskRun" : "A7E5241F-A8B1-45C4-9D89-A56050596370",
+    "item" : "Voice Activity",
+    "appVersion" : "version a22-130-g60a5f24-dirty, build 1068"
+  }
+}

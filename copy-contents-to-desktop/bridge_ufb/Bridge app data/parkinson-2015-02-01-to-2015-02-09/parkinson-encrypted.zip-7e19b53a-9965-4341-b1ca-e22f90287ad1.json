@@ -1,0 +1,18 @@
+{
+  "info.json" : {
+    "taskRun" : "7145AC6D-E858-44F4-A9F6-E7805829E350",
+    "item" : "Tapping Activity"
+  },
+  "NoName.json" : {
+    "TappingSamples" : [ {
+      "TapCoordinate" : "{64, 415}",
+      "TappedButtonId" : "TappedButtonLeft",
+      "TapTimeStamp" : 0
+    } ],
+    "TappingViewSize" : "{320, 504}",
+    "endDate" : "2015-02-05 01:09:53 +0000",
+    "startDate" : "2015-02-05 01:09:08 +0000",
+    "ButtonRectLeft" : "{{44, 364}, {104, 104}}",
+    "ButtonRectRight" : "{{172, 364}, {104, 104}}"
+  }
+}
