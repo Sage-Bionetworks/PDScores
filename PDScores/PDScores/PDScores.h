@@ -15,4 +15,7 @@
 + (double)scoreFromTappingTest:(NSArray *)tappingData;
 + (double)scoreFromPostureTest:(NSArray *)postureData;
 
++ (double)scoreFromPhonationTest:(NSURL *)phonationAudioFile gaitTest:(NSArray *)gaitData postureTest:(NSArray *)postureData tappingTest:(NSArray *)tappingData;
++ (double)combinedScoreFromPhonationScore:(double)phonationScore gaitScore:(double)gaitScore postureScore:(double)postureScore tappingScore:(double)tappingScore;
+
 @end

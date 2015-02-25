@@ -44,6 +44,7 @@
 		8081F7251A8FDEA80026511A /* hanning(2048).csv in Resources */ = {isa = PBXBuildFile; fileRef = 8081F7201A8FDEA80026511A /* hanning(2048).csv */; };
 		8081F7261A8FDEA80026511A /* hanning(4096).csv in Resources */ = {isa = PBXBuildFile; fileRef = 8081F7211A8FDEA80026511A /* hanning(4096).csv */; };
 		8081F7271A8FDEA80026511A /* hanning(8192).csv in Resources */ = {isa = PBXBuildFile; fileRef = 8081F7221A8FDEA80026511A /* hanning(8192).csv */; };
+		80B5A1EA1A980C940082D99E /* PDScoresTestPerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B5A1E91A980C940082D99E /* PDScoresTestPerformanceTests.m */; };
 		80B6F5401A9000D70068AC01 /* specgramf(512).csv in Resources */ = {isa = PBXBuildFile; fileRef = 80B6F5311A9000D70068AC01 /* specgramf(512).csv */; };
 		80B6F5411A9000D70068AC01 /* specgramf(1024).csv in Resources */ = {isa = PBXBuildFile; fileRef = 80B6F5321A9000D70068AC01 /* specgramf(1024).csv */; };
 		80B6F5421A9000D70068AC01 /* specgramf(2048).csv in Resources */ = {isa = PBXBuildFile; fileRef = 80B6F5331A9000D70068AC01 /* specgramf(2048).csv */; };
@@ -125,6 +126,13 @@
 			remoteGlobalIDString = 801712D31A897DC200CB13EB;
 			remoteInfo = PDScores;
 		};
+		80B5A1EB1A980C940082D99E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 801715311A8C12EB00CB13EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 801715381A8C12EB00CB13EB;
+			remoteInfo = PDScoresTest;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -171,6 +179,9 @@
 		8081F7201A8FDEA80026511A /* hanning(2048).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "hanning(2048).csv"; sourceTree = "<group>"; };
 		8081F7211A8FDEA80026511A /* hanning(4096).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "hanning(4096).csv"; sourceTree = "<group>"; };
 		8081F7221A8FDEA80026511A /* hanning(8192).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "hanning(8192).csv"; sourceTree = "<group>"; };
+		80B5A1E51A980C930082D99E /* PDScoresTestPerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PDScoresTestPerformanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		80B5A1E81A980C940082D99E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80B5A1E91A980C940082D99E /* PDScoresTestPerformanceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDScoresTestPerformanceTests.m; sourceTree = "<group>"; };
 		80B6F5311A9000D70068AC01 /* specgramf(512).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "specgramf(512).csv"; sourceTree = "<group>"; };
 		80B6F5321A9000D70068AC01 /* specgramf(1024).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "specgramf(1024).csv"; sourceTree = "<group>"; };
 		80B6F5331A9000D70068AC01 /* specgramf(2048).csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "specgramf(2048).csv"; sourceTree = "<group>"; };
@@ -241,6 +252,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		80B5A1E21A980C930082D99E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -251,6 +269,7 @@
 				801715781A8C196500CB13EB /* AudioToolbox.framework */,
 				8017153B1A8C12EB00CB13EB /* PDScoresTest */,
 				801715551A8C12ED00CB13EB /* PDScoresTestTests */,
+				80B5A1E61A980C940082D99E /* PDScoresTestPerformanceTests */,
 				8017153A1A8C12EB00CB13EB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -260,6 +279,7 @@
 			children = (
 				801715391A8C12EB00CB13EB /* PDScoresTest.app */,
 				801715521A8C12ED00CB13EB /* PDScoresTestTests.xctest */,
+				80B5A1E51A980C930082D99E /* PDScoresTestPerformanceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -409,6 +429,23 @@
 			path = "/Users/erin/Development/Sage/PDScores/PDScores/PDScoresTests/../../../../../Desktop/From Matlab";
 			sourceTree = "<absolute>";
 		};
+		80B5A1E61A980C940082D99E /* PDScoresTestPerformanceTests */ = {
+			isa = PBXGroup;
+			children = (
+				80B5A1E91A980C940082D99E /* PDScoresTestPerformanceTests.m */,
+				80B5A1E71A980C940082D99E /* Supporting Files */,
+			);
+			path = PDScoresTestPerformanceTests;
+			sourceTree = "<group>";
+		};
+		80B5A1E71A980C940082D99E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				80B5A1E81A980C940082D99E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -448,6 +485,24 @@
 			productReference = 801715521A8C12ED00CB13EB /* PDScoresTestTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		80B5A1E41A980C930082D99E /* PDScoresTestPerformanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80B5A1F01A980C940082D99E /* Build configuration list for PBXNativeTarget "PDScoresTestPerformanceTests" */;
+			buildPhases = (
+				80B5A1E11A980C930082D99E /* Sources */,
+				80B5A1E21A980C930082D99E /* Frameworks */,
+				80B5A1E31A980C930082D99E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				80B5A1EC1A980C940082D99E /* PBXTargetDependency */,
+			);
+			name = PDScoresTestPerformanceTests;
+			productName = PDScoresTestPerformanceTests;
+			productReference = 80B5A1E51A980C930082D99E /* PDScoresTestPerformanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -461,6 +516,10 @@
 						CreatedOnToolsVersion = 6.1.1;
 					};
 					801715511A8C12ED00CB13EB = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 801715381A8C12EB00CB13EB;
+					};
+					80B5A1E41A980C930082D99E = {
 						CreatedOnToolsVersion = 6.1.1;
 						TestTargetID = 801715381A8C12EB00CB13EB;
 					};
@@ -487,6 +546,7 @@
 			targets = (
 				801715381A8C12EB00CB13EB /* PDScoresTest */,
 				801715511A8C12ED00CB13EB /* PDScoresTestTests */,
+				80B5A1E41A980C930082D99E /* PDScoresTestPerformanceTests */,
 			);
 		};
 /* End PBXProject section */
@@ -603,6 +663,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		80B5A1E31A980C930082D99E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -624,6 +691,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		80B5A1E11A980C930082D99E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80B5A1EA1A980C940082D99E /* PDScoresTestPerformanceTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -636,6 +711,11 @@
 			isa = PBXTargetDependency;
 			name = PDScores;
 			targetProxy = 8017157C1A8C1A9B00CB13EB /* PBXContainerItemProxy */;
+		};
+		80B5A1EC1A980C940082D99E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 801715381A8C12EB00CB13EB /* PDScoresTest */;
+			targetProxy = 80B5A1EB1A980C940082D99E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -819,6 +899,40 @@
 			};
 			name = Release;
 		};
+		80B5A1ED1A980C940082D99E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PDScoresTestPerformanceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PDScoresTest.app/PDScoresTest";
+			};
+			name = Debug;
+		};
+		80B5A1EE1A980C940082D99E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PDScoresTestPerformanceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PDScoresTest.app/PDScoresTest";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -845,6 +959,15 @@
 			buildConfigurations = (
 				801715601A8C12ED00CB13EB /* Debug */,
 				801715611A8C12ED00CB13EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80B5A1F01A980C940082D99E /* Build configuration list for PBXNativeTarget "PDScoresTestPerformanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80B5A1ED1A980C940082D99E /* Debug */,
+				80B5A1EE1A980C940082D99E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

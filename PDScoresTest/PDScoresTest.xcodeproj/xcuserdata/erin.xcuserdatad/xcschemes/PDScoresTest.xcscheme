@@ -34,13 +34,27 @@
                ReferencedContainer = "container:PDScoresTest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "80B5A1E41A980C930082D99E"
+               BuildableName = "PDScoresTestPerformanceTests.xctest"
+               BlueprintName = "PDScoresTestPerformanceTests"
+               ReferencedContainer = "container:PDScoresTest.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      buildConfiguration = "Release">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -49,6 +63,16 @@
                BlueprintIdentifier = "801715511A8C12ED00CB13EB"
                BuildableName = "PDScoresTestTests.xctest"
                BlueprintName = "PDScoresTestTests"
+               ReferencedContainer = "container:PDScoresTest.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "80B5A1E41A980C930082D99E"
+               BuildableName = "PDScoresTestPerformanceTests.xctest"
+               BlueprintName = "PDScoresTestPerformanceTests"
                ReferencedContainer = "container:PDScoresTest.xcodeproj">
             </BuildableReference>
          </TestableReference>

@@ -64,13 +64,27 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Combined score:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rcr-Ob-KUT">
+                                <rect key="frame" x="16" y="144" width="278" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="calculating..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8C-G7-Ate">
+                                <rect key="frame" x="302" y="144" width="278" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="X8C-G7-Ate" firstAttribute="leading" secondItem="rcr-Ob-KUT" secondAttribute="trailing" constant="8" id="0Nl-N6-4JY"/>
                             <constraint firstAttribute="trailing" secondItem="g2r-bb-KIm" secondAttribute="trailing" constant="20" id="5gy-kB-e8J"/>
                             <constraint firstItem="Kao-Eb-83p" firstAttribute="baseline" secondItem="WwG-jh-7fj" secondAttribute="baseline" id="7Hz-7p-1uX"/>
                             <constraint firstItem="mp3-c5-CJY" firstAttribute="width" secondItem="g2r-bb-KIm" secondAttribute="width" id="8ZV-a5-w5P"/>
                             <constraint firstItem="g2r-bb-KIm" firstAttribute="leading" secondItem="mp3-c5-CJY" secondAttribute="trailing" constant="8" id="B22-rQ-zKP"/>
+                            <constraint firstItem="rcr-Ob-KUT" firstAttribute="top" secondItem="Dye-zq-gaD" secondAttribute="bottom" constant="8" id="C1o-7P-Bbx"/>
                             <constraint firstItem="Dog-Yr-YEp" firstAttribute="leading" secondItem="2L6-fH-j1a" secondAttribute="trailing" constant="8" id="DhS-hh-flD"/>
                             <constraint firstAttribute="trailing" secondItem="NsO-N5-j6n" secondAttribute="trailing" constant="20" id="Dw5-4p-gaN"/>
                             <constraint firstItem="WwG-jh-7fj" firstAttribute="top" secondItem="2L6-fH-j1a" secondAttribute="bottom" constant="8" id="F2P-99-mIH"/>
@@ -85,15 +99,20 @@
                             <constraint firstItem="WwG-jh-7fj" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="SWq-3V-lsr"/>
                             <constraint firstItem="mp3-c5-CJY" firstAttribute="top" secondItem="WwG-jh-7fj" secondAttribute="bottom" constant="8" id="SbZ-Uu-p3f"/>
                             <constraint firstItem="2L6-fH-j1a" firstAttribute="width" secondItem="Dog-Yr-YEp" secondAttribute="width" id="Y85-SH-9B0"/>
+                            <constraint firstItem="X8C-G7-Ate" firstAttribute="width" secondItem="rcr-Ob-KUT" secondAttribute="width" id="bJT-ZJ-Sbk"/>
                             <constraint firstItem="mp3-c5-CJY" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="dXv-cb-dmc"/>
+                            <constraint firstItem="rcr-Ob-KUT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="fjd-5r-4Hb"/>
                             <constraint firstAttribute="trailing" secondItem="Dog-Yr-YEp" secondAttribute="trailing" constant="20" id="hzB-NY-iMc"/>
                             <constraint firstItem="2L6-fH-j1a" firstAttribute="baseline" secondItem="Dog-Yr-YEp" secondAttribute="baseline" id="idp-pP-0YC"/>
                             <constraint firstItem="2L6-fH-j1a" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="k7U-R5-70n"/>
+                            <constraint firstAttribute="trailing" secondItem="X8C-G7-Ate" secondAttribute="trailing" constant="20" id="mF9-Ly-XQd"/>
                             <constraint firstItem="Dye-zq-gaD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="mx0-LQ-lKN"/>
+                            <constraint firstItem="X8C-G7-Ate" firstAttribute="baseline" secondItem="rcr-Ob-KUT" secondAttribute="baseline" id="y8H-rt-y7U"/>
                             <constraint firstItem="Kao-Eb-83p" firstAttribute="leading" secondItem="WwG-jh-7fj" secondAttribute="trailing" constant="8" id="zM5-Bl-bPK"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="combinedScoreLabel" destination="X8C-G7-Ate" id="PKs-Z2-iCP"/>
                         <outlet property="gaitScoreLabel" destination="Kao-Eb-83p" id="tks-oA-vxs"/>
                         <outlet property="phonationScoreLabel" destination="Dog-Yr-YEp" id="0Af-wM-4dA"/>
                         <outlet property="postureScoreLabel" destination="g2r-bb-KIm" id="hbP-Id-wCk"/>

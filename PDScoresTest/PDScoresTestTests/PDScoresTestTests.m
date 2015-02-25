@@ -167,17 +167,23 @@
     return size;
 }
 
-- (double)compareDouble:(double)mine toDouble:(double)matlabs saveResultInArray:(NSMutableArray *)compare
+- (double)compareDouble:(double)mine toDouble:(double)matlabs trackMax:(double *)max saveResultInArray:(NSMutableArray *)compare
 {
-    double denom = MAX(mine, matlabs);
-    double delta;
-    if (denom == 0.0) {
-        delta = 0.0;
-    } else {
-        delta = (mine - matlabs) / denom;
+    double denom = fabs(matlabs);
+    double diff = fabs(mine - matlabs);
+    double delta = (denom == 0) ? diff : diff / denom;
+    if (max) {
+        if (delta > *max) {
+            *max = delta;
+        }
     }
+
     NSString *comparison = [NSString stringWithFormat:@"%.8g\t%.8g\t%.5g", mine, matlabs, delta];
     [compare addObject:comparison];
+    
+    if (delta > 1e-10) {
+        NSLog(@"%@", comparison);
+    }
     return delta;
 }
 
@@ -205,18 +211,12 @@
     while (pMine < pMineEnd) {
         double mine = *pMine++;
         double matlabs = *pMatlab++;
-        double delta = [self compareDouble:mine toDouble:matlabs saveResultInArray:compare];
-        if (delta > maxDelta) {
-            maxDelta = delta;
-        }
+        double delta = [self compareDouble:mine toDouble:matlabs trackMax:&maxDelta saveResultInArray:compare];
         
         if (complex) {
             mine = *pMine++;
             matlabs = *pMatlab++;
-            delta = [self compareDouble:mine toDouble:matlabs saveResultInArray:imCompare];
-            if (delta > maxImDelta) {
-                maxImDelta = delta;
-            }
+            delta = [self compareDouble:mine toDouble:matlabs trackMax:&maxImDelta saveResultInArray:imCompare];
         }
     }
     
@@ -521,5 +521,6 @@ cleanup:
     emxFree_real_T(&matlabSwipepOutF0);
     emxFree_real_T(&audiotrim);
 }
+
 
 @end

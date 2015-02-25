@@ -17,8 +17,39 @@
 @import AudioToolbox;
 @import CoreMotion;
 
-const double fbmin = -2.6912;
-const double fbmax = 0.1125;
+const double fbmin = -2.691233945298616;
+const double fbmax = 0.112505762143074;
+double wvecData[25] = {
+    0.286231494507457,
+    0.261192327610184,
+    0.098853812937446,
+    -0.004458839281134,
+    0.260731349136143,
+    0.015095507428701,
+    -0.182309796525234,
+    0.000814580220081,
+    0.066284176369154,
+    0.035261446077445,
+    0.025754011784195,
+    0.008627620841593,
+    -0.127762049854148,
+    0.174356985048491,
+    -0.052879096662678,
+    0.401736293839382,
+    0.405038065529931,
+    0.212529121993104,
+    -0.034258234293573,
+    0.277275905057248,
+    0.322225334501282,
+    0.169523634856027,
+    0.163302597072440,
+    0.098002052991279,
+    0.255354469250380
+};
+
+double ftminData[] = { 75.873430138619014, 0.909064396681576, 0.750104755980688, -1.215275709611168, 0.028427110782721  , -1.108948895519833, -1.741205757224090, -10.311033700183184, -17.729737676923012, 0.754335846764612, 0.686455477854417, 0.851058827586193, 0.722586392689788, 0.014355432088169, -3.824923125327304, 0.143257499992615, 0.047538333004923, 0.015628695534973, 0, 10.795359985168215, -1.909234199669284, -3.943415064253990, 0.711488941278325, -1.301029995663882, -2.000000000030019 };
+
+double ftmaxData[] = { 466.9711215027887, 3.5755702286801, 2.2598212362848, 0.1496246072862, 0.9341546762825, 35.4322147307475, 16.9814320112968, 11.8234139704683, 11.5353327327018, 2.2795084122082, 2.0381298848445, 2.0520841815250, 1.9541007270693, 1.7499836685623, 2.1517890538311, 1.8984966684948, 2.9557149990000, 3.9238716785348, 2.1887075139316, 208.9349398410068, 0.1922690870262, 2.1382862219459, 1.5896368980157, 0.6780629049743, 0.7158362751650 };
 
 @implementation PDScores
 
@@ -58,37 +89,28 @@ const double fbmax = 0.1125;
     static int sizeOfFtvec[2] = {1, 7};
     static emxArray_real_T wvec;
     static int sizeOfWvec[2] = {7, 1};
-    static double wvecData[7] = {
-        0.1744,
-        -0.0529,
-        0.4017,
-        0.4050,
-        0.2125,
-        -0.0343,
-        0.2773
-    };
     static emxArray_real_T ilog;
     static int sizeOfIlog[2] = {1, 1};
     static double ilogData[1] = {2};
     static emxArray_real_T ftmin;
     static int sizeOfFtmin[2] = {7, 1};
-    static double ftminData[7] = {0.0144, -3.8249, 0.1433, 0.0475, 0.0156, 0, 10.7954};
     static emxArray_real_T ftmax;
     static int sizeOfFtmax[2] = {7, 1};
-    static double ftmaxData[7] = {1.7500, 2.1518, 1.8985, 2.9557, 3.9239, 2.1887, 208.9349};
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ftvec.size = sizeOfFtvec;
         wvec.size = sizeOfWvec;
-        wvec.data = wvecData;
+        wvec.data = wvecData + 13;
         ilog.size = sizeOfIlog;
         ilog.data = ilogData;
         ftmin.size = sizeOfFtmin;
-        ftmin.data = ftminData;
+        ftmin.data = ftminData + 13;
         ftmax.size = sizeOfFtmax;
-        ftmax.data = ftmaxData;
+        ftmax.data = ftmaxData + 13;
     });
+    
+    
     
     ftvec.data = ft;
     double score = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
@@ -209,30 +231,13 @@ const double fbmax = 0.1125;
     static int sizeOfFtvec[2] = {1, 13};
     static emxArray_real_T wvec;
     static int sizeOfWvec[2] = {13, 1};
-    static double wvecData[13] = {
-        0.2862,
-        0.2612,
-        0.0989,
-        -0.0045,
-        0.2607,
-        0.0151,
-        -0.1823,
-        0.0008,
-        0.0663,
-        0.0353,
-        0.0258,
-        0.0086,
-        -0.1278
-    };
     static emxArray_real_T ilog;
     static int sizeOfIlog[2] = {1, 7};
     static double ilogData[7] = {2, 3, 4, 10, 11, 12, 13};
     static emxArray_real_T ftmin;
     static int sizeOfFtmin[2] = {13, 1};
-    static double ftminData[13] = {75.8734,  0.9091, 0.7501, -1.2153, 0.0284, -1.1089, -1.7412, -10.3110, -17.7297, 0.7543, 0.6865, 0.8511, 0.7226};
     static emxArray_real_T ftmax;
     static int sizeOfFtmax[2] = {13, 1};
-    static double ftmaxData[13] = {466.9711, 3.5756, 2.2598, 0.1496, 0.9342, 35.4322, 16.9814, 11.8234, 11.5353, 2.2795, 2.0381, 2.0521, 1.9541};
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -284,32 +289,25 @@ const double fbmax = 0.1125;
     static int sizeOfFtvec[2] = {1, 3};
     static emxArray_real_T wvec;
     static int sizeOfWvec[2] = {3, 1};
-    static double wvecData[3] = {
-        0.3222,
-        0.1695,
-        0.1633
-    };
     static emxArray_real_T ilog;
     static int sizeOfIlog[2] = {1, 2};
     static double ilogData[2] = {1, 2};
     static emxArray_real_T ftmin;
     static int sizeOfFtmin[2] = {3, 1};
-    static double ftminData[3] = {-1.9092, -3.9434, 0.7115};
     static emxArray_real_T ftmax;
     static int sizeOfFtmax[2] = {3, 1};
-    static double ftmaxData[3] = {0.1923, 2.1383, 1.5896};
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ftvec.size = sizeOfFtvec;
         wvec.size = sizeOfWvec;
-        wvec.data = wvecData;
+        wvec.data = wvecData + 20;
         ilog.size = sizeOfIlog;
         ilog.data = ilogData;
         ftmin.size = sizeOfFtmin;
-        ftmin.data = ftminData;
+        ftmin.data = ftminData + 20;
         ftmax.size = sizeOfFtmax;
-        ftmax.data = ftmaxData;
+        ftmax.data = ftmaxData + 20;
     });
     
     ftvec.data = ft;
@@ -352,37 +350,61 @@ const double fbmax = 0.1125;
     static int sizeOfFtvec[2] = {1, 2};
     static emxArray_real_T wvec;
     static int sizeOfWvec[2] = {2, 1};
-    static double wvecData[2] = {
-        0.0980,
-        0.2554
-    };
     static emxArray_real_T ilog;
     static int sizeOfIlog[2] = {1, 2};
     static double ilogData[2] = {1, 2};
     static emxArray_real_T ftmin;
     static int sizeOfFtmin[2] = {2, 1};
-    static double ftminData[2] = {-1.3010, -2.0000};
     static emxArray_real_T ftmax;
     static int sizeOfFtmax[2] = {2, 1};
-    static double ftmaxData[2] = {0.6781, 0.7158};
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ftvec.size = sizeOfFtvec;
         wvec.size = sizeOfWvec;
-        wvec.data = wvecData;
+        wvec.data = wvecData + 23;
         ilog.size = sizeOfIlog;
         ilog.data = ilogData;
         ftmin.size = sizeOfFtmin;
-        ftmin.data = ftminData;
+        ftmin.data = ftminData + 23;
         ftmax.size = sizeOfFtmax;
-        ftmax.data = ftmaxData;
+        ftmax.data = ftmaxData + 23;
     });
     
     ftvec.data = ft;
     double score = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
     
     return score;
+}
+
+
+double rawScoreFromScore(double score)
+{
+    static double max_minus_min = fbmax - fbmin;
+    double rawScore = ((score / 100.0) * max_minus_min) + fbmin;
+    return rawScore;
+}
+
++ (double)scoreFromPhonationTest:(NSURL *)phonationAudioFile gaitTest:(NSArray *)gaitData postureTest:(NSArray *)postureData tappingTest:(NSArray *)tappingData
+{
+    return [self combinedScoreFromPhonationScore:[self scoreFromPhonationTest:phonationAudioFile]
+                                       gaitScore:[self scoreFromGaitTest:gaitData]
+                                    postureScore:[self scoreFromPostureTest:postureData]
+                                    tappingScore:[self scoreFromTappingTest:tappingData]];
+}
+
++ (double)combinedScoreFromPhonationScore:(double)phonationScore gaitScore:(double)gaitScore postureScore:(double)postureScore tappingScore:(double)tappingScore
+{
+    double rawPhon = rawScoreFromScore(phonationScore);
+    double rawGait = rawScoreFromScore(gaitScore);
+    double rawPosture = rawScoreFromScore(postureScore);
+    double rawTapping = rawScoreFromScore(tappingScore);
+    
+    double overallScore = 100.0 * (rawPhon + rawGait + rawPosture + rawTapping - fbmin) / (fbmax - fbmin);
+    
+    double normalizedScore = MAX(MIN(overallScore, 100.0), 0.0);
+    
+    return normalizedScore;
 }
 
 @end

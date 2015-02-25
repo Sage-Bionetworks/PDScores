@@ -10,13 +10,108 @@
 #include <Accelerate/Accelerate.h>
 #include <string.h>
 #include <stdlib.h>
+#include <dispatch/dispatch.h>
+
+#define vDSP_hann_window_is_faster 0
+#define vvsin_is_faster 1
+#define vvsin_is_way_faster 0
+
+#if vvsin_is_faster || vvsin_is_way_faster
+static size_t allocatedBufSize;
+static double *n_over_N_minus_ones;
+static double *sins;
+
+static inline bool ensureBufferSize(size_t neededSize)
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        allocatedBufSize = 512;
+        n_over_N_minus_ones = calloc(allocatedBufSize, sizeof(double));
+        sins = calloc(allocatedBufSize, sizeof(double));
+    });
+    
+    if (allocatedBufSize < neededSize) {
+        while (allocatedBufSize < neededSize) {
+            allocatedBufSize <<= 1;
+        }
+        free(n_over_N_minus_ones);
+        n_over_N_minus_ones = calloc(allocatedBufSize, sizeof(double));
+        free(sins);
+        sins = calloc(allocatedBufSize, sizeof(double));
+    }
+    
+    return (sins && n_over_N_minus_ones);
+}
+
+#endif
 
 void hanning(double *outBuf, unsigned long windowSize)
 {
+#if vDSP_hann_window_is_faster
     unsigned long n = windowSize + 1;
     double tempBuf[n];
     vDSP_hann_windowD(tempBuf, n, vDSP_HANN_DENORM);
     memcpy(outBuf, tempBuf + 1, windowSize * sizeof(double));
+#elif vvsin_is_faster
+    // traditional 0.5(1 - cos(2πn/(N-1))) calculation of Hann window loses precision at small & large n where cos ~ 1
+    // vDSP_hann_windowD(...) appears to use this calculation as it suffers this loss of precision
+    // sin²(πn/(N-1)) is mathematically equivalent, but doesn't suffer this problem and requires fewer operations
+    // to calculate so we'll do that instead
+    double N_minus_one = windowSize + 1; // calc for window two samples bigger, but skip zeroes in first and last position
+    double one_over_N_minus_one = 1.0 / N_minus_one;
+    double *p = outBuf;
+    int halfwin = (int)(windowSize + 1) / 2;
+    
+    ensureBufferSize(halfwin);
+    
+    double *pMid = p + halfwin;
+    double *pEnd = p + windowSize;
+    // calculate the first half of the window
+    vDSP_vrampD(&one_over_N_minus_one, &one_over_N_minus_one, n_over_N_minus_ones, 1, halfwin);
+    vvsinpi(sins, n_over_N_minus_ones, &halfwin);
+    vDSP_vmulD(sins, 1, sins, 1, outBuf, 1, halfwin);
+    // second half is the mirror of the first half so just copy what we already calculated
+    p = pMid;
+    double *pMirror = (windowSize % 2) ? p - 2 : p - 1;
+    
+    // can't seem to find a vector copy-in-reverse operation (cblas_dcopy doesn't work with -1 stride)
+    while (p < pEnd) {
+        *p++ = *pMirror--;
+    }
+#elif vvsin_is_way_faster
+    double N_minus_one = windowSize + 1; // calc for window two samples bigger, but skip zeroes in first and last position
+    double one_over_N_minus_one = 1.0 / N_minus_one;
+    int samples = (int)windowSize;
+    
+    ensureBufferSize(samples);
+
+    vDSP_vrampD(&one_over_N_minus_one, &one_over_N_minus_one, n_over_N_minus_ones, 1, samples);
+    vvsinpi(sins, n_over_N_minus_ones, &samples);
+    vDSP_vmulD(sins, 1, sins, 1, outBuf, 1, samples);
+#else
+    double N_minus_one = windowSize + 1; // calc for window two samples bigger, but skip zeroes in first and last position
+    double pi_over_N_minus_one = M_PI / N_minus_one;
+    double pi_times_n_over_N_minus_one = pi_over_N_minus_one; // start at n == 1
+    double *p = outBuf;
+    int halfwin = (int)(windowSize + 1) / 2;
+    
+    double *pMid = p + halfwin;
+    double *pEnd = p + windowSize;
+    // calculate the first half of the window
+    while (p < pMid) {
+        double sinx = sin(pi_times_n_over_N_minus_one);
+        *p++ = sinx * sinx;
+        pi_times_n_over_N_minus_one += pi_over_N_minus_one;
+    }
+    // second half is the mirror of the first half so just copy what we already calculated
+    p = pMid;
+    double *pMirror = (windowSize % 2) ? p - 2 : p - 1;
+    
+    // can't seem to find a vector copy-in-reverse operation (cblas_dcopy doesn't work with -1 stride)
+    while (p < pEnd) {
+        *p++ = *pMirror--;
+    }
+#endif
 }
 
 void spectrogram(creal_T *outFourierTransform, double *outFrequencies, double *outTimes, double *inSignal, unsigned long signalSize, double *window, unsigned long overlap, unsigned long windowSize, double samplingRate)
