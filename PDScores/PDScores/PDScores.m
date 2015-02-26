@@ -51,11 +51,48 @@ double ftminData[] = { 75.873430138619014, 0.909064396681576, 0.750104755980688,
 
 double ftmaxData[] = { 466.9711215027887, 3.5755702286801, 2.2598212362848, 0.1496246072862, 0.9341546762825, 35.4322147307475, 16.9814320112968, 11.8234139704683, 11.5353327327018, 2.2795084122082, 2.0381298848445, 2.0520841815250, 1.9541007270693, 1.7499836685623, 2.1517890538311, 1.8984966684948, 2.9557149990000, 3.9238716785348, 2.1887075139316, 208.9349398410068, 0.1922690870262, 2.1382862219459, 1.5896368980157, 0.6780629049743, 0.7158362751650 };
 
+// individual scores fall in narrowed ranges; we use these to renormalize them to ~0-100 (actually ~10-90 based on
+// Max Little's original feature data, to give a little room for outliers; or to 100 if original scores went there with a
+// continuous distribution)
+const double phonationRange[] = { 56.0, 100.0 }; // observed: all between 60-100, 3% spike at 100
+const double gaitRange[] = { 39.0, 93.0 }; // observed: all between 46-86, except for outliers clamped at 0 and 100
+const double postureRange[] = { 69.0, 100.0 }; // observed: all between 72-100, 11% spike at 100
+const double tappingRange[] = { 80.0, 100.0 }; // observed: all between 85-100, 2% spike at 100
+const double kNormalizedMinimum = 10.0;
+
 @implementation PDScores
 
 + (void)initialize
 {
     bridge_ufb_initialize();
+}
+
++ (double)normalizedScoreFromScore:(double)score range:(const double[2])range
+{
+    double newRange = (range[1] == 100.0) ? 90.0 : 80.0;
+    double rangeScale = newRange / (range[1] - range[0]);
+    double nscore = (score - range[0]) * rangeScale + kNormalizedMinimum;
+    
+    // keep clam(ped) and carry on (i.e. old 0 and 100 -> new 0 and 100)
+    nscore = MAX(MIN(nscore, 100.0), 0.0);
+    
+    return nscore;
+}
+
++ (double)scoreFromNormalizedScore:(double)nscore range:(const double[2])range
+{
+    // clamped scores is still clamped scores
+    if (nscore == 0.0 || nscore == 100.0) {
+        return nscore;
+    }
+    
+    // otherwise convert from new back to original
+    double originalRange = range[1] - range[0];
+    double newRange = (range[1] == 100.0) ? 90.0 : 80.0;
+    double originalScale = originalRange / newRange;
+    double score = (nscore - kNormalizedMinimum) * originalScale + range[0];
+    
+    return score;
 }
 
 + (double)scoreFromGaitTest:(NSArray *)gaitData
@@ -113,7 +150,8 @@ double ftmaxData[] = { 466.9711215027887, 3.5755702286801, 2.2598212362848, 0.14
     
     
     ftvec.data = ft;
-    double score = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    double score = [self normalizedScoreFromScore:rawScore range:gaitRange];
     
     return score;
 }
@@ -253,8 +291,9 @@ double ftmaxData[] = { 466.9711215027887, 3.5755702286801, 2.2598212362848, 0.14
     });
     
     ftvec.data = ft;
-    double score = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
-    
+    double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    double score = [self normalizedScoreFromScore:rawScore range:phonationRange];
+
     return score;
 }
 
@@ -311,7 +350,8 @@ double ftmaxData[] = { 466.9711215027887, 3.5755702286801, 2.2598212362848, 0.14
     });
     
     ftvec.data = ft;
-    double score = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    double score = [self normalizedScoreFromScore:rawScore range:postureRange];
     
     return score;
 }
@@ -372,7 +412,8 @@ double ftmaxData[] = { 466.9711215027887, 3.5755702286801, 2.2598212362848, 0.14
     });
     
     ftvec.data = ft;
-    double score = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    double score = [self normalizedScoreFromScore:rawScore range:tappingRange];
     
     return score;
 }
@@ -395,10 +436,10 @@ double rawScoreFromScore(double score)
 
 + (double)combinedScoreFromPhonationScore:(double)phonationScore gaitScore:(double)gaitScore postureScore:(double)postureScore tappingScore:(double)tappingScore
 {
-    double rawPhon = rawScoreFromScore(phonationScore);
-    double rawGait = rawScoreFromScore(gaitScore);
-    double rawPosture = rawScoreFromScore(postureScore);
-    double rawTapping = rawScoreFromScore(tappingScore);
+    double rawPhon = rawScoreFromScore([self scoreFromNormalizedScore:phonationScore range:phonationRange]);
+    double rawGait = rawScoreFromScore([self scoreFromNormalizedScore:gaitScore range:gaitRange]);
+    double rawPosture = rawScoreFromScore([self scoreFromNormalizedScore:postureScore range:postureRange]);
+    double rawTapping = rawScoreFromScore([self scoreFromNormalizedScore:tappingScore range:tappingRange]);
     
     double overallScore = 100.0 * (rawPhon + rawGait + rawPosture + rawTapping - fbmin) / (fbmax - fbmin);
     
