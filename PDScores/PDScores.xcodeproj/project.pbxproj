@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60E3E4BC1AA531A100B21B5D /* fastdfa.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B11AA531A100B21B5D /* fastdfa.m */; };
+		60E3E4BD1AA531A100B21B5D /* features_bga.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B21AA531A100B21B5D /* features_bga.m */; };
+		60E3E4BE1AA531A100B21B5D /* features_bpa.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B31AA531A100B21B5D /* features_bpa.m */; };
+		60E3E4BF1AA531A100B21B5D /* features_bta.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B41AA531A100B21B5D /* features_bta.m */; };
+		60E3E4C01AA531A100B21B5D /* features_bvav2.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B51AA531A100B21B5D /* features_bvav2.m */; };
+		60E3E4C11AA531A100B21B5D /* features_ufb.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B61AA531A100B21B5D /* features_ufb.m */; };
+		60E3E4C21AA531A100B21B5D /* lomb.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B71AA531A100B21B5D /* lomb.m */; };
+		60E3E4C31AA531A100B21B5D /* mfcc.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B81AA531A100B21B5D /* mfcc.m */; };
+		60E3E4C41AA531A100B21B5D /* swipep.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B91AA531A100B21B5D /* swipep.m */; };
+		60E3E4C81AA53B1200B21B5D /* PDArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4C71AA53B1200B21B5D /* PDArray.m */; };
 		801712D81A897DC200CB13EB /* PDScores.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 801712D71A897DC200CB13EB /* PDScores.h */; };
 		801712DA1A897DC200CB13EB /* PDScores.m in Sources */ = {isa = PBXBuildFile; fileRef = 801712D91A897DC200CB13EB /* PDScores.m */; };
 		801712E01A897DC200CB13EB /* libPDScores.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 801712D41A897DC200CB13EB /* libPDScores.a */; };
@@ -84,6 +94,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		60E3E4B11AA531A100B21B5D /* fastdfa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fastdfa.m; sourceTree = "<group>"; };
+		60E3E4B21AA531A100B21B5D /* features_bga.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = features_bga.m; sourceTree = "<group>"; };
+		60E3E4B31AA531A100B21B5D /* features_bpa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = features_bpa.m; sourceTree = "<group>"; };
+		60E3E4B41AA531A100B21B5D /* features_bta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = features_bta.m; sourceTree = "<group>"; };
+		60E3E4B51AA531A100B21B5D /* features_bvav2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = features_bvav2.m; sourceTree = "<group>"; };
+		60E3E4B61AA531A100B21B5D /* features_ufb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = features_ufb.m; sourceTree = "<group>"; };
+		60E3E4B71AA531A100B21B5D /* lomb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = lomb.m; sourceTree = "<group>"; };
+		60E3E4B81AA531A100B21B5D /* mfcc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = mfcc.m; sourceTree = "<group>"; };
+		60E3E4B91AA531A100B21B5D /* swipep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = swipep.m; sourceTree = "<group>"; };
+		60E3E4C61AA53B1200B21B5D /* PDArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDArray.h; sourceTree = "<group>"; };
+		60E3E4C71AA53B1200B21B5D /* PDArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDArray.m; sourceTree = "<group>"; };
 		801712D41A897DC200CB13EB /* libPDScores.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPDScores.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		801712D71A897DC200CB13EB /* PDScores.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDScores.h; sourceTree = "<group>"; };
 		801712D91A897DC200CB13EB /* PDScores.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PDScores.m; sourceTree = "<group>"; };
@@ -209,6 +230,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		60E3E4981AA5309F00B21B5D /* bridge_ufb_hand_tooled */ = {
+			isa = PBXGroup;
+			children = (
+				60E3E4B11AA531A100B21B5D /* fastdfa.m */,
+				60E3E4B21AA531A100B21B5D /* features_bga.m */,
+				60E3E4B31AA531A100B21B5D /* features_bpa.m */,
+				60E3E4B41AA531A100B21B5D /* features_bta.m */,
+				60E3E4B51AA531A100B21B5D /* features_bvav2.m */,
+				60E3E4B61AA531A100B21B5D /* features_ufb.m */,
+				60E3E4B71AA531A100B21B5D /* lomb.m */,
+				60E3E4B81AA531A100B21B5D /* mfcc.m */,
+				60E3E4B91AA531A100B21B5D /* swipep.m */,
+				60E3E4C61AA53B1200B21B5D /* PDArray.h */,
+				60E3E4C71AA53B1200B21B5D /* PDArray.m */,
+			);
+			path = bridge_ufb_hand_tooled;
+			sourceTree = "<group>";
+		};
 		801712CB1A897DC200CB13EB = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +269,7 @@
 		801712D61A897DC200CB13EB /* PDScores */ = {
 			isa = PBXGroup;
 			children = (
+				60E3E4981AA5309F00B21B5D /* bridge_ufb_hand_tooled */,
 				801713FB1A89AD7500CB13EB /* bridge_ufb */,
 				801713F71A89A4CA00CB13EB /* unsupportedMatlabFunctions */,
 				8017152A1A8B17CB00CB13EB /* fastdfa_core_nomex.c */,
@@ -461,8 +501,12 @@
 				801715271A8B150D00CB13EB /* log10.c in Sources */,
 				801714F71A89AD7600CB13EB /* features_bpa.c in Sources */,
 				801714F21A89AD7600CB13EB /* combine_vector_elements.c in Sources */,
+				60E3E4BF1AA531A100B21B5D /* features_bta.m in Sources */,
+				60E3E4BC1AA531A100B21B5D /* fastdfa.m in Sources */,
 				801714F01A89AD7600CB13EB /* bridge_ufb_rtwutil.c in Sources */,
 				801715121A89AD7600CB13EB /* spline.c in Sources */,
+				60E3E4C31AA531A100B21B5D /* mfcc.m in Sources */,
+				60E3E4C01AA531A100B21B5D /* features_bvav2.m in Sources */,
 				801714ED1A89AD7600CB13EB /* bridge_ufb_emxAPI.c in Sources */,
 				8017150F1A89AD7600CB13EB /* rt_nonfinite.c in Sources */,
 				8017150D1A89AD7600CB13EB /* repmat.c in Sources */,
@@ -471,9 +515,12 @@
 				801715161A89AD7600CB13EB /* vadsplitphon.c in Sources */,
 				8017151A1A89B35700CB13EB /* signalprocessing.c in Sources */,
 				801714F41A89AD7600CB13EB /* extractaudiophon.c in Sources */,
+				60E3E4C41AA531A100B21B5D /* swipep.m in Sources */,
 				801714FF1A89AD7600CB13EB /* interp1.c in Sources */,
 				801715081A89AD7600CB13EB /* power.c in Sources */,
 				801715171A89AD7600CB13EB /* var.c in Sources */,
+				60E3E4BE1AA531A100B21B5D /* features_bpa.m in Sources */,
+				60E3E4C81AA53B1200B21B5D /* PDArray.m in Sources */,
 				801714EC1A89AD7600CB13EB /* bridge_ufb_data.c in Sources */,
 				801715251A8B150D00CB13EB /* flip.c in Sources */,
 				801714F51A89AD7600CB13EB /* fastdfa.c in Sources */,
@@ -497,10 +544,13 @@
 				8017150C1A89AD7600CB13EB /* rdivide.c in Sources */,
 				801715111A89AD7600CB13EB /* rtGetNaN.c in Sources */,
 				801714F11A89AD7600CB13EB /* bridge_ufb_terminate.c in Sources */,
+				60E3E4C21AA531A100B21B5D /* lomb.m in Sources */,
 				801714F31A89AD7600CB13EB /* diff.c in Sources */,
+				60E3E4BD1AA531A100B21B5D /* features_bga.m in Sources */,
 				801715031A89AD7600CB13EB /* mean.c in Sources */,
 				801713FA1A89A58400CB13EB /* buffer.c in Sources */,
 				801714EB1A89AD7600CB13EB /* atan2.c in Sources */,
+				60E3E4C11AA531A100B21B5D /* features_ufb.m in Sources */,
 				801715131A89AD7600CB13EB /* sqrt.c in Sources */,
 				801712DA1A897DC200CB13EB /* PDScores.m in Sources */,
 				801715041A89AD7600CB13EB /* median.c in Sources */,
