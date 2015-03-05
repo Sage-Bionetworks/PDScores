@@ -21,7 +21,7 @@
 /* Function Declarations */
 extern void b_polyfit(const emxArray_real_T *x, const emxArray_real_T *y, double
                       p[3]);
-extern void polyfit(const emxArray_real_T *x, const emxArray_real_T *y, double
+extern void polyfitX(const emxArray_real_T *x, const emxArray_real_T *y, double
                     p[2]);
 
 #endif

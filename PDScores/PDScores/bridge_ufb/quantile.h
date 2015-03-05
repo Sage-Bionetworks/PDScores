@@ -19,7 +19,7 @@
 #include "bridge_ufb_types.h"
 
 /* Function Declarations */
-extern double quantile(const emxArray_real_T *x);
+extern double quantileX(const emxArray_real_T *x);
 
 #endif
 

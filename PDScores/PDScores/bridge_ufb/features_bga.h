@@ -20,7 +20,7 @@
 
 /* Function Declarations */
 extern void eml_li_find(const emxArray_boolean_T *x, emxArray_int32_T *y);
-extern void features_bga(const emxArray_real_T *gait, double ft[7]);
+extern void features_bgaX(const emxArray_real_T *gait, double ft[7]);
 
 #endif
 

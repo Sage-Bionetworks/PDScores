@@ -31,7 +31,7 @@
 #include "signalprocessing.h"
 
 /* Function Definitions */
-void features_bta(const emxArray_real_T *tap, double ft[2])
+void features_btaX(const emxArray_real_T *tap, double ft[2])
 {
   int i12;
   emxArray_real_T *t;

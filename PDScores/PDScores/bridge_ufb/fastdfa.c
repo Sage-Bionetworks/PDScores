@@ -57,7 +57,7 @@ static boolean_T eml_sort_le(const emxArray_real_T *v, int irow1, int irow2)
   return p;
 }
 
-void fastdfa(const emxArray_real_T *x, double *alpha, emxArray_real_T *intervals,
+void fastdfaX(const emxArray_real_T *x, double *alpha, emxArray_real_T *intervals,
              emxArray_real_T *flucts)
 {
   double nscales;
@@ -284,7 +284,7 @@ void fastdfa(const emxArray_real_T *x, double *alpha, emxArray_real_T *intervals
   emxFree_real_T(&datapts);
   b_log10(xpts);
   b_log10(ypts);
-  polyfit(xpts, ypts, coeffs);
+  polyfitX(xpts, ypts, coeffs);
   *alpha = coeffs[0];
   emxFree_real_T(&ypts);
   emxFree_real_T(&xpts);

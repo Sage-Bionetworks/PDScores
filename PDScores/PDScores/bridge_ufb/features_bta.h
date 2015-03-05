@@ -19,7 +19,7 @@
 #include "bridge_ufb_types.h"
 
 /* Function Declarations */
-extern void features_bta(const emxArray_real_T *tap, double ft[2]);
+extern void features_btaX(const emxArray_real_T *tap, double ft[2]);
 
 #endif
 

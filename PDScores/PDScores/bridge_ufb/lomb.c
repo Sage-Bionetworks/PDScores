@@ -691,7 +691,7 @@ void b_lomb(const emxArray_real_T *t, const emxArray_real_T *h, emxArray_real_T 
   emxFree_int32_T(&r8);
 }
 
-void lomb(const emxArray_real_T *t, const emxArray_real_T *h, double ofac,
+void lombX(const emxArray_real_T *t, const emxArray_real_T *h, double ofac,
           double hifac, emxArray_real_T *f, emxArray_real_T *P, emxArray_real_T *
           prob)
 {

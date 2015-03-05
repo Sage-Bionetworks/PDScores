@@ -26,7 +26,7 @@ extern void d_repmat(double varargin_1, double varargin_2, emxArray_real_T *b);
 extern void e_repmat(const emxArray_real_T *a, double varargin_2,
                      emxArray_real_T *b);
 extern void f_repmat(double varargin_1, emxArray_real_T *b);
-extern void repmat(const double a[3], double varargin_1, emxArray_real_T *b);
+extern void repmatX(const double a[3], double varargin_1, emxArray_real_T *b);
 
 #endif
 

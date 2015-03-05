@@ -19,7 +19,7 @@
 #include "bridge_ufb_types.h"
 
 /* Function Declarations */
-extern void fastdfa(const emxArray_real_T *x, double *alpha, emxArray_real_T
+extern void fastdfaX(const emxArray_real_T *x, double *alpha, emxArray_real_T
                     *intervals, emxArray_real_T *flucts);
 
 #endif

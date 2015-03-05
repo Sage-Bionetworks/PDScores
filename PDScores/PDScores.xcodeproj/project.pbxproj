@@ -8,15 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		60E3E4BC1AA531A100B21B5D /* fastdfa.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B11AA531A100B21B5D /* fastdfa.m */; };
-		60E3E4BD1AA531A100B21B5D /* features_bga.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B21AA531A100B21B5D /* features_bga.m */; };
 		60E3E4BE1AA531A100B21B5D /* features_bpa.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B31AA531A100B21B5D /* features_bpa.m */; };
-		60E3E4BF1AA531A100B21B5D /* features_bta.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B41AA531A100B21B5D /* features_bta.m */; };
-		60E3E4C01AA531A100B21B5D /* features_bvav2.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B51AA531A100B21B5D /* features_bvav2.m */; };
-		60E3E4C11AA531A100B21B5D /* features_ufb.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B61AA531A100B21B5D /* features_ufb.m */; };
-		60E3E4C21AA531A100B21B5D /* lomb.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B71AA531A100B21B5D /* lomb.m */; };
-		60E3E4C31AA531A100B21B5D /* mfcc.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B81AA531A100B21B5D /* mfcc.m */; };
-		60E3E4C41AA531A100B21B5D /* swipep.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B91AA531A100B21B5D /* swipep.m */; };
 		60E3E4C81AA53B1200B21B5D /* PDArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4C71AA53B1200B21B5D /* PDArray.m */; };
+		800F96561AA7DBAB0015FE61 /* lomb.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B71AA531A100B21B5D /* lomb.m */; };
+		800F96571AA811660015FE61 /* features_bta.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B41AA531A100B21B5D /* features_bta.m */; };
 		801712D81A897DC200CB13EB /* PDScores.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 801712D71A897DC200CB13EB /* PDScores.h */; };
 		801712DA1A897DC200CB13EB /* PDScores.m in Sources */ = {isa = PBXBuildFile; fileRef = 801712D91A897DC200CB13EB /* PDScores.m */; };
 		801712E01A897DC200CB13EB /* libPDScores.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 801712D41A897DC200CB13EB /* libPDScores.a */; };
@@ -32,9 +27,7 @@
 		801714F21A89AD7600CB13EB /* combine_vector_elements.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714111A89AD7500CB13EB /* combine_vector_elements.c */; };
 		801714F31A89AD7600CB13EB /* diff.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714131A89AD7500CB13EB /* diff.c */; };
 		801714F41A89AD7600CB13EB /* extractaudiophon.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714151A89AD7500CB13EB /* extractaudiophon.c */; };
-		801714F51A89AD7600CB13EB /* fastdfa.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714171A89AD7500CB13EB /* fastdfa.c */; };
 		801714F61A89AD7600CB13EB /* features_bga.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714191A89AD7500CB13EB /* features_bga.c */; };
-		801714F71A89AD7600CB13EB /* features_bpa.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017141B1A89AD7500CB13EB /* features_bpa.c */; };
 		801714F81A89AD7600CB13EB /* features_bta.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017141D1A89AD7500CB13EB /* features_bta.c */; };
 		801714F91A89AD7600CB13EB /* features_bvav2.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017141F1A89AD7500CB13EB /* features_bvav2.c */; };
 		801714FA1A89AD7600CB13EB /* features_ufb.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714211A89AD7500CB13EB /* features_ufb.c */; };
@@ -68,6 +61,10 @@
 		801715261A8B150D00CB13EB /* flipud.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017151E1A8B150D00CB13EB /* flipud.c */; };
 		801715271A8B150D00CB13EB /* log10.c in Sources */ = {isa = PBXBuildFile; fileRef = 801715201A8B150D00CB13EB /* log10.c */; };
 		8017152C1A8B17CB00CB13EB /* fastdfa_core_nomex.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017152A1A8B17CB00CB13EB /* fastdfa_core_nomex.c */; };
+		8055C7AA1AA6CDEA00885F4F /* features_bpa.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017141B1A89AD7500CB13EB /* features_bpa.c */; };
+		8055C7AB1AA6CE8700885F4F /* fastdfa.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714171A89AD7500CB13EB /* fastdfa.c */; };
+		808F08CF1AA7A95700875A74 /* features_bga.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B21AA531A100B21B5D /* features_bga.m */; };
+		80918BA71AA6128E00985A70 /* PDMatlab.m in Sources */ = {isa = PBXBuildFile; fileRef = 80918BA61AA6128E00985A70 /* PDMatlab.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -209,6 +206,9 @@
 		801715211A8B150D00CB13EB /* log10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = log10.h; sourceTree = "<group>"; };
 		8017152A1A8B17CB00CB13EB /* fastdfa_core_nomex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fastdfa_core_nomex.c; sourceTree = "<group>"; };
 		8017152B1A8B17CB00CB13EB /* fastdfa_core_nomex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fastdfa_core_nomex.h; sourceTree = "<group>"; };
+		8055C7A91AA6B19F00885F4F /* bridge_ufb_hand_tooled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridge_ufb_hand_tooled.h; sourceTree = "<group>"; };
+		80918BA61AA6128E00985A70 /* PDMatlab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDMatlab.m; sourceTree = "<group>"; };
+		80918BA81AA612AA00985A70 /* PDMatlab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDMatlab.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +244,9 @@
 				60E3E4B91AA531A100B21B5D /* swipep.m */,
 				60E3E4C61AA53B1200B21B5D /* PDArray.h */,
 				60E3E4C71AA53B1200B21B5D /* PDArray.m */,
+				80918BA81AA612AA00985A70 /* PDMatlab.h */,
+				80918BA61AA6128E00985A70 /* PDMatlab.m */,
+				8055C7A91AA6B19F00885F4F /* bridge_ufb_hand_tooled.h */,
 			);
 			path = bridge_ufb_hand_tooled;
 			sourceTree = "<group>";
@@ -499,14 +502,10 @@
 				801715021A89AD7600CB13EB /* lomb.c in Sources */,
 				801715071A89AD7600CB13EB /* polyval.c in Sources */,
 				801715271A8B150D00CB13EB /* log10.c in Sources */,
-				801714F71A89AD7600CB13EB /* features_bpa.c in Sources */,
 				801714F21A89AD7600CB13EB /* combine_vector_elements.c in Sources */,
-				60E3E4BF1AA531A100B21B5D /* features_bta.m in Sources */,
 				60E3E4BC1AA531A100B21B5D /* fastdfa.m in Sources */,
 				801714F01A89AD7600CB13EB /* bridge_ufb_rtwutil.c in Sources */,
 				801715121A89AD7600CB13EB /* spline.c in Sources */,
-				60E3E4C31AA531A100B21B5D /* mfcc.m in Sources */,
-				60E3E4C01AA531A100B21B5D /* features_bvav2.m in Sources */,
 				801714ED1A89AD7600CB13EB /* bridge_ufb_emxAPI.c in Sources */,
 				8017150F1A89AD7600CB13EB /* rt_nonfinite.c in Sources */,
 				8017150D1A89AD7600CB13EB /* repmat.c in Sources */,
@@ -515,7 +514,6 @@
 				801715161A89AD7600CB13EB /* vadsplitphon.c in Sources */,
 				8017151A1A89B35700CB13EB /* signalprocessing.c in Sources */,
 				801714F41A89AD7600CB13EB /* extractaudiophon.c in Sources */,
-				60E3E4C41AA531A100B21B5D /* swipep.m in Sources */,
 				801714FF1A89AD7600CB13EB /* interp1.c in Sources */,
 				801715081A89AD7600CB13EB /* power.c in Sources */,
 				801715171A89AD7600CB13EB /* var.c in Sources */,
@@ -523,19 +521,22 @@
 				60E3E4C81AA53B1200B21B5D /* PDArray.m in Sources */,
 				801714EC1A89AD7600CB13EB /* bridge_ufb_data.c in Sources */,
 				801715251A8B150D00CB13EB /* flip.c in Sources */,
-				801714F51A89AD7600CB13EB /* fastdfa.c in Sources */,
 				801714EF1A89AD7600CB13EB /* bridge_ufb_initialize.c in Sources */,
 				801714FA1A89AD7600CB13EB /* features_ufb.c in Sources */,
+				800F96561AA7DBAB0015FE61 /* lomb.m in Sources */,
 				801714EE1A89AD7600CB13EB /* bridge_ufb_emxutil.c in Sources */,
 				801715011A89AD7600CB13EB /* log2.c in Sources */,
 				801715091A89AD7600CB13EB /* primes.c in Sources */,
+				8055C7AA1AA6CDEA00885F4F /* features_bpa.c in Sources */,
 				801715141A89AD7600CB13EB /* sum.c in Sources */,
 				801715101A89AD7600CB13EB /* rtGetInf.c in Sources */,
 				801714EA1A89AD7600CB13EB /* abs.c in Sources */,
 				801714F61A89AD7600CB13EB /* features_bga.c in Sources */,
+				8055C7AB1AA6CE8700885F4F /* fastdfa.c in Sources */,
 				801714F81A89AD7600CB13EB /* features_bta.c in Sources */,
 				801714F91A89AD7600CB13EB /* features_bvav2.c in Sources */,
 				8017152C1A8B17CB00CB13EB /* fastdfa_core_nomex.c in Sources */,
+				800F96571AA811660015FE61 /* features_bta.m in Sources */,
 				801715051A89AD7600CB13EB /* mfcc.c in Sources */,
 				801715151A89AD7600CB13EB /* swipep.c in Sources */,
 				8017150E1A89AD7600CB13EB /* round.c in Sources */,
@@ -544,16 +545,15 @@
 				8017150C1A89AD7600CB13EB /* rdivide.c in Sources */,
 				801715111A89AD7600CB13EB /* rtGetNaN.c in Sources */,
 				801714F11A89AD7600CB13EB /* bridge_ufb_terminate.c in Sources */,
-				60E3E4C21AA531A100B21B5D /* lomb.m in Sources */,
+				80918BA71AA6128E00985A70 /* PDMatlab.m in Sources */,
 				801714F31A89AD7600CB13EB /* diff.c in Sources */,
-				60E3E4BD1AA531A100B21B5D /* features_bga.m in Sources */,
 				801715031A89AD7600CB13EB /* mean.c in Sources */,
 				801713FA1A89A58400CB13EB /* buffer.c in Sources */,
 				801714EB1A89AD7600CB13EB /* atan2.c in Sources */,
-				60E3E4C11AA531A100B21B5D /* features_ufb.m in Sources */,
 				801715131A89AD7600CB13EB /* sqrt.c in Sources */,
 				801712DA1A897DC200CB13EB /* PDScores.m in Sources */,
 				801715041A89AD7600CB13EB /* median.c in Sources */,
+				808F08CF1AA7A95700875A74 /* features_bga.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

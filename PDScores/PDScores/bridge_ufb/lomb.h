@@ -21,7 +21,7 @@
 /* Function Declarations */
 extern void b_lomb(const emxArray_real_T *t, const emxArray_real_T *h,
                    emxArray_real_T *f, emxArray_real_T *P, emxArray_real_T *prob);
-extern void lomb(const emxArray_real_T *t, const emxArray_real_T *h, double ofac,
+extern void lombX(const emxArray_real_T *t, const emxArray_real_T *h, double ofac,
                  double hifac, emxArray_real_T *f, emxArray_real_T *P,
                  emxArray_real_T *prob);
 

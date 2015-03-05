@@ -63,7 +63,7 @@ void eml_li_find(const emxArray_boolean_T *x, emxArray_int32_T *y)
   }
 }
 
-void features_bga(const emxArray_real_T *gait, double ft[7])
+void features_bgaX(const emxArray_real_T *gait, double ft[7])
 {
   int npages;
   emxArray_real_T *t;
@@ -288,7 +288,7 @@ void features_bga(const emxArray_real_T *gait, double ft[7])
       }
 
       emxInit_real_T(&d_x, 2);
-      repmat(c_x, n + 1, d_x);
+      repmatX(c_x, n + 1, d_x);
       npages = gaittrim->size[0] * gaittrim->size[1];
       gaittrim->size[1] = 3;
       emxEnsureCapacity((emxArray__common *)gaittrim, npages, (int)sizeof(double));
@@ -408,7 +408,7 @@ void features_bga(const emxArray_real_T *gait, double ft[7])
       b_sqrt(gaitmag);
 
       /*  Maximum force */
-      A = quantile(gaitmag);
+      A = quantileX(gaitmag);
 
       /*  Zero crossing events */
       mg = mean(gaitmag);

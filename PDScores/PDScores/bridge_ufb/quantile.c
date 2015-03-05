@@ -30,7 +30,7 @@
 #include "signalprocessing.h"
 
 /* Function Definitions */
-double quantile(const emxArray_real_T *x)
+double quantileX(const emxArray_real_T *x)
 {
   double y;
   emxArray_int32_T *idx;

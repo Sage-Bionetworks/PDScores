@@ -938,7 +938,7 @@ void b_polyfit(const emxArray_real_T *x, const emxArray_real_T *y, double p[3])
   }
 }
 
-void polyfit(const emxArray_real_T *x, const emxArray_real_T *y, double p[2])
+void polyfitX(const emxArray_real_T *x, const emxArray_real_T *y, double p[2])
 {
   emxArray_real_T *V;
   int n;

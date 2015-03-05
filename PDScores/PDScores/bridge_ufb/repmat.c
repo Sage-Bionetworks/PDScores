@@ -129,7 +129,7 @@ void f_repmat(double varargin_1, emxArray_real_T *b)
   }
 }
 
-void repmat(const double a[3], double varargin_1, emxArray_real_T *b)
+void repmatX(const double a[3], double varargin_1, emxArray_real_T *b)
 {
   int jcol;
   int ibmat;

@@ -21,23 +21,44 @@
 //% Nonlinear, biophysically-informed speech pathology detection
 //% in Proceedings of ICASSP 2006, IEEE Publishers: Toulouse, France.
 //
-//function [alpha, intervals, flucts] = fastdfa(x, varargin)
-//
-//[xpts, ypts] = fastdfa_core(x, varargin{:});
-//
-//% Sort the intervals, and produce a log-log straight line fit
-//datapts   = sortrows([xpts ypts],1);
-//intervals = datapts(:,1);
-//flucts    = datapts(:,2);
-//
-//coeffs    = polyfit(log10(xpts), log10(ypts), 1);
-//alpha     = coeffs(1);
 
-#import "PDArray.h"
+#import "bridge_ufb_hand_tooled.h"
 #import "fastdfa_core_nomex.h"
 
-void fastdfa(const PDRealArray *x, double *alpha, PDRealArray *intervals, PDRealArray *flucts)
+//function [alpha, intervals, flucts] = fastdfa(x, varargin)
+void fastdfa(const PDRealArray *x, double *alpha, PDRealArray **intervals, PDRealArray **flucts)
 {
-    PDRealArray *outIntervals = [[PDRealArray alloc] initWithDimensions:<#(size_t)#>]
-    fastdfa_core_nomex(<#double *outIntervals#>, <#double *outFlucts#>, <#double *inSignal#>, <#unsigned long rowsIn#>, <#unsigned long colsIn#>)
+    //[xpts, ypts] = fastdfa_core(x, varargin{:});
+    double elements = x.rows * x.cols;
+    size_t nscales = floor(log2(elements));
+    if (1 << (nscales - 1) > elements / 2.5) {
+        nscales = nscales - 1;
+    }
+    
+    PDRealArray *xpts = zeros(nscales,1);
+    PDRealArray *ypts = zeros(nscales,1);
+    fastdfa_core_nomex(xpts.data, ypts.data, x.data, x.rows, x.cols);
+
+    //% Sort the intervals, and produce a log-log straight line fit
+    //datapts   = sortrows([xpts ypts],1);
+    PDRealArray *both = [PDRealArray new];
+    [both addColumns:@[xpts, ypts]];
+    PDRealArray *datapts = sortrows(both, 0);
+    
+    //intervals = datapts(:,1);
+    *intervals = [datapts subarrayWithRows:NSMakeRange(0, datapts.rows) columns:NSMakeRange(0, 1)];
+    //flucts    = datapts(:,2);
+    *flucts = [datapts subarrayWithRows:NSMakeRange(0, datapts.rows) columns:NSMakeRange(1, 1)];
+
+    //coeffs    = polyfit(log10(xpts), log10(ypts), 1);
+    PDRealArray *log10xpts = [xpts applyReal:^double(const double element) {
+        return log10(element);
+    }];
+    PDRealArray *log10ypts = [ypts applyReal:^double(const double element) {
+        return log10(element);
+    }];
+    PDRealArray *coeffs = polyfit(log10xpts, log10ypts, 1);
+    
+    //alpha     = coeffs(1);
+    *alpha = coeffs.data[0];
 }

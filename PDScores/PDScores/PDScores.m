@@ -14,6 +14,7 @@
 #import "features_bvav2.h"
 #import "features_ufb.h"
 #import "bridge_ufb_initialize.h"
+#import "bridge_ufb_hand_tooled.h"
 @import AudioToolbox;
 @import CoreMotion;
 
@@ -98,10 +99,13 @@ const double kNormalizedMinimum = 10.0;
 + (double)scoreFromGaitTest:(NSArray *)gaitData
 {
     // format the gait data for the MATLAB code
-    emxArray_real_T gait;
+    emxArray_real_T gaitX;
     int sizeOfGait[2] = {(int)[gaitData count], 4};
-    gait.size = sizeOfGait;
-    gait.data = malloc(sizeof(double) * sizeOfGait[0] * sizeOfGait[1]);
+    gaitX.size = sizeOfGait;
+//    gaitX.data = malloc(sizeof(double) * sizeOfGait[0] * sizeOfGait[1]);
+    PDRealArray *gait = [PDRealArray new];
+    [gait setRows:[gaitData count] columns:4];
+    gaitX.data = gait.data; // share it
     double *pT = gait.data;
     double *pX = pT + sizeOfGait[0];
     double *pY = pX + sizeOfGait[0];
@@ -115,10 +119,13 @@ const double kNormalizedMinimum = 10.0;
     }
     
     // get the features array
-    double ft[7];
-    features_bga(&gait, ft);
+    double ftX[7];
+    features_bgaX(&gaitX, ftX);
+    PDRealArray *ft;
+    features_bga(gait, &ft);
     for (int i = 0; i < 7; ++i) {
-        if (isnan(ft[i]))
+//        if (isnan(ftX[i]))
+        if (isnan(ft.data[i]))
             return NAN;
     }
 
@@ -149,7 +156,7 @@ const double kNormalizedMinimum = 10.0;
     
     
     
-    ftvec.data = ft;
+    ftvec.data = ft.data;
     double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
     double score = [self normalizedScoreFromScore:rawScore range:gaitRange];
     
@@ -300,15 +307,20 @@ const double kNormalizedMinimum = 10.0;
 + (double)scoreFromPostureTest:(NSArray *)postureData
 {
     // format the posture data for the MATLAB code
-    emxArray_real_T posture;
+    // --old style
+    emxArray_real_T postureX;
     int sizeOfPosture[2] = {(int)[postureData count], 4};
-    posture.size = sizeOfPosture;
-    posture.data = malloc(sizeof(double) * sizeOfPosture[0] * sizeOfPosture[1]);
+    postureX.size = sizeOfPosture;
+//    postureX.data = malloc(sizeof(double) * sizeOfPosture[0] * sizeOfPosture[1]);
+    // --new style
+    PDRealArray *posture = [PDRealArray new];
+    [posture setRows:[postureData count] columns:4];
+    postureX.data = posture.data; // let's share the data
     double *pT = posture.data;
-    double *pX = pT + sizeOfPosture[0];
-    double *pY = pX + sizeOfPosture[0];
-    double *pZ = pY + sizeOfPosture[0];
-    for (int i = 0; i < sizeOfPosture[0]; ++i) {
+    double *pX = pT + posture.rows;
+    double *pY = pX + posture.rows;
+    double *pZ = pY + posture.rows;
+    for (int i = 0; i < posture.rows; ++i) {
         NSDictionary *accel = [postureData objectAtIndex:i];
         *pT++ = [[accel objectForKey:@"timestamp"] doubleValue];
         *pX++ = [[accel objectForKey:@"x"] doubleValue];
@@ -317,10 +329,13 @@ const double kNormalizedMinimum = 10.0;
     }
     
     // get the features array
-    double ft[3];
-    features_bpa(&posture, ft);
+    double ftX[3];
+    features_bpaX(&postureX, ftX);
+    PDRealArray *ft;
+    features_bpa(posture, &ft);
     for (int i = 0; i < 3; ++i) {
-        if (isnan(ft[i]))
+//        if (isnan(ft[i]))
+        if (isnan(ft.data[i]))
             return NAN;
     }
 
@@ -349,7 +364,8 @@ const double kNormalizedMinimum = 10.0;
         ftmax.data = ftmaxData + 20;
     });
     
-    ftvec.data = ft;
+//    ftvec.data = ft;
+    ftvec.data = ft.data;
     double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
     double score = [self normalizedScoreFromScore:rawScore range:postureRange];
     
@@ -359,10 +375,13 @@ const double kNormalizedMinimum = 10.0;
 + (double)scoreFromTappingTest:(NSArray *)tappingData
 {
     // format the tapping data for the MATLAB code
-    emxArray_real_T tapping;
+    emxArray_real_T tappingX;
     int sizeOfTapping[2] = {(int)[tappingData count], 3};
-    tapping.size = sizeOfTapping;
-    tapping.data = malloc(sizeof(double) * sizeOfTapping[0] * sizeOfTapping[1]);
+    tappingX.size = sizeOfTapping;
+//    tapping.data = malloc(sizeof(double) * sizeOfTapping[0] * sizeOfTapping[1]);
+    PDRealArray *tapping = [PDRealArray new];
+    [tapping setRows:[tappingData count] columns:3];
+    tappingX.data = tapping.data; // share it
     double *pT = tapping.data;
     double *pX = pT + sizeOfTapping[0];
     double *pY = pX + sizeOfTapping[0];
@@ -379,10 +398,13 @@ const double kNormalizedMinimum = 10.0;
     }
     
     // get the features array
-    double ft[2];
-    features_bta(&tapping, ft);
+    double ftX[2];
+    features_btaX(&tappingX, ftX);
+    PDRealArray *ft;
+    features_bta(tapping, &ft);
     for (int i = 0; i < 2; ++i) {
-        if (isnan(ft[i]))
+//        if (isnan(ft[i]))
+        if (isnan(ft.data[i]))
             return NAN;
     }
     
@@ -411,7 +433,7 @@ const double kNormalizedMinimum = 10.0;
         ftmax.data = ftmaxData + 23;
     });
     
-    ftvec.data = ft;
+    ftvec.data = ft.data;
     double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
     double score = [self normalizedScoreFromScore:rawScore range:tappingRange];
     

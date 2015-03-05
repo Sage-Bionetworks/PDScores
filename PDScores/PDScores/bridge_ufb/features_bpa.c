@@ -33,7 +33,7 @@
 #include "signalprocessing.h"
 
 /* Function Definitions */
-void features_bpa(const emxArray_real_T *post, double ft[3])
+void features_bpaX(const emxArray_real_T *post, double ft[3])
 {
   int ixstart;
   emxArray_real_T *t;
@@ -242,7 +242,7 @@ void features_bpa(const emxArray_real_T *post, double ft[3])
         }
 
         emxInit_real_T(&d_x, 2);
-        repmat(c_x, n + 1, d_x);
+        repmatX(c_x, n + 1, d_x);
         ixstart = posttrim->size[0] * posttrim->size[1];
         posttrim->size[1] = 3;
         emxEnsureCapacity((emxArray__common *)posttrim, ixstart, (int)sizeof
@@ -373,10 +373,10 @@ void features_bpa(const emxArray_real_T *post, double ft[3])
         b_sqrt(t);
 
         /*  Maximum force */
-        dT = quantile(t);
+        dT = quantileX(t);
 
         /*  Detrended fluctuation analysis scaling exponent */
-        fastdfa(t, &alpha, dt, fl);
+        fastdfaX(t, &alpha, dt, fl);
 
         /*  Output posture test feature vector */
         ft[0] = dT / 10.0;
