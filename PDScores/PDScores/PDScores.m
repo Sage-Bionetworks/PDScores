@@ -104,13 +104,15 @@ const double kNormalizedMinimum = 10.0;
     gaitX.size = sizeOfGait;
 //    gaitX.data = malloc(sizeof(double) * sizeOfGait[0] * sizeOfGait[1]);
     PDRealArray *gait = [PDRealArray new];
-    [gait setRows:[gaitData count] columns:4];
+    size_t rows = [gaitData count];
+    size_t cols = 4;
+    [gait setRows:rows columns:cols];
     gaitX.data = gait.data; // share it
     double *pT = gait.data;
-    double *pX = pT + sizeOfGait[0];
-    double *pY = pX + sizeOfGait[0];
-    double *pZ = pY + sizeOfGait[0];
-    for (int i = 0; i < sizeOfGait[0]; ++i) {
+    double *pX = pT + rows;
+    double *pY = pX + rows;
+    double *pZ = pY + rows;
+    for (int i = 0; i < rows; ++i) {
         NSDictionary *accel = [gaitData objectAtIndex:i];
         *pT++ = [[accel objectForKey:@"timestamp"] doubleValue];
         *pX++ = [[accel objectForKey:@"x"] doubleValue];
@@ -131,35 +133,56 @@ const double kNormalizedMinimum = 10.0;
 
     static emxArray_real_T ftvec;
     static int sizeOfFtvec[2] = {1, 7};
-    static emxArray_real_T wvec;
+    static emxArray_real_T wvecX;
     static int sizeOfWvec[2] = {7, 1};
-    static emxArray_real_T ilog;
+    static emxArray_real_T ilogX;
     static int sizeOfIlog[2] = {1, 1};
     static double ilogData[1] = {2};
-    static emxArray_real_T ftmin;
+    static emxArray_real_T ftminX;
     static int sizeOfFtmin[2] = {7, 1};
-    static emxArray_real_T ftmax;
+    static emxArray_real_T ftmaxX;
     static int sizeOfFtmax[2] = {7, 1};
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ftvec.size = sizeOfFtvec;
-        wvec.size = sizeOfWvec;
-        wvec.data = wvecData + 13;
-        ilog.size = sizeOfIlog;
-        ilog.data = ilogData;
-        ftmin.size = sizeOfFtmin;
-        ftmin.data = ftminData + 13;
-        ftmax.size = sizeOfFtmax;
-        ftmax.data = ftmaxData + 13;
+        wvecX.size = sizeOfWvec;
+        wvecX.data = wvecData + 13;
+        ilogX.size = sizeOfIlog;
+        ilogX.data = ilogData;
+        ftminX.size = sizeOfFtmin;
+        ftminX.data = ftminData + 13;
+        ftmaxX.size = sizeOfFtmax;
+        ftmaxX.data = ftmaxData + 13;
     });
     
     
     
-    ftvec.data = ft.data;
-    double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
-    double score = [self normalizedScoreFromScore:rawScore range:gaitRange];
+    ftvec.data = ftX;
+    double rawScoreX = features_ufbX(&ftvec, &wvecX, &ilogX, &ftminX, &ftmaxX, fbmin, fbmax);
+    double scoreX = [self normalizedScoreFromScore:rawScoreX range:gaitRange];
     
+    static PDRealArray *wvec, *ftmin, *ftmax;
+    static PDIntArray *ilog;
+    static dispatch_once_t onceToken2;
+    dispatch_once(&onceToken2, ^{
+        wvec = [PDRealArray new];
+        [wvec setRows:7 columns:1];
+        memcpy(wvec.data, wvecData + 13, 7 * wvec.typeSize);
+        ilog = [PDIntArray new];
+        [ilog setRows:1 columns:1];
+        ilog.data[0] = 2;
+        ftmin = [PDRealArray new];
+        [ftmin setRows:1 columns:7];
+        memcpy(ftmin.data, ftminData + 13, 7 * ftmin.typeSize);
+        ftmax = [PDRealArray new];
+        [ftmax setRows:1 columns:7];
+        memcpy(ftmax.data, ftmaxData + 13, 7 * ftmax.typeSize);
+    });
+    
+    double rawScore = features_ufb(ft, wvec, ilog, ftmin, ftmax, fbmin, fbmax);
+    double score = [self normalizedScoreFromScore:rawScore range:gaitRange];
+
     return score;
 }
 
@@ -298,7 +321,7 @@ const double kNormalizedMinimum = 10.0;
     });
     
     ftvec.data = ft;
-    double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    double rawScore = features_ufbX(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
     double score = [self normalizedScoreFromScore:rawScore range:phonationRange];
 
     return score;
@@ -365,8 +388,8 @@ const double kNormalizedMinimum = 10.0;
     });
     
 //    ftvec.data = ft;
-    ftvec.data = ft.data;
-    double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    ftvec.data = ftX;
+    double rawScore = features_ufbX(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
     double score = [self normalizedScoreFromScore:rawScore range:postureRange];
     
     return score;
@@ -433,8 +456,8 @@ const double kNormalizedMinimum = 10.0;
         ftmax.data = ftmaxData + 23;
     });
     
-    ftvec.data = ft.data;
-    double rawScore = features_ufb(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    ftvec.data = ftX;
+    double rawScore = features_ufbX(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
     double score = [self normalizedScoreFromScore:rawScore range:tappingRange];
     
     return score;
