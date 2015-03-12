@@ -19,7 +19,7 @@
 #include "bridge_ufb_types.h"
 
 /* Function Declarations */
-extern void features_bvav2(const emxArray_real_T *audio, double srate, double
+extern void features_bvav2X(const emxArray_real_T *audio, double srate, double
   ft[13]);
 
 #endif

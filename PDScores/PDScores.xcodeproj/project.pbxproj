@@ -12,6 +12,8 @@
 		60E3E4C81AA53B1200B21B5D /* PDArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4C71AA53B1200B21B5D /* PDArray.m */; };
 		800F96561AA7DBAB0015FE61 /* lomb.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B71AA531A100B21B5D /* lomb.m */; };
 		800F96571AA811660015FE61 /* features_bta.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B41AA531A100B21B5D /* features_bta.m */; };
+		800F96581AA81DE50015FE61 /* features_ufb.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B61AA531A100B21B5D /* features_ufb.m */; };
+		800F965B1AA8D5750015FE61 /* features_bvav2.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B51AA531A100B21B5D /* features_bvav2.m */; };
 		801712D81A897DC200CB13EB /* PDScores.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 801712D71A897DC200CB13EB /* PDScores.h */; };
 		801712DA1A897DC200CB13EB /* PDScores.m in Sources */ = {isa = PBXBuildFile; fileRef = 801712D91A897DC200CB13EB /* PDScores.m */; };
 		801712E01A897DC200CB13EB /* libPDScores.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 801712D41A897DC200CB13EB /* libPDScores.a */; };
@@ -56,7 +58,7 @@
 		801715151A89AD7600CB13EB /* swipep.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714E41A89AD7600CB13EB /* swipep.c */; };
 		801715161A89AD7600CB13EB /* vadsplitphon.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714E61A89AD7600CB13EB /* vadsplitphon.c */; };
 		801715171A89AD7600CB13EB /* var.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714E81A89AD7600CB13EB /* var.c */; };
-		8017151A1A89B35700CB13EB /* signalprocessing.c in Sources */ = {isa = PBXBuildFile; fileRef = 801715181A89B35700CB13EB /* signalprocessing.c */; };
+		8017151A1A89B35700CB13EB /* signalprocessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 801715181A89B35700CB13EB /* signalprocessing.m */; };
 		801715251A8B150D00CB13EB /* flip.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017151C1A8B150D00CB13EB /* flip.c */; };
 		801715261A8B150D00CB13EB /* flipud.c in Sources */ = {isa = PBXBuildFile; fileRef = 8017151E1A8B150D00CB13EB /* flipud.c */; };
 		801715271A8B150D00CB13EB /* log10.c in Sources */ = {isa = PBXBuildFile; fileRef = 801715201A8B150D00CB13EB /* log10.c */; };
@@ -65,6 +67,8 @@
 		8055C7AB1AA6CE8700885F4F /* fastdfa.c in Sources */ = {isa = PBXBuildFile; fileRef = 801714171A89AD7500CB13EB /* fastdfa.c */; };
 		808F08CF1AA7A95700875A74 /* features_bga.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B21AA531A100B21B5D /* features_bga.m */; };
 		80918BA71AA6128E00985A70 /* PDMatlab.m in Sources */ = {isa = PBXBuildFile; fileRef = 80918BA61AA6128E00985A70 /* PDMatlab.m */; };
+		80F7E7191AA8D8D000158052 /* swipep.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B91AA531A100B21B5D /* swipep.m */; };
+		80F7E71A1AA8D9BC00158052 /* mfcc.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E3E4B81AA531A100B21B5D /* mfcc.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,7 +200,7 @@
 		801714E71A89AD7600CB13EB /* vadsplitphon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vadsplitphon.h; sourceTree = "<group>"; };
 		801714E81A89AD7600CB13EB /* var.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = var.c; sourceTree = "<group>"; };
 		801714E91A89AD7600CB13EB /* var.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = var.h; sourceTree = "<group>"; };
-		801715181A89B35700CB13EB /* signalprocessing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = signalprocessing.c; sourceTree = "<group>"; };
+		801715181A89B35700CB13EB /* signalprocessing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = signalprocessing.m; sourceTree = "<group>"; };
 		801715191A89B35700CB13EB /* signalprocessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = signalprocessing.h; sourceTree = "<group>"; };
 		8017151C1A8B150D00CB13EB /* flip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = flip.c; sourceTree = "<group>"; };
 		8017151D1A8B150D00CB13EB /* flip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flip.h; sourceTree = "<group>"; };
@@ -304,7 +308,7 @@
 			children = (
 				801713F81A89A58400CB13EB /* buffer.c */,
 				801713F91A89A58400CB13EB /* buffer.h */,
-				801715181A89B35700CB13EB /* signalprocessing.c */,
+				801715181A89B35700CB13EB /* signalprocessing.m */,
 				801715191A89B35700CB13EB /* signalprocessing.h */,
 			);
 			path = unsupportedMatlabFunctions;
@@ -500,6 +504,7 @@
 			files = (
 				801715261A8B150D00CB13EB /* flipud.c in Sources */,
 				801715021A89AD7600CB13EB /* lomb.c in Sources */,
+				800F96581AA81DE50015FE61 /* features_ufb.m in Sources */,
 				801715071A89AD7600CB13EB /* polyval.c in Sources */,
 				801715271A8B150D00CB13EB /* log10.c in Sources */,
 				801714F21A89AD7600CB13EB /* combine_vector_elements.c in Sources */,
@@ -507,15 +512,18 @@
 				801714F01A89AD7600CB13EB /* bridge_ufb_rtwutil.c in Sources */,
 				801715121A89AD7600CB13EB /* spline.c in Sources */,
 				801714ED1A89AD7600CB13EB /* bridge_ufb_emxAPI.c in Sources */,
+				80F7E71A1AA8D9BC00158052 /* mfcc.m in Sources */,
 				8017150F1A89AD7600CB13EB /* rt_nonfinite.c in Sources */,
 				8017150D1A89AD7600CB13EB /* repmat.c in Sources */,
 				8017150B1A89AD7600CB13EB /* quantile.c in Sources */,
 				801715061A89AD7600CB13EB /* polyfit.c in Sources */,
 				801715161A89AD7600CB13EB /* vadsplitphon.c in Sources */,
-				8017151A1A89B35700CB13EB /* signalprocessing.c in Sources */,
+				8017151A1A89B35700CB13EB /* signalprocessing.m in Sources */,
+				800F965B1AA8D5750015FE61 /* features_bvav2.m in Sources */,
 				801714F41A89AD7600CB13EB /* extractaudiophon.c in Sources */,
 				801714FF1A89AD7600CB13EB /* interp1.c in Sources */,
 				801715081A89AD7600CB13EB /* power.c in Sources */,
+				80F7E7191AA8D8D000158052 /* swipep.m in Sources */,
 				801715171A89AD7600CB13EB /* var.c in Sources */,
 				60E3E4BE1AA531A100B21B5D /* features_bpa.m in Sources */,
 				60E3E4C81AA53B1200B21B5D /* PDArray.m in Sources */,

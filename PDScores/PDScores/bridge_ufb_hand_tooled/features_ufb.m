@@ -22,21 +22,8 @@ double features_ufb(PDRealArray *ftvec, PDRealArray *wvec, PDIntArray *ilog, PDR
     //ftvecnorm = ftvec;
     PDRealArray *ftvecnorm = [ftvec copy];
     //ftvecnorm(:,ilog) = log10(ftvecnorm(:,ilog));
-    PDRealArray *ilogreal = zeros(ftvecnorm.rows, ftvecnorm.cols);
-    size_t ilogSize = ilog.rows * ilog.cols;
-    for (size_t row = 0; row < ilogreal.rows; ++row) {
-        for (size_t ilogIdx = 0; ilogIdx < ilogSize; ++ilogIdx) {
-            size_t colIdx = ilog.data[ilogIdx] - 1;
-            ilogreal.data[colIdx * ilogreal.rows + row] = 1.0;
-        }
-    }
-    ftvecnorm = [ftvecnorm applyReal:^double(const double element, const double otherArrayElement) {
-        double value = element;
-        if (otherArrayElement) {
-            value = log10(value);
-        }
-        return value;
-    } withRealArray:ilogreal];
+    PDIntArray *ftvecrows = [PDIntArray rowVectorFrom:1 to:ftvecnorm.rows];
+    [ftvecnorm setElementsWithRowIndices:ftvecrows columnIndices:ilog fromArray:[[ftvecnorm subarrayWithRowIndices:ftvecrows columnIndices:ilog] log10]];
     //ftvecnorm = 2*((ftvecnorm-ftmin)./(ftmax-ftmin))-1;
     PDRealArray *ftdiff = [ftmax applyReal:^double(const double element, const double otherArrayElement) {
         return element - otherArrayElement;

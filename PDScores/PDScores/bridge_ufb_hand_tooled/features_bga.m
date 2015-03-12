@@ -28,9 +28,7 @@ void features_bga(PDRealArray *gait, PDRealArray **ft)
     //t = gait(:,1)-gait(1,1);
     PDRealArray *times = [gait subarrayWithRows:NSMakeRange(0, gait.rows) columns:NSMakeRange(0, 1)];
     double startTime = times.data[0];
-    PDRealArray *t = [times applyReal:^double(const double element) {
-        return element - startTime;
-    }];
+    PDRealArray *t = [times subtract:startTime];
     
     //Tstart = 3.0;
     //Tend   = 19.0;
@@ -97,25 +95,17 @@ void features_bga(PDRealArray *gait, PDRealArray **ft)
     //gaitpower = mean(sum(0.5*70*gaitvel.^2)/dT)/1e4;
     PDRealArray *gaitpower = [[[[[gaitvel applyReal:^double(const double element) {
         return pow(element, 2.0) * 70.0 * 0.5;
-    }] sum] applyReal:^double(const double element) {
-        return element / dT;
-    }] mean] applyReal:^double(const double element) {
-        return element / 1e4;
-    }];
+    }] sum] divide:dT] mean] divide:1e4];
     
     //% Force vector magnitude signal
     //gaitmag = sqrt(sum(gaitforce.^2,2));
-    PDRealArray *gfsquared = [gaitforce applyReal:^double(const double element) {
-        return pow(element, 2.0);
-    }];
+    PDRealArray *gfsquared = [gaitforce square];
     PDRealArray *gaitmagsquared = [gfsquared sum2];
     PDRealArray *gaitmag = [gaitmagsquared sqrt];
     
     //% Maximum force
     //gaitpeak = quantile(gaitmag,0.95)/10;
-    PDRealArray *gaitpeak = [quantile(gaitmag, 0.95) applyReal:^double(const double element) {
-        return element / 10.0;
-    }];
+    PDRealArray *gaitpeak = [quantile(gaitmag, 0.95) divide:10.0];
     
     //% Zero crossing events
     //mg = mean(gaitmag);
@@ -141,9 +131,7 @@ void features_bga(PDRealArray *gait, PDRealArray **ft)
     PDRealArray *F;
     PDRealArray *P;
     PDRealArray *prob;
-    PDRealArray *normGaitmag = [gaitmag applyReal:^double(const double element) {
-        return element - gmm;
-    }];
+    PDRealArray *normGaitmag = [gaitmag subtract:gmm];
     lomb(ttrim, normGaitmag, 4.0, 1.0, &F, &P, &prob);
     
     //% Peak frequency
@@ -151,9 +139,9 @@ void features_bga(PDRealArray *gait, PDRealArray **ft)
     PDIntArray *imax;
     PDRealArray *Pmax = [P maxAndIndices:&imax];
     //F0 = F(imax);
-    double F0 = F.data[imax.data[0]];
+    double F0 = F.data[imax.data[0] - 1];
     //probF0 = -log10(prob(imax));
-    double probF0 = -log10(prob.data[imax.data[0]]);
+    double probF0 = -log10(prob.data[imax.data[0] - 1]);
 
     //% SNR of peak frequency
     //i = (F <= F0);
@@ -162,14 +150,12 @@ void features_bga(PDRealArray *gait, PDRealArray **ft)
     }];
     //mP = median(log10(P(i)));
     PDRealArray *Psubi = [P elementsWithIndices:[i find]];
-    PDRealArray *mP = [[Psubi applyReal:^double(const double element) {
-        return log10(element);
-    }] median];
+    PDRealArray *mP = [[Psubi log10] median];
     //snrF0 = log10(Pmax)-mP;
     PDRealArray *snrF0 = [Pmax applyReal:^double(const double element, const double otherArrayElement) {
         return log10(element) - otherArrayElement;
     } withRealArray:mP];
-    //
+
     //% Output gait test feature vector
     //ft = [gaitpeak gaitpower zcr zcv F0 snrF0 probF0];
     (*ft).data[0] = gaitpeak.data[0];

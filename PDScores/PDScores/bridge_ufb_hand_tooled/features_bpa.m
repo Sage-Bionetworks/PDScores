@@ -28,9 +28,7 @@ void features_bpa(PDRealArray *post, PDRealArray **ft)
     //t = post(:,1)-post(1,1);
     PDRealArray *times = [post subarrayWithRows:NSMakeRange(0, post.rows) columns:NSMakeRange(0, 1)];
     double startTime = times.data[0];
-    PDRealArray *t = [times applyReal:^double(const double element) {
-        return element - startTime;
-    }];
+    PDRealArray *t = [times subtract:startTime];
     
     //Tstart = 3.0;
     //Tend   = 19.0;
@@ -104,25 +102,17 @@ void features_bpa(PDRealArray *post, PDRealArray **ft)
     //postpower = mean(sum(0.5*70*postvel.^2)/dT)/1e4;
     PDRealArray *postpower = [[[[[postvel applyReal:^double(const double element) {
         return pow(element, 2.0) * 70.0 * 0.5;
-    }] sum] applyReal:^double(const double element) {
-        return element / dT;
-    }] mean] applyReal:^double(const double element) {
-        return element / 1e4;
-    }];
+    }] sum] divide:dT] mean] divide:1e4];
 
     //% Force vector magnitude signal
     //postmag = sqrt(sum(postforce.^2,2));
-    PDRealArray *pfsquared = [postforce applyReal:^double(const double element) {
-        return pow(element, 2.0);
-    }];
+    PDRealArray *pfsquared = [postforce square];
     PDRealArray *postmagsquared = [pfsquared sum2];
     PDRealArray *postmag = [postmagsquared sqrt];
 
     //% Maximum force
     //postpeak = quantile(postmag,0.95)/10;
-    PDRealArray *postpeak = [quantile(postmag, 0.95) applyReal:^double(const double element) {
-        return element / 10.0;
-    }];
+    PDRealArray *postpeak = [quantile(postmag, 0.95) divide:10.0];
 
     //% Detrended fluctuation analysis scaling exponent
     //[alpha,iv,fl] = fastdfa(postmag);

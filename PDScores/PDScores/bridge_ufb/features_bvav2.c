@@ -35,7 +35,7 @@
 #include "signalprocessing.h"
 
 /* Function Definitions */
-void features_bvav2(const emxArray_real_T *audio, double srate, double ft[13])
+void features_bvav2X(const emxArray_real_T *audio, double srate, double ft[13])
 {
   int iy;
   double istart;
@@ -235,7 +235,7 @@ void features_bvav2(const emxArray_real_T *audio, double srate, double ft[13])
     ashr = median(r15);
 
     /*  Compute MFCCs */
-    mfcc(audiotrim, r16);
+    mfccX(audiotrim, r16);
     iy = cep->size[0] * cep->size[1];
     cep->size[0] = r16->size[1];
     cep->size[1] = 13;

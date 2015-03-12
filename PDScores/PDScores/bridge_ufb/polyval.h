@@ -19,7 +19,7 @@
 #include "bridge_ufb_types.h"
 
 /* Function Declarations */
-extern void polyval(const double p[3], const emxArray_real_T *x, emxArray_real_T
+extern void polyvalX(const double p[3], const emxArray_real_T *x, emxArray_real_T
                     *y);
 
 #endif

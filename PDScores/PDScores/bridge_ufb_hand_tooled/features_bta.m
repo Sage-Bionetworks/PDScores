@@ -30,9 +30,7 @@ void features_bta(PDRealArray *tap, PDRealArray **ft)
     NSRange tapRows = NSMakeRange(0, tap.rows);
     PDRealArray *times = [tap subarrayWithRows:tapRows columns:NSMakeRange(0, 1)];
     double startTime = times.data[0];
-    PDRealArray *t = [times applyReal:^double(const double element) {
-        return element - startTime;
-    }];
+    PDRealArray *t = [times subtract:startTime];
     
     //% X,Y offset
     //tapx = tap(:,2);
@@ -41,14 +39,10 @@ void features_bta(PDRealArray *tap, PDRealArray **ft)
     PDRealArray *tapy = [tap subarrayWithRows:tapRows columns:NSMakeRange(2, 1)];
     //tapx = tapx-mean(tapx);
     double tapxmean = [tapx mean].data[0];
-    tapx = [tapx applyReal:^double(const double element) {
-        return element - tapxmean;
-    }];
+    tapx = [tapx subtract:tapxmean];
     //tapy = tapy-mean(tapy);
     double tapymean = [tapy mean].data[0];
-    tapy = [tapy applyReal:^double(const double element) {
-        return element - tapymean;
-    }];
+    tapy = [tapy subtract:tapymean];
 
     //% Find left/right finger 'depress' events
     //dx = diff(tapx);

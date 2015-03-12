@@ -55,25 +55,15 @@ void lomb(PDRealArray *t, PDRealArray *h, double ofac, double hifac, PDRealArray
 
     //%angular frequencies and constant offsets
     //w = 2*pi*f;
-    PDRealArray *w = [*f applyReal:^double(const double element) {
-        return 2.0 * M_PI * element;
-    }];
+    PDRealArray *w = [*f multiply:2.0 * M_PI];
     
     //tau = atan2(sum(sin(2*w*t.'),2),sum(cos(2*w*t.'),2))./(2*w);
     PDRealArray *t_prime = [t transpose];
     PDRealArray *w_t_prime = [w matmult:t_prime];
-    PDRealArray *two_w_t_prime = [w_t_prime applyReal:^double(const double element) {
-        return element * 2;
-    }];
-    PDRealArray *sumsin = [[two_w_t_prime applyReal:^double(const double element) {
-        return sin(element);
-    }] sum2];
-    PDRealArray *sumcos = [[two_w_t_prime applyReal:^double(const double element) {
-        return cos(element);
-    }] sum2];
-    PDRealArray *atan2_of_sums = [sumsin applyReal:^double(const double element, const double otherArrayElement) {
-        return atan2(element, otherArrayElement);
-    } withRealArray:sumcos];
+    PDRealArray *two_w_t_prime = [w_t_prime multiply:2.0];
+    PDRealArray *sumsin = [[two_w_t_prime sin] sum2];
+    PDRealArray *sumcos = [[two_w_t_prime cos] sum2];
+    PDRealArray *atan2_of_sums = [sumsin atan2:sumcos];
     PDRealArray *tau = [atan2_of_sums applyReal:^double(const double element, const double otherArrayElement) {
         return element / (2.0 * otherArrayElement);
     } withRealArray:w];
@@ -87,31 +77,17 @@ void lomb(PDRealArray *t, PDRealArray *h, double ofac, double hifac, PDRealArray
     PDRealArray *w_t_prime_minus_repped_w_tau = [w_t_prime applyReal:^double(const double element, const double otherArrayElement) {
         return element - otherArrayElement;
     } withRealArray:reppedw_tau];
-    PDRealArray *cterm = [w_t_prime_minus_repped_w_tau applyReal:^double(const double element) {
-        return cos(element);
-    }];
+    PDRealArray *cterm = [w_t_prime_minus_repped_w_tau cos];
     
     //sterm = sin(w*t.' - repmat(w.*tau,1,length(t)));
-    PDRealArray *sterm = [w_t_prime_minus_repped_w_tau applyReal:^double(const double element) {
-        return sin(element);
-    }];
+    PDRealArray *sterm = [w_t_prime_minus_repped_w_tau sin];
     //P = (sum(cterm*diag(h-mu),2).^2./sum(cterm.^2,2) + ...
     //     sum(sterm*diag(h-mu),2).^2./sum(sterm.^2,2))/(2*s2);
-    PDRealArray *diag_h_mu = [[h applyReal:^double(const double element) {
-        return element - mu;
-    }] diag];
-    PDRealArray *cterm_diag_sum_sq = [[[cterm matmult:diag_h_mu] sum2] applyReal:^double(const double element) {
-        return element * element;
-    }];
-    PDRealArray *sterm_diag_sum_sq = [[[sterm matmult:diag_h_mu] sum2] applyReal:^double(const double element) {
-        return element * element;
-    }];
-    PDRealArray *cterm_sq_sum = [[cterm applyReal:^double(const double element) {
-        return element * element;
-    }] sum2];
-    PDRealArray *sterm_sq_sum = [[sterm applyReal:^double(const double element) {
-        return element * element;
-    }] sum2];
+    PDRealArray *diag_h_mu = [[h subtract:mu] diag];
+    PDRealArray *cterm_diag_sum_sq = [[[cterm matmult:diag_h_mu] sum2] square];
+    PDRealArray *sterm_diag_sum_sq = [[[sterm matmult:diag_h_mu] sum2] square];
+    PDRealArray *cterm_sq_sum = [[cterm square] sum2];
+    PDRealArray *sterm_sq_sum = [[sterm square] sum2];
     PDRealArray *numerator = [[cterm_diag_sum_sq applyReal:^double(const double element, const double otherArrayElement) {
         return element / otherArrayElement;
     } withRealArray:cterm_sq_sum] applyReal:^double(const double element, const double otherArrayElement) {
@@ -119,9 +95,7 @@ void lomb(PDRealArray *t, PDRealArray *h, double ofac, double hifac, PDRealArray
     } withRealArray:[sterm_diag_sum_sq applyReal:^double(const double element, const double otherArrayElement) {
         return element / otherArrayElement;
     } withRealArray:sterm_sq_sum]];
-    *P = [numerator applyReal:^double(const double element) {
-        return element / (2.0 * s2);
-    }];
+    *P = [numerator divide:(2.0 * s2)];
 
     //%estimate of the number of independent frequencies
     //M=2*length(f)/ofac;

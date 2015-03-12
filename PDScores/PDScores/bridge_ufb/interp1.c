@@ -155,7 +155,7 @@ void b_interp1(const emxArray_real_T *varargin_1, const emxArray_real_T
   emxFree_real_T(&y);
 }
 
-void interp1(const emxArray_real_T *varargin_1, const emxArray_real_T
+void interp1X(const emxArray_real_T *varargin_1, const emxArray_real_T
              *varargin_2, const emxArray_real_T *varargin_3, emxArray_real_T *Vq)
 {
   emxArray_real_T *y;

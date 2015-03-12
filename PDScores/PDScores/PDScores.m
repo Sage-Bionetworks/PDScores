@@ -167,17 +167,20 @@ const double kNormalizedMinimum = 10.0;
     static dispatch_once_t onceToken2;
     dispatch_once(&onceToken2, ^{
         wvec = [PDRealArray new];
-        [wvec setRows:7 columns:1];
-        memcpy(wvec.data, wvecData + 13, 7 * wvec.typeSize);
+        wvec.rows = 7;
+        wvec.cols = 1;
+        wvec.data = wvecData + 13;
         ilog = [PDIntArray new];
         [ilog setRows:1 columns:1];
         ilog.data[0] = 2;
         ftmin = [PDRealArray new];
-        [ftmin setRows:1 columns:7];
-        memcpy(ftmin.data, ftminData + 13, 7 * ftmin.typeSize);
+        ftmin.rows = 1;
+        ftmin.cols = 7;
+        ftmin.data = ftminData + 13;
         ftmax = [PDRealArray new];
-        [ftmax setRows:1 columns:7];
-        memcpy(ftmax.data, ftmaxData + 13, 7 * ftmax.typeSize);
+        ftmax.rows = 1;
+        ftmax.cols = 7;
+        ftmax.data = ftmaxData + 13;
     });
     
     double rawScore = features_ufb(ft, wvec, ilog, ftmin, ftmax, fbmin, fbmax);
@@ -261,13 +264,16 @@ const double kNormalizedMinimum = 10.0;
     }
     
     // convert to emxArray_real_T for use with MATLAB converted code
-    emxArray_real_T audio;
+    emxArray_real_T audioX;
     int sizeOfAudio[2] = {(int)numFrames, 1};
-    audio.size = sizeOfAudio;
-    audio.numDimensions = 1;
-    audio.canFreeData = true;
-    audio.allocatedSize = (int)(sizeof(double) * numFrames);
-    audio.data = malloc(audio.allocatedSize);
+    audioX.size = sizeOfAudio;
+    audioX.numDimensions = 1;
+    audioX.canFreeData = true;
+    audioX.allocatedSize = (int)(sizeof(double) * numFrames);
+//    audioX.data = malloc(audio.allocatedSize);
+    PDRealArray *audio = [PDRealArray new];
+    [audio setRows:numFrames columns:1];
+    audioX.data = audio.data; // sharing is nice
     float *pSrc = bufferList->mBuffers[0].mData;
     float *pSrcEnd = pSrc + numFrames;
     double *pDst = audio.data;
@@ -283,45 +289,74 @@ const double kNormalizedMinimum = 10.0;
     bufferList = NULL;
     
     // get the features array
-    double ft[13];
+    double ftX[13];
     double srate = fileFormat.mSampleRate;
-    features_bvav2(&audio, srate, ft);
+    features_bvav2X(&audioX, srate, ftX);
+    PDRealArray *ft;
+    features_bvav2(audio, srate, &ft);
     for (int i = 0; i < 13; ++i) {
-        if (isnan(ft[i]))
+//        if (isnan(ft[i]))
+        if (isnan(ft.data[i]))
             return NAN;
     }
     
     // clean up
-    free(audio.data);
+    audio = nil;
     
     // generate a score
     static emxArray_real_T ftvec;
     static int sizeOfFtvec[2] = {1, 13};
-    static emxArray_real_T wvec;
+    static emxArray_real_T wvecX;
     static int sizeOfWvec[2] = {13, 1};
-    static emxArray_real_T ilog;
+    static emxArray_real_T ilogX;
     static int sizeOfIlog[2] = {1, 7};
     static double ilogData[7] = {2, 3, 4, 10, 11, 12, 13};
-    static emxArray_real_T ftmin;
+    static emxArray_real_T ftminX;
     static int sizeOfFtmin[2] = {13, 1};
-    static emxArray_real_T ftmax;
+    static emxArray_real_T ftmaxX;
     static int sizeOfFtmax[2] = {13, 1};
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ftvec.size = sizeOfFtvec;
-        wvec.size = sizeOfWvec;
+        wvecX.size = sizeOfWvec;
+        wvecX.data = wvecData;
+        ilogX.size = sizeOfIlog;
+        ilogX.data = ilogData;
+        ftminX.size = sizeOfFtmin;
+        ftminX.data = ftminData;
+        ftmaxX.size = sizeOfFtmax;
+        ftmaxX.data = ftmaxData;
+    });
+    
+    ftvec.data = ftX;
+    double rawScoreX = features_ufbX(&ftvec, &wvecX, &ilogX, &ftminX, &ftmaxX, fbmin, fbmax);
+    double scoreX = [self normalizedScoreFromScore:rawScoreX range:phonationRange];
+
+    static PDRealArray *wvec, *ftmin, *ftmax;
+    static PDIntArray *ilog;
+    static size_t ilogIntData[7] = {2, 3, 4, 10, 11, 12, 13};
+    static dispatch_once_t onceToken2;
+    dispatch_once(&onceToken2, ^{
+        wvec = [PDRealArray new];
+        wvec.rows = 13;
+        wvec.cols = 1;
         wvec.data = wvecData;
-        ilog.size = sizeOfIlog;
-        ilog.data = ilogData;
-        ftmin.size = sizeOfFtmin;
+        ilog = [PDIntArray new];
+        ilog.rows = 1;
+        ilog.cols = 7;
+        ilog.data = ilogIntData;
+        ftmin = [PDRealArray new];
+        ftmin.rows = 1;
+        ftmin.cols = 13;
         ftmin.data = ftminData;
-        ftmax.size = sizeOfFtmax;
+        ftmax = [PDRealArray new];
+        ftmax.rows = 1;
+        ftmax.cols = 13;
         ftmax.data = ftmaxData;
     });
     
-    ftvec.data = ft;
-    double rawScore = features_ufbX(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
+    double rawScore = features_ufb(ft, wvec, ilog, ftmin, ftmax, fbmin, fbmax);
     double score = [self normalizedScoreFromScore:rawScore range:phonationRange];
 
     return score;
@@ -364,34 +399,59 @@ const double kNormalizedMinimum = 10.0;
 
     static emxArray_real_T ftvec;
     static int sizeOfFtvec[2] = {1, 3};
-    static emxArray_real_T wvec;
+    static emxArray_real_T wvecX;
     static int sizeOfWvec[2] = {3, 1};
-    static emxArray_real_T ilog;
+    static emxArray_real_T ilogX;
     static int sizeOfIlog[2] = {1, 2};
     static double ilogData[2] = {1, 2};
-    static emxArray_real_T ftmin;
+    static emxArray_real_T ftminX;
     static int sizeOfFtmin[2] = {3, 1};
-    static emxArray_real_T ftmax;
+    static emxArray_real_T ftmaxX;
     static int sizeOfFtmax[2] = {3, 1};
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ftvec.size = sizeOfFtvec;
-        wvec.size = sizeOfWvec;
-        wvec.data = wvecData + 20;
-        ilog.size = sizeOfIlog;
-        ilog.data = ilogData;
-        ftmin.size = sizeOfFtmin;
-        ftmin.data = ftminData + 20;
-        ftmax.size = sizeOfFtmax;
-        ftmax.data = ftmaxData + 20;
+        wvecX.size = sizeOfWvec;
+        wvecX.data = wvecData + 20;
+        ilogX.size = sizeOfIlog;
+        ilogX.data = ilogData;
+        ftminX.size = sizeOfFtmin;
+        ftminX.data = ftminData + 20;
+        ftmaxX.size = sizeOfFtmax;
+        ftmaxX.data = ftmaxData + 20;
     });
     
 //    ftvec.data = ft;
     ftvec.data = ftX;
-    double rawScore = features_ufbX(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
-    double score = [self normalizedScoreFromScore:rawScore range:postureRange];
+    double rawScoreX = features_ufbX(&ftvec, &wvecX, &ilogX, &ftminX, &ftmaxX, fbmin, fbmax);
+    double scoreX = [self normalizedScoreFromScore:rawScoreX range:postureRange];
     
+    static PDRealArray *wvec, *ftmin, *ftmax;
+    static PDIntArray *ilog;
+    static dispatch_once_t onceToken2;
+    dispatch_once(&onceToken2, ^{
+        wvec = [PDRealArray new];
+        wvec.rows = 3;
+        wvec.cols = 1;
+        wvec.data = wvecData + 20;
+        ilog = [PDIntArray new];
+        [ilog setRows:1 columns:2];
+        ilog.data[0] = 1;
+        ilog.data[1] = 2;
+        ftmin = [PDRealArray new];
+        ftmin.rows = 1;
+        ftmin.cols = 3;
+        ftmin.data = ftminData + 20;
+        ftmax = [PDRealArray new];
+        ftmax.rows = 1;
+        ftmax.cols = 3;
+        ftmax.data = ftmaxData + 20;
+    });
+    
+    double rawScore = features_ufb(ft, wvec, ilog, ftmin, ftmax, fbmin, fbmax);
+    double score = [self normalizedScoreFromScore:rawScore range:postureRange];
+
     return score;
 }
 
@@ -433,33 +493,58 @@ const double kNormalizedMinimum = 10.0;
     
     static emxArray_real_T ftvec;
     static int sizeOfFtvec[2] = {1, 2};
-    static emxArray_real_T wvec;
+    static emxArray_real_T wvecX;
     static int sizeOfWvec[2] = {2, 1};
-    static emxArray_real_T ilog;
+    static emxArray_real_T ilogX;
     static int sizeOfIlog[2] = {1, 2};
     static double ilogData[2] = {1, 2};
-    static emxArray_real_T ftmin;
+    static emxArray_real_T ftminX;
     static int sizeOfFtmin[2] = {2, 1};
-    static emxArray_real_T ftmax;
+    static emxArray_real_T ftmaxX;
     static int sizeOfFtmax[2] = {2, 1};
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ftvec.size = sizeOfFtvec;
-        wvec.size = sizeOfWvec;
-        wvec.data = wvecData + 23;
-        ilog.size = sizeOfIlog;
-        ilog.data = ilogData;
-        ftmin.size = sizeOfFtmin;
-        ftmin.data = ftminData + 23;
-        ftmax.size = sizeOfFtmax;
-        ftmax.data = ftmaxData + 23;
+        wvecX.size = sizeOfWvec;
+        wvecX.data = wvecData + 23;
+        ilogX.size = sizeOfIlog;
+        ilogX.data = ilogData;
+        ftminX.size = sizeOfFtmin;
+        ftminX.data = ftminData + 23;
+        ftmaxX.size = sizeOfFtmax;
+        ftmaxX.data = ftmaxData + 23;
     });
     
     ftvec.data = ftX;
-    double rawScore = features_ufbX(&ftvec, &wvec, &ilog, &ftmin, &ftmax, fbmin, fbmax);
-    double score = [self normalizedScoreFromScore:rawScore range:tappingRange];
+    double rawScoreX = features_ufbX(&ftvec, &wvecX, &ilogX, &ftminX, &ftmaxX, fbmin, fbmax);
+    double scoreX = [self normalizedScoreFromScore:rawScoreX range:tappingRange];
     
+    static PDRealArray *wvec, *ftmin, *ftmax;
+    static PDIntArray *ilog;
+    static dispatch_once_t onceToken2;
+    dispatch_once(&onceToken2, ^{
+        wvec = [PDRealArray new];
+        wvec.rows = 2;
+        wvec.cols = 1;
+        wvec.data = wvecData + 23;
+        ilog = [PDIntArray new];
+        [ilog setRows:1 columns:2];
+        ilog.data[0] = 1;
+        ilog.data[1] = 2;
+        ftmin = [PDRealArray new];
+        ftmin.rows = 1;
+        ftmin.cols = 2;
+        ftmin.data = ftminData + 23;
+        ftmax = [PDRealArray new];
+        ftmax.rows = 1;
+        ftmax.cols = 2;
+        ftmax.data = ftmaxData + 23;
+    });
+    
+    double rawScore = features_ufb(ft, wvec, ilog, ftmin, ftmax, fbmin, fbmax);
+    double score = [self normalizedScoreFromScore:rawScore range:tappingRange];
+
     return score;
 }
 

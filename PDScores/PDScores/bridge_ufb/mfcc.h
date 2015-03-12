@@ -19,7 +19,7 @@
 #include "bridge_ufb_types.h"
 
 /* Function Declarations */
-extern void mfcc(const emxArray_real_T *samples, emxArray_real_T *cepstra);
+extern void mfccX(const emxArray_real_T *samples, emxArray_real_T *cepstra);
 
 #endif
 

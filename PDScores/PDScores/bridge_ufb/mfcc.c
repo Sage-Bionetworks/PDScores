@@ -151,7 +151,7 @@ static void eml_xgemm(int n, const double A[10260], const emxArray_real_T *B,
   }
 }
 
-void mfcc(const emxArray_real_T *samples, emxArray_real_T *cepstra)
+void mfccX(const emxArray_real_T *samples, emxArray_real_T *cepstra)
 {
   int nframes;
   double melwts[20480];

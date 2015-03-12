@@ -27,7 +27,7 @@
 #include "signalprocessing.h"
 
 /* Function Definitions */
-void polyval(const double p[3], const emxArray_real_T *x, emxArray_real_T *y)
+void polyvalX(const double p[3], const emxArray_real_T *x, emxArray_real_T *y)
 {
   unsigned int uv6[2];
   int i24;

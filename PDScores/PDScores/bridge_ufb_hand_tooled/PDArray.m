@@ -8,6 +8,7 @@
 
 #import "PDArray.h"
 #import "PDMatlab.h"
+#import "signalprocessing.h"
 @import Accelerate;
 
 #pragma mark - PDArray
@@ -62,6 +63,11 @@
     }
     
     return (_data != NULL);
+}
+
+- (BOOL)isVector
+{
+    return _rows == 1 || _cols == 1;
 }
 
 - (BOOL)concatenateColumnVectors:(NSArray *)arrays
@@ -146,6 +152,88 @@
     return subarray;
 }
 
+- (instancetype)subarrayWithRowIndices:(PDIntArray *)rows columnIndices:(PDIntArray *)columns
+{
+    PDArray *subarray = [[self class] new];
+    size_t rowsSize = rows.rows * rows.cols;
+    size_t colsSize = columns.rows * columns.cols;
+    [subarray setRows:rowsSize columns:colsSize];
+    char *pDest = (char *)subarray.data;
+    
+    const size_t *pColIdxs = columns.data;
+    size_t typeSize = self.typeSize;
+
+    for (size_t col = 0; col < colsSize; ++col) {
+        size_t colIdx = *pColIdxs++ - 1;
+        const size_t *pRowIdxs = rows.data;
+        
+        for (size_t row = 0; row < rowsSize; ++row) {
+            size_t rowIdx = *pRowIdxs++ - 1; // because Matlab uses quaint one-based indexing
+            char *pSrc = (char *)_data + (colIdx * _rows + rowIdx) * typeSize;
+            blit(pDest, pSrc, typeSize);
+            pDest += typeSize;
+        }
+    }
+    
+    return subarray;
+}
+
+
+- (void)setSubarrayRows:(NSRange)rows columns:(NSRange)columns fromArray:(PDArray *)array
+{
+    // make sure the types match
+    if ([self class] != [array class]) {
+        return; // no match, silently fail
+    }
+    
+    // make sure all dimensions are suitable
+    if (rows.length != array.rows || columns.length != array.cols || rows.length > self.rows || columns.length > self.cols) {
+        // invalid operation attempted; again, silently fail because that's ALWAYS a good idea
+        return;
+    }
+    
+    size_t endOfCols = columns.location + columns.length;
+    size_t arrayStride = rows.length * self.typeSize;
+    const char *pSrc = array.data;
+    for (size_t column = columns.location; column < endOfCols; ++column) {
+        char *pDest = self.data + (column * self.rows + rows.location) * self.typeSize;
+        blit(pDest, pSrc, arrayStride);
+        pSrc += arrayStride;
+    }
+}
+
+- (void)setElementsWithRowIndices:(PDIntArray *)rows columnIndices:(PDIntArray *)columns fromArray:(PDArray *)array
+{
+    // make sure the types match
+    if ([self class] != [array class]) {
+        return; // no match, silently fail
+    }
+    
+    // make sure all dimensions are suitable
+    size_t rowsSize = rows.rows * rows.cols;
+    size_t colsSize = columns.rows * columns.cols;
+    if (rowsSize * colsSize != array.rows * array.cols) {
+        // invalid operation attempted; again, silently fail because that's ALWAYS a good idea
+        return;
+    }
+    
+    const size_t *pColIdxs = columns.data;
+    size_t typeSize = self.typeSize;
+    const char *pSrc = array.data;
+    
+    for (size_t col = 0; col < colsSize; ++col) {
+        size_t colIdx = *pColIdxs++ - 1;
+        const size_t *pRowIdxs = rows.data;
+        
+        for (size_t row = 0; row < rowsSize; ++row) {
+            size_t rowIdx = *pRowIdxs++ - 1;
+            char *pDest = (char *)_data + (colIdx * _rows + rowIdx) * typeSize;
+            blit(pDest, pSrc, typeSize);
+            pSrc += typeSize;
+        }
+    }
+}
+
 - (PDIntArray *)find
 {
     PDIntArray *found = [PDIntArray new];
@@ -216,6 +304,65 @@
     return found;
 }
 
+- (instancetype)elementsWithIndices:(PDIntArray *)indexArray
+{
+    PDArray *elements = [[self class] new];
+    size_t rows = indexArray.rows;
+    size_t cols = 1;
+    if (rows == 1) {
+        rows = indexArray.cols;
+    }
+    [elements setRows:rows columns:cols];
+    
+    const size_t *pIdx = indexArray.data;
+    const size_t *pEnd = pIdx + rows;
+    const char *source = self.data;
+    char *pDest = elements.data;
+    size_t destStride = elements.typeSize;
+    while (pIdx < pEnd) {
+        size_t index = *pIdx++ - 1;
+        blit(pDest, source + index * destStride, destStride);
+        pDest += destStride;
+    }
+    
+    return elements;
+}
+
+- (void)setElementsWithIndices:(PDIntArray *)indexArray fromArray:(PDArray *)array
+{
+    // array type must match self
+    if ([self class] != [array class]) {
+        return;
+    }
+    
+    // do nothing if either is empty
+    if (!(indexArray.rows && indexArray.cols && array.rows && array.cols)) {
+        return;
+    }
+    
+    // make sure they're the same sizes (though if they're both vectors, don't care whether row or column)
+    if ((indexArray.rows * indexArray.cols != array.rows * array.cols) ||
+        (!([indexArray isVector] && [array isVector]) && (indexArray.rows != array.rows || indexArray.cols != array.cols))) {
+        // not suitable for assignment
+        return;
+    }
+    
+    size_t stride = self.typeSize;
+    const char *pSrc = array.data;
+    const size_t *pIdx = indexArray.data;
+    const size_t *endIdx = pIdx + indexArray.rows * indexArray.cols;
+    const size_t mySize = _rows * _cols;
+    while (pIdx < endIdx) {
+        size_t index = *pIdx++ - 1;
+        if (index > mySize) {
+            // just skip out-of-bounds indices
+            continue;
+        }
+        blit(self.data + index * stride, pSrc, stride);
+        pSrc += stride;
+    }
+}
+
 static inline void blit(char *dest, const char *src, size_t count)
 {
     char *end = dest + count;
@@ -233,7 +380,7 @@ static inline void blit(char *dest, const char *src, size_t count)
         memcpy(transpose.data, _data, _rows * _cols * self.typeSize);
     } else {
         size_t typeSize = self.typeSize;
-        size_t tColStride = transpose.rows;
+        size_t tColStride = transpose.rows * typeSize;
         const char *pSrc = _data;
         const char *pEnd = pSrc + _rows * _cols * typeSize;
         char *rowStart = transpose.data;
@@ -251,6 +398,40 @@ static inline void blit(char *dest, const char *src, size_t count)
     return transpose;
 }
 
+void flipCol(char *outCol, const char *inCol, size_t rows, size_t stride)
+{
+    const char *pIn = inCol;
+    const char *pEnd = pIn + rows * stride;
+    char *pOut = outCol + (rows - 1) * stride;
+    
+    while (pIn < pEnd) {
+        blit(pOut, pIn, stride);
+        pIn += stride;
+        pOut -= stride;
+    }
+}
+
+- (instancetype)flipud
+{
+    if (_rows == 1) {
+        // row vector is unchanged by flipud
+        return [self copy];
+    }
+    
+    PDArray *flipud = [[self class] new];
+    [flipud setRows:_rows columns:_cols];
+    size_t stride = _rows * self.typeSize;
+    char *pIn = _data;
+    char *pOut = flipud.data;
+    for (size_t col = 0; col < _cols; ++col) {
+        flipCol(pOut, pIn, _rows, self.typeSize);
+        pIn += stride;
+        pOut += stride;
+    }
+    
+    return flipud;
+}
+
 - (BOOL)isZero:(void *)valPtr
 {
     return YES; // must override in all subclasses
@@ -258,7 +439,10 @@ static inline void blit(char *dest, const char *src, size_t count)
 
 - (void)dealloc
 {
-    free(_data);
+    // only free it if we actually allocated it
+    if (_allocatedSize) {
+        free(_data);
+    }
 }
 
 @end
@@ -276,6 +460,23 @@ static inline void blit(char *dest, const char *src, size_t count)
 {
     return (DSPDoubleComplex *)super.data;
 }
+
+- (PDRealArray *)abs
+{
+    PDRealArray *abs = [PDRealArray new];
+    [abs setRows:self.rows columns:self.cols];
+    const DOUBLE_COMPLEX *p = self.data;
+    const DOUBLE_COMPLEX *pEnd = p + self.rows * self.cols;
+    double *pDest = abs.data;
+    while (p < pEnd) {
+        DOUBLE_COMPLEX this = *p++;
+        *pDest++ = sqrt(this.real * this.real + this.imag * this.imag);
+    }
+    
+    return abs;
+}
+
+
 
 - (BOOL)isZero:(void *)valPtr
 {
@@ -299,12 +500,12 @@ static inline void blit(char *dest, const char *src, size_t count)
     [rv setRows:1 columns:cols];
     double *p = rv.data;
     double *pEnd = p + cols;
-    double current = start;
-    while (p < pEnd) {
-        *p++ = current;
-        current += step;
-    }
     
+    double index = 0.0;
+    while (p < pEnd) {
+        *p++ = start + index++ * step;
+    }
+        
     return rv;
 }
 
@@ -382,39 +583,78 @@ static inline void blit(char *dest, const char *src, size_t count)
     return applied;
 }
 
-- (PDRealArray *)elementsWithIndices:(PDIntArray *)indexArray
+//- (PDRealArray *)elementsWithIndices:(PDIntArray *)indexArray
+//{
+//    PDRealArray *elements = [PDRealArray new];
+//    size_t rows = indexArray.rows;
+//    size_t cols = 1;
+//    if (rows == 1) {
+//        rows = indexArray.cols;
+//    }
+//    [elements setRows:rows columns:cols];
+//    
+//    const size_t *pIdx = indexArray.data;
+//    const size_t *pEnd = pIdx + rows;
+//    const double *source = self.data;
+//    double *pDest = elements.data;
+//    while (pIdx < pEnd) {
+//        size_t index = *pIdx++;
+//        *pDest++ = source[index];
+//    }
+//    
+//    return elements;
+//}
+
+- (PDRealArray *)abs
 {
-    PDRealArray *elements = [PDRealArray new];
-    size_t rows = indexArray.rows;
-    size_t cols = 1;
-    if (rows == 1) {
-        rows = indexArray.cols;
-    }
-    [elements setRows:rows columns:cols];
-    
-    const size_t *pIdx = indexArray.data;
-    const size_t *pEnd = pIdx + rows;
-    const double *source = self.data;
-    double *pDest = elements.data;
-    while (pIdx < pEnd) {
-        size_t index = *pIdx++;
-        *pDest++ = source[index];
+    PDRealArray *abs = [PDRealArray new];
+    [abs setRows:self.rows columns:self.cols];
+    const double *p = self.data;
+    const double *pEnd = p + self.rows * self.cols;
+    double *pDest = abs.data;
+    while (p < pEnd) {
+        *pDest++ = fabs(*p++);
     }
     
-    return elements;
+    return abs;
+}
+
+- (PDRealArray *)round
+{
+    PDRealArray *roundArray = [PDRealArray new];
+    [roundArray setRows:self.rows columns:self.cols];
+    const double *p = self.data;
+    const double *pEnd = p + self.rows * self.cols;
+    double *pDest = roundArray.data;
+    while (p < pEnd) {
+        *pDest++ = round(*p++);
+    }
+    
+    return roundArray;
 }
 
 double minForColumn(const double *colStart, size_t rows, size_t *index)
 {
     const double *p = colStart;
     const double *pEnd = p + rows;
-    double min = DBL_MAX;
+    double min = *p++;
+    while (p < pEnd && isnan(min)) {
+        min = *p++;
+    }
+    if (index) {
+        // start it with *something*
+        *index = p - colStart + 1;
+    }
     while (p < pEnd) {
-        if (*p < min) {
+        double val = *p++;
+        if (isnan(val)) {
+            continue;
+        }
+        if (val < min) {
             if (index) {
                 *index = p - colStart;
             }
-            min = *p;
+            min = val;
         }
         ++p;
     }
@@ -477,15 +717,26 @@ double maxForColumn(const double *colStart, size_t rows, size_t *index)
 {
     const double *p = colStart;
     const double *pEnd = p + rows;
-    double max = -DBL_MAX;
+    double max = *p++;
+    while (p < pEnd && isnan(max)) {
+        max = *p++;
+    }
+    if (index) {
+        // start it with *something*
+        *index = p - colStart; // + 1; --we've already incremented p past this one
+    }
     while (p < pEnd) {
-        if (*p > max) {
-            if (index) {
-                *index = p - colStart;
-            }
-            max = *p;
+        double val = *p++;
+        if (isnan(val)) {
+            continue;
         }
-        ++p;
+        if (val > max) {
+            if (index) {
+                // Matlab one-based indices
+                *index = p - colStart; // + 1; --we've already incremented p past this one
+            }
+            max = val;
+        }
     }
     
     return max;
@@ -547,11 +798,19 @@ double meanForColumn(const double *colStart, size_t rows)
     const double *p = colStart;
     const double *pEnd = p + rows;
     double sum = 0.0;
+    size_t validRows = rows;
     while (p < pEnd) {
-        sum += *p++;
+        double val = *p++;
+        
+        // skip NaNs and don't count them as zeros
+        if (isnan(val)) {
+            --validRows;
+            continue;
+        }
+        sum += val;
     }
     
-    return sum / (double)rows;
+    return sum / (double)validRows;
 }
 
 - (PDRealArray *)mean
@@ -585,12 +844,26 @@ double medianForColumn(const double *colStart, size_t rows)
     qsort_b(sortedCol, rows, sizeof(double), ^int(const void *ptr1, const void *ptr2) {
         double v1 = *(double *)ptr1;
         double v2 = *(double *)ptr2;
-        return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+        // sort all the NaNs to the bottom (even below -Inf) so we can just skip over 'em
+        return isnan(v1) || isnan(v2) ? -1 : v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
     });
     
     double median = NAN;
-    size_t mid = rows >> 1;
-    if (rows % 2) {
+    
+    // don't count the NaNs
+    const double *p = colStart;
+    const double *pEnd = colStart + rows;
+    size_t validRows = rows;
+    while (p < pEnd) {
+        if (!isnan(*p)) {
+            break;
+        }
+        ++p;
+        --validRows;
+    }
+    
+    size_t mid = validRows >> 1;
+    if (validRows % 2) {
         // odd--take the middle one
         median = sortedCol[mid];
     } else {
@@ -625,6 +898,22 @@ double medianForColumn(const double *colStart, size_t rows)
     }
     
     return median;
+}
+
+- (double)norm
+{
+    double sumsq = 0.0;
+    const double *p = self.data;
+    const double *pEnd = p + self.rows * self.cols;
+    while (p < pEnd) {
+        double value = *p++;
+        if (isnan(value)) {
+            return NAN;
+        }
+        sumsq += value * value;
+    }
+    
+    return sqrt(sumsq);
 }
 
 - (PDRealArray *)iqr
@@ -705,8 +994,9 @@ void diffsForColumn(double *destStart, const double *colStart, size_t rows)
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [diff setRows:1 columns:self.cols - 1];
+        pDest = diff.data; // if rows were 1, then it was empty before
         while (p < pEnd) {
-            diffsForColumn(pDest, p, self.rows);
+            diffsForColumn(pDest, p, self.cols);
             p += self.cols;
             pDest += diff.cols;
         }
@@ -814,11 +1104,81 @@ void addRowsFromColumn(double *destStart, const double *colStart, size_t rows)
     return sum2;
 }
 
+- (PDRealArray *)square
+{
+    return [self applyReal:^double(const double element) {
+        return element * element;
+    }];
+}
+
 - (PDRealArray *)sqrt
 {
     // assumes all values in self are non-negative; seems to be true for Max Little's code
     return [self applyReal:^double(const double element) {
         return sqrt(element);
+    }];
+}
+
+- (PDRealArray *)sin
+{
+    return [self applyReal:^double(const double element) {
+        return sin(element);
+    }];
+}
+
+- (PDRealArray *)cos
+{
+    return [self applyReal:^double(const double element) {
+        return cos(element);
+    }];
+}
+
+- (PDRealArray *)atan2:(PDRealArray *)x
+{
+    return [self applyReal:^double(const double element, const double otherArrayElement) {
+        return atan2(element, otherArrayElement);
+    } withRealArray:x];
+}
+
+- (PDRealArray *)log
+{
+    return [self applyReal:^double(const double element) {
+        return log(element);
+    }];
+}
+
+- (PDRealArray *)log2
+{
+    return [self applyReal:^double(const double element) {
+        return log2(element);
+    }];
+}
+
+- (PDRealArray *)log10
+{
+    return [self applyReal:^double(const double element) {
+        return log10(element);
+    }];
+}
+
+- (PDRealArray *)exp2
+{
+    return [self applyReal:^double(const double element) {
+        return exp2(element);
+    }];
+}
+
+- (PDRealArray *)pow:(double)exp
+{
+    return [self applyReal:^double(const double element) {
+        return pow(element, exp);
+    }];
+}
+
+- (PDRealArray *)oneOverX
+{
+    return [self applyReal:^double(const double element) {
+        return 1.0 / element;
     }];
 }
 
@@ -853,6 +1213,32 @@ void addRowsFromColumn(double *destStart, const double *colStart, size_t rows)
     return diag;
 }
 
+void doFftForColumn(DOUBLE_COMPLEX *outColStart, const double *colStart, size_t rows)
+{
+    fft(colStart, rows, outColStart);
+}
+
+- (PDComplexArray *)fft
+{
+    PDComplexArray *fftout = [PDComplexArray new];
+    [fftout setRows:self.rows columns:self.cols];
+    const double *p = self.data;
+    const double *pEnd = p + self.rows * self.cols;
+    DOUBLE_COMPLEX *pDest = fftout.data;
+    if (self.rows == 1) {
+        doFftForColumn(pDest, p, self.cols);
+    } else {
+        while (p < pEnd) {
+            doFftForColumn(pDest, p, self.rows);
+            p += self.rows;
+            pDest += fftout.rows;
+        }
+    }
+    
+    return fftout;
+}
+
+
 - (PDRealArray *)matmult:(PDRealArray *)matrix
 {
     // inner dimensions must match
@@ -868,6 +1254,45 @@ void addRowsFromColumn(double *destStart, const double *colStart, size_t rows)
     return result;
 }
 
+- (PDRealArray *)multiply:(double)factor
+{
+    return [self applyReal:^double(const double element) {
+        return element * factor;
+    }];
+}
+
+- (PDRealArray *)divide:(double)denominator
+{
+    return [self multiply:1.0 / denominator];
+}
+
+- (PDRealArray *)under:(double)numerator
+{
+    return [self applyReal:^double(const double element) {
+        return numerator / element;
+    }];
+}
+
+- (PDRealArray *)add:(double)addend
+{
+    return [self applyReal:^double(const double element) {
+        return element + addend;
+    }];
+}
+
+- (PDRealArray *)subtract:(double)subtrahend
+{
+    return [self add:-subtrahend];
+}
+
+- (PDRealArray *)subtractFrom:(double)minuend
+{
+    return [self applyReal:^double(const double element) {
+        return minuend - element;
+    }];
+}
+
+// internal method
 - (BOOL)isZero:(void *)valPtr
 {
     return *(double *)valPtr == 0.0;
@@ -878,6 +1303,21 @@ void addRowsFromColumn(double *destStart, const double *colStart, size_t rows)
 #pragma mark - PDIntArray
 
 @implementation PDIntArray
+
++ (PDIntArray *)rowVectorFrom:(size_t)start to:(size_t)end
+{
+    PDIntArray *rowVector = [PDIntArray new];
+    size_t cols = end - start + 1;
+    [rowVector setRows:1 columns:cols];
+    size_t *p = rowVector.data;
+    size_t *pEnd = p + cols;
+    size_t value = start;
+    while (p < pEnd) {
+        *p++ = value++;
+    }
+    
+    return rowVector;
+}
 
 - (size_t)typeSize
 {

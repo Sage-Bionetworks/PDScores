@@ -41,13 +41,13 @@
 #include "signalprocessing.h"
 
 /* Function Declarations */
-/*static*/ void pitchStrengthAllCandidates(const emxArray_real_T *f, const
+/*static*/ void pitchStrengthAllCandidatesX(const emxArray_real_T *f, const
   emxArray_real_T *L, const emxArray_real_T *pc, emxArray_real_T *S);
-/*static*/ void pitchStrengthOneCandidate(const emxArray_real_T *f, const
+/*static*/ void pitchStrengthOneCandidateX(const emxArray_real_T *f, const
   emxArray_real_T *NL, double pc, emxArray_real_T *S);
 
 /* Function Definitions */
-/*static*/ void pitchStrengthAllCandidates(const emxArray_real_T *f, const
+/*static*/ void pitchStrengthAllCandidatesX(const emxArray_real_T *f, const
   emxArray_real_T *L, const emxArray_real_T *pc, emxArray_real_T *S)
 {
   int u1;
@@ -428,7 +428,7 @@
       }
     }
 
-    pitchStrengthOneCandidate(b_f, b_L, pc->data[j], b_n);
+    pitchStrengthOneCandidateX(b_f, b_L, pc->data[j], b_n);
     absb = b_n->size[1];
     for (i = 0; i < absb; i++) {
       S->data[j + S->size[0] * i] = b_n->data[b_n->size[0] * i];
@@ -449,7 +449,7 @@
   emxFree_real_T(&k);
 }
 
-/*static*/ void pitchStrengthOneCandidate(const emxArray_real_T *f, const
+/*static*/ void pitchStrengthOneCandidateX(const emxArray_real_T *f, const
   emxArray_real_T *NL, double pc, emxArray_real_T *S)
 {
   double n;
@@ -1326,7 +1326,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       w->data[i13] = 0.0;
     }
 
-    hanning(&w->data[0], ws->data[i]);
+    sp_hanning(&w->data[0], ws->data[i]);
     kd = fmax(0.0, rt_roundd_snf(ws->data[i] - kd));
 
     /*  Window overlap */
@@ -1884,7 +1884,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
     }
 
     c_abs(X, r19);
-    interp1(f, r19, fERBs, varargin_2);
+    interp1X(f, r19, fERBs, varargin_2);
     for (i13 = 0; i13 < 2; i13++) {
       logWs[i13] = varargin_2->size[i13];
     }
@@ -1910,7 +1910,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
       pc->data[i13] = pc_data[(int)j->data[i13] - 1];
     }
 
-    pitchStrengthAllCandidates(fERBs, L, pc, r19);
+    pitchStrengthAllCandidatesX(fERBs, L, pc, r19);
     i13 = Si->size[0] * Si->size[1];
     Si->size[0] = r19->size[0];
     Si->size[1] = r19->size[1];
@@ -2322,7 +2322,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
         b_pO->data[i13] = (pO->data[i13] - 1.0) * 2.0 * 3.1415926535897931;
       }
 
-      polyval(c, b_pO, ws);
+      polyvalX(c, b_pO, ws);
       ixstart = 1;
       n = ws->size[1];
       kd = ws->data[0];
@@ -2373,7 +2373,7 @@ void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
   emxFree_real_T(&S);
 }
 
-void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt,
+void swipepX(const emxArray_real_T *x, double fs, const double plim[2], double dt,
             double dlog2p, double dERBs, double woverlap, double sTHR,
             emxArray_real_T *p, emxArray_real_T *t, emxArray_real_T *s)
 {
@@ -2979,7 +2979,7 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
       w->data[i27] = 0.0;
     }
 
-    hanning(&w->data[0], ws->data[i]);
+    sp_hanning(&w->data[0], ws->data[i]);
     kd = fmax(0.0, rt_roundd_snf(ws->data[i] - kd));
 
     /*  Window overlap */
@@ -3547,7 +3547,7 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
     }
 
     c_abs(X, L);
-    interp1(f, L, fERBs, mu);
+    interp1X(f, L, fERBs, mu);
     for (i27 = 0; i27 < 2; i27++) {
       tmp_size[i27] = mu->size[i27];
     }
@@ -3573,7 +3573,7 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
       b_pc->data[i27] = pc->data[(int)j->data[i27] - 1];
     }
 
-    pitchStrengthAllCandidates(fERBs, L, b_pc, Si);
+    pitchStrengthAllCandidatesX(fERBs, L, b_pc, Si);
 
     /*  Interpolate pitch strength at desired times */
     if (Si->size[1] > 1) {
@@ -3900,7 +3900,7 @@ void swipep(const emxArray_real_T *x, double fs, const double plim[2], double dt
         b_pO->data[i27] = (pO->data[i27] - 1.0) * 2.0 * 3.1415926535897931;
       }
 
-      polyval(c, b_pO, ws);
+      polyvalX(c, b_pO, ws);
       ixstart = 1;
       n = ws->size[1];
       kd = ws->data[0];

@@ -21,7 +21,7 @@
 /* Function Declarations */
 extern void b_swipep(const emxArray_real_T *x, double fs, emxArray_real_T *p,
                      emxArray_real_T *t, emxArray_real_T *s);
-extern void swipep(const emxArray_real_T *x, double fs, const double plim[2],
+extern void swipepX(const emxArray_real_T *x, double fs, const double plim[2],
                    double dt, double dlog2p, double dERBs, double woverlap,
                    double sTHR, emxArray_real_T *p, emxArray_real_T *t,
                    emxArray_real_T *s);

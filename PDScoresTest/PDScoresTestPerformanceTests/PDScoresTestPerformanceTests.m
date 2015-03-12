@@ -34,7 +34,7 @@ static const unsigned long kMaxWindowSize = 16384;
     [self measureBlock:^{
         double outBuf[kMaxWindowSize];
         for (int i = kMinWindowSize; i < kMaxWindowSize; ++i) {
-            hanning(outBuf, i);
+            sp_hanning(outBuf, i);
         }
     }];
 }

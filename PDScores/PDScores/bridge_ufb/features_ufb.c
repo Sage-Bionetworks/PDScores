@@ -26,7 +26,7 @@
 #include "signalprocessing.h"
 
 /* Function Definitions */
-double features_ufb(const emxArray_real_T *ftvec, const emxArray_real_T *wvec,
+double features_ufbX(const emxArray_real_T *ftvec, const emxArray_real_T *wvec,
                     const emxArray_real_T *ilog, const emxArray_real_T *ftmin,
                     const emxArray_real_T *ftmax, double fbmin, double fbmax)
 {

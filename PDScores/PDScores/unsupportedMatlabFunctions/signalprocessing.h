@@ -6,12 +6,15 @@
 //  Copyright (c) 2015 Sage Bionetworks. All rights reserved.
 //
 
-#ifndef __PDScores__signalprocessing__
-#define __PDScores__signalprocessing__
+#ifndef __SIGNALPROCESSING__
+#define __SIGNALPROCESSING__
 
-#include "bridge_ufb_types.h"
+#include <Accelerate/Accelerate.h>
 
-void hanning(double *outBuf, unsigned long windowSize);
-void spectrogram(creal_T *outFourierTransform, double *outFrequencies, double *outTimes, double *inSignal, unsigned long signalSize, double *window, unsigned long overlap, unsigned long windowSize, double samplingRate);
+void sp_hanning(double *outBuf, unsigned long windowSize);
+void sp_hamming(double *outBuf, unsigned long windowSize);
+void spectrogram(DOUBLE_COMPLEX *outFourierTransform, double *outFrequencies, double *outTimes, double *inSignal, unsigned long signalSize, double *window, unsigned long overlap, unsigned long windowSize, double samplingRate);
 
-#endif /* defined(__PDScores__signalprocessing__) */
+void fft(const double *inSignal, size_t signalLength, DOUBLE_COMPLEX *outDFT);
+
+#endif
