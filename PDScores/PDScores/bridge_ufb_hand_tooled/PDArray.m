@@ -151,13 +151,15 @@
     PDArray *subarray = [[self class] new];
     [subarray setRows:rows.length columns:columns.length];
     char *pDest = (char *)subarray.data;
+    size_t destStride = subarray.rows * subarray.typeSize;
     size_t endCol = columns.length + columns.location;
+    char *p = (char *)_data + self.typeSize * (_rows * columns.location + rows.location);
+    size_t srcStride = self.typeSize * self.rows;
+    size_t colHeight = self.typeSize * rows.length;
     for (size_t col = columns.location; col < endCol; ++col) {
-        char *p = (char *)_data + self.typeSize * (_rows * col + rows.location);
-        char *pEnd = p + self.typeSize * rows.length;
-        while (p < pEnd) {
-            *pDest++ = *p++;
-        }
+        memcpy(pDest, p, colHeight);
+        p += srcStride;
+        pDest += destStride;
     }
     
     return subarray;
