@@ -43,6 +43,7 @@
     NSURL *gpFileURL = [[NSBundle mainBundle] URLForResource:@"gait-posture" withExtension:@"json"];
     NSData *jsonData = [NSData dataWithContentsOfURL:gpFileURL];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:NULL];
+    jsonData = nil;
     NSArray *keys = [json allKeys];
     NSPredicate *gaitPred = [NSPredicate predicateWithFormat:@"SELF contains %@ OR SELF contains %@", @"accel_walking.outbound-", @"accel_walking.return-"];
     NSPredicate *postPred = [NSPredicate predicateWithFormat:@"SELF contains %@", @"accel_walking.rest-"];

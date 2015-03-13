@@ -55,6 +55,10 @@
             }
             _allocatedSize = newSize;
         }
+        
+        if (!_data) {
+            NSLog(@"Failed to allocate %lu bytes for %@", newBytes, NSStringFromClass([self class]));
+        }
     }
     
     if (_data) {
@@ -442,6 +446,7 @@ void flipCol(char *outCol, const char *inCol, size_t rows, size_t stride)
     // only free it if we actually allocated it
     if (_allocatedSize) {
         free(_data);
+        _data = NULL;
     }
 }
 
