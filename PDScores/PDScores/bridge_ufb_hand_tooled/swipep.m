@@ -243,128 +243,139 @@ void swipep(PDRealArray *x, double fs, double plim[2], double dt, double dlog2p,
     //for i = 1 : length(ws)
     size_t length_ws = MAX(ws.rows, ws.cols);
     for (size_t i = 0; i < length_ws; ++i) {
-    //    dn = max( 1, round( 8*(1-woverlap) * fs / pO(i) ) ); % Hop size
-        double dn = MAX(1.0, round(8.0 * (1.0 - woverlap) * fs / p0.data[i]));
-    //    % Zero pad signal
-    //    xzp = [ zeros( ws(i)/2, 1 ); x(:); zeros( dn + ws(i)/2, 1 ) ];
-        double ws_i = ws.data[i];
-        PDRealArray *xzp = [PDRealArray new];
-        [xzp concatenateColumnVectors:@[ zeros(ws_i / 2.0, 1), x, zeros(dn + ws_i / 2.0, 1)]];
-    //    % Compute spectrum
-    //    w = hanning( ws(i) ); % Hann window
-        PDRealArray *w = hanning(ws_i);
-    //    o = max( 0, round( ws(i) - dn ) ); % Window overlap
-        size_t o = MAX(0, round(ws_i - dn));
-    //    [ X, f, ti ] = specgram( xzp, ws(i), fs, w, o );
-        PDRealArray *f;
-        PDRealArray *ti;
-        PDComplexArray *X = specgram(xzp, ws_i, fs, w, o, &f, &ti);
-    //    % Select candidates that use this window size
-    //    if length(ws) == 1
-    //        j=[(pc)]'; k = [];
-    //    elseif i == length(ws)
-    //        j=find(d-i>-1); k=find(d(j)-i<0);
-    //    elseif i==1
-    //        j=find(d-i<1); k=find(d(j)-i>0);
-    //    else
-    //        j=find(abs(d-i)<1); k=1:length(j);
-    //    end
-        PDIntArray *j;
-        PDIntArray *k;
-        if (length_ws == 1) {
-            // The Matlab code for this case makes no sense to me--the output would be a real array, not an
-            // integer or logical one, so couldn't be used to index into or select rows from other arrays. And
-            // even if there's some magic in the (apparently superfluous) [(..)] construction, it won't affect that
-            // pc will have values in the range 50-500 while find(d...) would have values in the 1-length(d) range.
-            // Be that as it may... I don't think it matters as we never get in here anyway.
-            j = [[pc applyInt:^size_t(const double element) {
-                return element;
-            }] transpose];
-            k = [PDIntArray new];
-        } else if (i + 1 == length_ws) {
-            j = [[d applyInt:^size_t(const double element) {
-                return element - (i + 1) > -1;
-            }] find];
-            k = [[[d elementsWithIndices:j] applyInt:^size_t(const double element) {
-                return element - (i + 1) < 0;
-            }] find];
-        } else if (i + 1 == 1) {
-            j = [[d applyInt:^size_t(const double element) {
-                return element - (i + 1) < 1;
-            }] find];
-            k = [[[d elementsWithIndices:j] applyInt:^size_t(const double element) {
-                return element - (i + 1) > 0;
-            }] find];
-        } else {
-            j = [[d applyInt:^size_t(const double element) {
-                return fabs(element - (i + 1)) < 1;
-            }] find];
-            size_t length_j = MAX(j.rows, j.cols);
-            k = [PDIntArray rowVectorFrom:1 to:length_j];
+        @autoreleasepool {
+            //    dn = max( 1, round( 8*(1-woverlap) * fs / pO(i) ) ); % Hop size
+            double dn = MAX(1.0, round(8.0 * (1.0 - woverlap) * fs / p0.data[i]));
+            //    % Zero pad signal
+            //    xzp = [ zeros( ws(i)/2, 1 ); x(:); zeros( dn + ws(i)/2, 1 ) ];
+            double ws_i = ws.data[i];
+            PDRealArray *f;
+            PDRealArray *ti;
+            PDComplexArray *X;
+            @autoreleasepool {
+                PDRealArray *xzp = [PDRealArray new];
+                [xzp concatenateColumnVectors:@[ zeros(ws_i / 2.0, 1), x, zeros(dn + ws_i / 2.0, 1)]];
+                //    % Compute spectrum
+                //    w = hanning( ws(i) ); % Hann window
+                PDRealArray *w = hanning(ws_i);
+                //    o = max( 0, round( ws(i) - dn ) ); % Window overlap
+                size_t o = MAX(0, round(ws_i - dn));
+                //    [ X, f, ti ] = specgram( xzp, ws(i), fs, w, o );
+                X = specgram(xzp, ws_i, fs, w, o, &f, &ti);
+            }
+            //    % Select candidates that use this window size
+            //    if length(ws) == 1
+            //        j=[(pc)]'; k = [];
+            //    elseif i == length(ws)
+            //        j=find(d-i>-1); k=find(d(j)-i<0);
+            //    elseif i==1
+            //        j=find(d-i<1); k=find(d(j)-i>0);
+            //    else
+            //        j=find(abs(d-i)<1); k=1:length(j);
+            //    end
+            PDIntArray *j;
+            PDIntArray *k;
+            if (length_ws == 1) {
+                // The Matlab code for this case makes no sense to me--the output would be a real array, not an
+                // integer or logical one, so couldn't be used to index into or select rows from other arrays. And
+                // even if there's some magic in the (apparently superfluous) [(..)] construction, it won't affect that
+                // pc will have values in the range 50-500 while find(d...) would have values in the 1-length(d) range.
+                // Be that as it may... I don't think it matters as we never get in here anyway.
+                j = [[pc applyInt:^size_t(const double element) {
+                    return element;
+                }] transpose];
+                k = [PDIntArray new];
+            } else if (i + 1 == length_ws) {
+                j = [[d applyInt:^size_t(const double element) {
+                    return element - (i + 1) > -1;
+                }] find];
+                k = [[[d elementsWithIndices:j] applyInt:^size_t(const double element) {
+                    return element - (i + 1) < 0;
+                }] find];
+            } else if (i + 1 == 1) {
+                j = [[d applyInt:^size_t(const double element) {
+                    return element - (i + 1) < 1;
+                }] find];
+                k = [[[d elementsWithIndices:j] applyInt:^size_t(const double element) {
+                    return element - (i + 1) > 0;
+                }] find];
+            } else {
+                j = [[d applyInt:^size_t(const double element) {
+                    return fabs(element - (i + 1)) < 1;
+                }] find];
+                size_t length_j = MAX(j.rows, j.cols);
+                k = [PDIntArray rowVectorFrom:1 to:length_j];
+            }
+            //    % Compute loudness at ERBs uniformly-spaced frequencies
+            //    fERBs = fERBs( find( fERBs > pc(j(1))/4, 1, 'first' ) : end );
+            size_t foundfERBs = [[fERBs applyInt:^size_t(const double element) {
+                return element > pc.data[j.data[0] - 1] / 4.0;
+            }] findFirst:1].data[0];
+            PDIntArray *ifERBs = [PDIntArray rowVectorFrom:foundfERBs to:fERBs.rows];
+            fERBs = [fERBs elementsWithIndices:ifERBs];
+            //    L = sqrt( max( 0, interp1( f, abs(X), fERBs, 'spline', 0) ) );
+            PDRealArray *L;
+            @autoreleasepool {
+                PDRealArray *Linterp = interp1(f, [X abs], fERBs, PDInterp1MethodSpline, 0.0);
+                L = [[Linterp applyReal:^double(const double element) {
+                    return isnan(element) || element < 0.0 ? 0.0 : element;
+                }] sqrt];
+            }
+            //    % Compute pitch strength
+            //    Si = pitchStrengthAllCandidates( fERBs, L, pc(j) );
+            PDRealArray *Si;
+            @autoreleasepool {
+                Si = pitchStrengthAllCandidates(fERBs, L, [pc elementsWithIndices:j]);
+            }
+            //    % Interpolate pitch strength at desired times
+            //    if size(Si,2) > 1
+            if (Si.cols > 1) {
+                //        warning off MATLAB:interp1:NaNinY
+                //        Si = interp1( ti, Si', t, 'linear', NaN )';
+                Si = [interp1(ti, [Si transpose], *t, PDInterp1MethodLinear, NAN) transpose];
+                //        warning on MATLAB:interp1:NaNinY
+                //    else
+            } else {
+                
+                //        Si = repmat( NaN, length(Si), length(t) );
+                size_t length_Si = MAX(Si.rows, Si.cols);
+                Si = NaN(length_Si, length_t);
+                //    end
+            }
+            //    % Add pitch strength to combination
+            //    lambda = d( j(k) ) - i;
+            PDRealArray *lambda = [[d elementsWithIndices:[j elementsWithIndices:k]] subtract:i + 1];
+            //    mu = ones( size(j) );
+            PDRealArray *mu = ones(j.rows, j.cols);
+            //    mu(k) = 1 - abs( lambda );
+            PDRealArray *one_minus_abs_lambda = [[lambda abs] applyReal:^double(const double element) {
+                return 1.0 - element;
+            }];
+            [mu setElementsWithIndices:k fromArray:one_minus_abs_lambda];
+            //    S(j,:) = S(j,:) + repmat(mu,1,size(Si,2)) .* Si;
+            PDRealArray *reppedmu_times_si = [repmat(mu, 1, Si.cols) applyReal:^double(const double element, const double otherArrayElement) {
+                return element * otherArrayElement;
+            } withRealArray:Si];
+            PDIntArray *S_cols = [PDIntArray rowVectorFrom:1 to:S.cols];
+            PDRealArray *S_j = [S subarrayWithRowIndices:j columnIndices:S_cols];
+            PDRealArray *S_j_plus_reppedmu = [S_j applyReal:^double(const double element, const double otherArrayElement) {
+                return element + otherArrayElement;
+            } withRealArray:reppedmu_times_si];
+            [S setElementsWithRowIndices:j columnIndices:S_cols fromArray:S_j_plus_reppedmu];
+            //        size_t j_size = j.rows * j.cols;
+            //        for (size_t jIdx = 0; jIdx < j_size; ++jIdx) {
+            //            PDIntArray *SColumns = [PDIntArray rowVectorFrom:1 to:S.cols];
+            //            PDRealArray *reppedmu = [repmat(mu, 1, Si.cols) applyReal:^double(const double element, const double otherArrayElement) {
+            //                return element * otherArrayElement;
+            //            } withRealArray:Si];
+            //            PDRealArray *S_j = [S subarrayWithRowIndices:j columnIndices:SColumns];
+            //            PDRealArray *S_plus_repmat = [S_j applyReal:^double(const double element, const double otherArrayElement) {
+            //                return element + otherArrayElement;
+            //            } withRealArray:reppedmu];
+            //            [S setElementsWithRowIndices:j columnIndices:SColumns fromArray:S_plus_repmat];
+            //        }
+            //end
         }
-    //    % Compute loudness at ERBs uniformly-spaced frequencies
-    //    fERBs = fERBs( find( fERBs > pc(j(1))/4, 1, 'first' ) : end );
-        size_t foundfERBs = [[fERBs applyInt:^size_t(const double element) {
-            return element > pc.data[j.data[0] - 1] / 4.0;
-        }] findFirst:1].data[0];
-        PDIntArray *ifERBs = [PDIntArray rowVectorFrom:foundfERBs to:fERBs.rows];
-        fERBs = [fERBs elementsWithIndices:ifERBs];
-    //    L = sqrt( max( 0, interp1( f, abs(X), fERBs, 'spline', 0) ) );
-        PDRealArray *Linterp = interp1(f, [X abs], fERBs, PDInterp1MethodSpline, 0.0);
-        PDRealArray *L = [[Linterp applyReal:^double(const double element) {
-            return isnan(element) || element < 0.0 ? 0.0 : element;
-        }] sqrt];
-    //    % Compute pitch strength
-    //    Si = pitchStrengthAllCandidates( fERBs, L, pc(j) );
-        PDRealArray *Si = pitchStrengthAllCandidates(fERBs, L, [pc elementsWithIndices:j]);
-    //    % Interpolate pitch strength at desired times
-    //    if size(Si,2) > 1
-        if (Si.cols > 1) {
-    //        warning off MATLAB:interp1:NaNinY
-    //        Si = interp1( ti, Si', t, 'linear', NaN )';
-            Si = [interp1(ti, [Si transpose], *t, PDInterp1MethodLinear, NAN) transpose];
-    //        warning on MATLAB:interp1:NaNinY
-    //    else
-        } else {
-
-    //        Si = repmat( NaN, length(Si), length(t) );
-            size_t length_Si = MAX(Si.rows, Si.cols);
-            Si = NaN(length_Si, length_t);
-    //    end
-        }
-    //    % Add pitch strength to combination
-    //    lambda = d( j(k) ) - i;
-        PDRealArray *lambda = [[d elementsWithIndices:[j elementsWithIndices:k]] subtract:i + 1];
-    //    mu = ones( size(j) );
-        PDRealArray *mu = ones(j.rows, j.cols);
-    //    mu(k) = 1 - abs( lambda );
-        PDRealArray *one_minus_abs_lambda = [[lambda abs] applyReal:^double(const double element) {
-            return 1.0 - element;
-        }];
-        [mu setElementsWithIndices:k fromArray:one_minus_abs_lambda];
-    //    S(j,:) = S(j,:) + repmat(mu,1,size(Si,2)) .* Si;
-        PDRealArray *reppedmu_times_si = [repmat(mu, 1, Si.cols) applyReal:^double(const double element, const double otherArrayElement) {
-            return element * otherArrayElement;
-        } withRealArray:Si];
-        PDIntArray *S_cols = [PDIntArray rowVectorFrom:1 to:S.cols];
-        PDRealArray *S_j = [S subarrayWithRowIndices:j columnIndices:S_cols];
-        PDRealArray *S_j_plus_reppedmu = [S_j applyReal:^double(const double element, const double otherArrayElement) {
-            return element + otherArrayElement;
-        } withRealArray:reppedmu_times_si];
-        [S setElementsWithRowIndices:j columnIndices:S_cols fromArray:S_j_plus_reppedmu];
-//        size_t j_size = j.rows * j.cols;
-//        for (size_t jIdx = 0; jIdx < j_size; ++jIdx) {
-//            PDIntArray *SColumns = [PDIntArray rowVectorFrom:1 to:S.cols];
-//            PDRealArray *reppedmu = [repmat(mu, 1, Si.cols) applyReal:^double(const double element, const double otherArrayElement) {
-//                return element * otherArrayElement;
-//            } withRealArray:Si];
-//            PDRealArray *S_j = [S subarrayWithRowIndices:j columnIndices:SColumns];
-//            PDRealArray *S_plus_repmat = [S_j applyReal:^double(const double element, const double otherArrayElement) {
-//                return element + otherArrayElement;
-//            } withRealArray:reppedmu];
-//            [S setElementsWithRowIndices:j columnIndices:SColumns fromArray:S_plus_repmat];
-//        }
-    //end
     }
 
     //% Fine tune pitch using parabolic interpolation
@@ -434,129 +445,150 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
     //S = zeros( length(pc), size(L,2) );
     size_t length_pc = MAX(pc.rows, pc.cols);
     PDRealArray *S = zeros(length_pc, L.cols);
-    //% Define integration regions
-    //k = ones( 1, length(pc)+1 );
-    PDRealArray *k = ones(1, length_pc + 1);
-    //for j = 1 : length(k)-1
-    //    k(j+1) = k(j) - 1 + find( f(k(j):end) > pc(j)/4, 1, 'first' );
-    //end
-    size_t length_k = MAX(k.rows, k.cols);
-    NSRange fcols = NSMakeRange(0, 1);
-    for (size_t j = 0; j < length_k - 1; ++j) {
-        NSRange frows = NSMakeRange(k.data[j] - 1, f.rows - k.data[j] + 1);
-        PDRealArray *f_k_j_end = [f subarrayWithRows:frows columns:fcols];
-        k.data[j + 1] = k.data[j] - 1.0 + [[f_k_j_end applyInt:^size_t(const double element) {
-            return element > pc.data[j] / 4.0;
-        }] findFirst:1].data[0];
-    }
-    //k = k(2:end);
-    k = [k subarrayWithRows:NSMakeRange(0, 1) columns:NSMakeRange(1, k.cols - 1)];
-    //% Create loudness normalization matrix
-    //N = sqrt( flipud( cumsum( flipud(L.*L) ) ) );
-    PDRealArray *N = [[[[[L  square] flipud] cumsum] flipud] sqrt];
-    //for j = 1 : length(pc)
-    for (size_t j = 0; j < length_pc; ++j) {
-    //    % Normalize loudness
-    //    n = N(k(j),:);
-        PDRealArray *n = [N subarrayWithRows:NSMakeRange(k.data[j] - 1, 1) columns:NSMakeRange(0, N.cols)];
-    //    n(n==0) = Inf; % to make zero-loudness equal zero after normalization
-        [n applyReal:^double(const double element) {
-            double value = element;
-            if (value == 0.0) {
-                value = INFINITY;
+    @autoreleasepool {
+        //% Define integration regions
+        //k = ones( 1, length(pc)+1 );
+        PDRealArray *k = ones(1, length_pc + 1);
+        //for j = 1 : length(k)-1
+        //    k(j+1) = k(j) - 1 + find( f(k(j):end) > pc(j)/4, 1, 'first' );
+        //end
+        size_t length_k = MAX(k.rows, k.cols);
+        NSRange fcols = NSMakeRange(0, 1);
+        for (size_t j = 0; j < length_k - 1; ++j) {
+            NSRange frows = NSMakeRange(k.data[j] - 1, f.rows - k.data[j] + 1);
+            PDRealArray *f_k_j_end = [f subarrayWithRows:frows columns:fcols];
+            k.data[j + 1] = k.data[j] - 1.0 + [[f_k_j_end applyInt:^size_t(const double element) {
+                return element > pc.data[j] / 4.0;
+            }] findFirst:1].data[0];
+        }
+        //k = k(2:end);
+        k = [k subarrayWithRows:NSMakeRange(0, 1) columns:NSMakeRange(1, k.cols - 1)];
+        //% Create loudness normalization matrix
+        //N = sqrt( flipud( cumsum( flipud(L.*L) ) ) );
+//        PDRealArray *Nslow = [[[[[L  square] flipud] cumsum] flipud] sqrt]; // uses way too much peak memory
+        PDRealArray *N = [L copy];
+        // square-flipud-cumsum-flipud-sqrt in place, in one pass
+        for (size_t col = 0; col < N.cols; ++col) {
+            double *pCol = N.data + col * N.rows;
+            double *pBottom = pCol + N.rows - 1;
+            double prevfsumfsq = *pBottom * *pBottom;
+            *pBottom = sqrt(prevfsumfsq); // square-sqrt (this one not affected by flipud-cumsum-flipud)
+            while (--pBottom >= pCol) {
+                double value = *pBottom;
+                value *= value; // square
+                value += prevfsumfsq; // flipud-cumsum-flipud
+                prevfsumfsq = value;
+                *pBottom = sqrt(value); // sqrt
             }
-            return value;
-        }];
-    //
-    //%     NL = L(k(j):end,:) ./ repmat( n, size(L,1)-k(j)+1, 1);
-    //
-    //    rowIdx = (1:size(n,1))';
-//        PDIntArray *rowIdx = [[PDIntArray rowVectorFrom:1 to:n.rows] transpose];
-    //    colIdx = (1:size(n,2))';
-//        PDIntArray *colIdx = [[PDIntArray rowVectorFrom:1 to:n.cols] transpose];
-    //%     NL = L(k(j):end,:) ./ n(rowIdx(:,ones(size(L,1)-k(j)+1,1)), colIdx(:,1));
-    //    NL = L(k(j):end,:) ./ n(rowIdx(:,ones(size(L,1)-k(j)+1,1)), colIdx);
-        PDRealArray *L_k_j_end = [L subarrayWithRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) columns:NSMakeRange(0, L.cols)];
-//        PDIntArray *onesLRows_k = ones(1, L.rows - k.data[j] + 1);
-//        PDRealArray *nSubset = [n subarrayWithRowIndices:onesLRows_k columnIndices:colIdx];
-////        PDRealArray *nSubset = [n subarrayWithRows:NSMakeRange(0, L.rows - k.data[j] + 1) columns:NSMakeRange(0, n.cols)];
-        PDRealArray *nSubset = repmat(n, L.rows - k.data[j] + 1, 1);
-        PDRealArray *NL = [L_k_j_end applyReal:^double(const double element, const double otherArrayElement) {
-            return element / otherArrayElement;
-        } withRealArray:nSubset];
-    //
-    //    % Compute pitch strength
-    //    S(j,:) = pitchStrengthOneCandidate( f(k(j):end), NL, pc(j) );
-        NSRange jRow = NSMakeRange(j, 1);
-        NSRange Scols = NSMakeRange(0, S.cols);
-        PDRealArray *psoc = pitchStrengthOneCandidate([f subarrayWithRows:NSMakeRange(k.data[j] - 1, f.rows - k.data[j] + 1) columns:fcols], NL, pc.data[j]);
-        [S setSubarrayRows:jRow columns:Scols fromArray:psoc];
-    //end
+        }
+        //for j = 1 : length(pc)
+        for (size_t j = 0; j < length_pc; ++j) {
+            //    % Normalize loudness
+            //    n = N(k(j),:);
+            PDRealArray *n = [N subarrayWithRows:NSMakeRange(k.data[j] - 1, 1) columns:NSMakeRange(0, N.cols)];
+            //    n(n==0) = Inf; % to make zero-loudness equal zero after normalization
+            [n applyReal:^double(const double element) {
+                double value = element;
+                if (value == 0.0) {
+                    value = INFINITY;
+                }
+                return value;
+            }];
+            //
+            //%     NL = L(k(j):end,:) ./ repmat( n, size(L,1)-k(j)+1, 1);
+            //
+            //    rowIdx = (1:size(n,1))';
+            //        PDIntArray *rowIdx = [[PDIntArray rowVectorFrom:1 to:n.rows] transpose];
+            //    colIdx = (1:size(n,2))';
+            //        PDIntArray *colIdx = [[PDIntArray rowVectorFrom:1 to:n.cols] transpose];
+            //%     NL = L(k(j):end,:) ./ n(rowIdx(:,ones(size(L,1)-k(j)+1,1)), colIdx(:,1));
+            //    NL = L(k(j):end,:) ./ n(rowIdx(:,ones(size(L,1)-k(j)+1,1)), colIdx);
+            PDRealArray *L_k_j_end = [L subarrayWithRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) columns:NSMakeRange(0, L.cols)];
+            //        PDIntArray *onesLRows_k = ones(1, L.rows - k.data[j] + 1);
+            //        PDRealArray *nSubset = [n subarrayWithRowIndices:onesLRows_k columnIndices:colIdx];
+            ////        PDRealArray *nSubset = [n subarrayWithRows:NSMakeRange(0, L.rows - k.data[j] + 1) columns:NSMakeRange(0, n.cols)];
+            PDRealArray *nSubset = repmat(n, L.rows - k.data[j] + 1, 1);
+            PDRealArray *NL = [L_k_j_end applyReal:^double(const double element, const double otherArrayElement) {
+                return element / otherArrayElement;
+            } withRealArray:nSubset];
+            //
+            //    % Compute pitch strength
+            //    S(j,:) = pitchStrengthOneCandidate( f(k(j):end), NL, pc(j) );
+            NSRange jRow = NSMakeRange(j, 1);
+            NSRange Scols = NSMakeRange(0, S.cols);
+            PDRealArray *psoc = pitchStrengthOneCandidate([f subarrayWithRows:NSMakeRange(k.data[j] - 1, f.rows - k.data[j] + 1) columns:fcols], NL, pc.data[j]);
+            [S setSubarrayRows:jRow columns:Scols fromArray:psoc];
+            //end
+        }
     }
+
     return S;
 }
     //
     //function S = pitchStrengthOneCandidate( f, NL, pc )
 PDRealArray *pitchStrengthOneCandidate(PDRealArray *f, PDRealArray *NL, double pc)
 {
-    //global primetable;
-    //
-    //n = fix( f(end)/pc - 0.75 ); % Number of harmonics
-    double unfixed_n = f.data[f.rows * f.cols - 1] / pc - 0.75;
-    double n = unfixed_n < 0.0 ? ceil(unfixed_n) : floor(unfixed_n);
-    
-    //if n==0, S=NaN; return, end
-    if (n == 0.0) {
-        return NaN(1, NL.cols);
-    }
-    //k = zeros( size(f) ); % Kernel
-    PDRealArray *k = zeros(f.rows, f.cols);
-    //% Normalize frequency w.r.t. candidate
-    //q = f / pc;
-    PDRealArray *q = [f divide:pc];
-    //% Create kernel
-    //% for i = [ 1 primes(n) ]
-    //for i = primetable(primetable <= n)
-    size_t idx = 0;
-    size_t numPrimes = primetable.rows * primetable.cols;
-    double i;
-    while (idx < numPrimes && (i = primetable.data[idx]) <= n) {
-    //    a = abs( q - i );
-        PDRealArray *a = [[q subtract:i] abs];
-    //    % Peak's weigth
-    //    p = a < .25;
-        PDIntArray *p = [[a applyInt:^size_t(const double element) {
-            return element < .25;
+    PDRealArray *S;
+    @autoreleasepool {
+        //global primetable;
+        //
+        //n = fix( f(end)/pc - 0.75 ); % Number of harmonics
+        double unfixed_n = f.data[f.rows * f.cols - 1] / pc - 0.75;
+        double n = unfixed_n < 0.0 ? ceil(unfixed_n) : floor(unfixed_n);
+        
+        //if n==0, S=NaN; return, end
+        if (n == 0.0) {
+            return NaN(1, NL.cols);
+        }
+        //k = zeros( size(f) ); % Kernel
+        PDRealArray *k = zeros(f.rows, f.cols);
+        //% Normalize frequency w.r.t. candidate
+        //q = f / pc;
+        PDRealArray *q = [f divide:pc];
+        //% Create kernel
+        //% for i = [ 1 primes(n) ]
+        //for i = primetable(primetable <= n)
+        size_t idx = 0;
+        size_t numPrimes = primetable.rows * primetable.cols;
+        double i;
+        while (idx < numPrimes && (i = primetable.data[idx]) <= n) {
+            //    a = abs( q - i );
+            PDRealArray *a = [[q subtract:i] abs];
+            //    % Peak's weigth
+            //    p = a < .25;
+            PDIntArray *p = [[a applyInt:^size_t(const double element) {
+                return element < .25;
+            }] find];
+            //    k(p) = cos( 2*pi * q(p) );
+            [k setElementsWithIndices:p fromArray:[[[q elementsWithIndices:p] multiply:2.0 * M_PI] cos]];
+            //    % Valleys' weights
+            //    v = .25 < a & a < .75;
+            PDIntArray *v = [[a applyInt:^size_t(const double element) {
+                return .25 < element && element < .75;
+            }] find];
+            //    k(v) = k(v) + cos( 2*pi * q(v) ) / 2;
+            PDRealArray *kv_plus_cos = [[k elementsWithIndices:v] applyReal:^double(const double element, const double otherArrayElement) {
+                return element + cos(2 * M_PI * otherArrayElement) / 2.0;
+            } withRealArray:[q elementsWithIndices:v]];
+            [k setElementsWithIndices:v fromArray:kv_plus_cos];
+            //end
+            ++idx;
+        }
+        //% Apply envelope
+        //k = k .* sqrt( 1./f  );
+        k = [k applyReal:^double(const double element, const double otherArrayElement) {
+            return element * sqrt(1. / otherArrayElement);
+        } withRealArray:f];
+        //% K+-normalize kernel
+        //k = k / norm( k(k>0) );
+        PDIntArray *pos_ks = [[k applyInt:^size_t(const double element) {
+            return element > 0;
         }] find];
-    //    k(p) = cos( 2*pi * q(p) );
-        [k setElementsWithIndices:p fromArray:[[[q elementsWithIndices:p] multiply:2.0 * M_PI] cos]];
-    //    % Valleys' weights
-    //    v = .25 < a & a < .75;
-        PDIntArray *v = [[a applyInt:^size_t(const double element) {
-            return .25 < element && element < .75;
-        }] find];
-    //    k(v) = k(v) + cos( 2*pi * q(v) ) / 2;
-        PDRealArray *kv_plus_cos = [[k elementsWithIndices:v] applyReal:^double(const double element, const double otherArrayElement) {
-            return element + cos(2 * M_PI * otherArrayElement) / 2.0;
-        } withRealArray:[q elementsWithIndices:v]];
-        [k setElementsWithIndices:v fromArray:kv_plus_cos];
-    //end
-        ++idx;
+        k = [k divide:[[k elementsWithIndices:pos_ks] norm]];
+        //% Compute pitch strength
+        //S = k' * NL;
+        S = [[k transpose] matmult:NL];
     }
-    //% Apply envelope
-    //k = k .* sqrt( 1./f  );
-    k = [k applyReal:^double(const double element, const double otherArrayElement) {
-        return element * sqrt(1. / otherArrayElement);
-    } withRealArray:f];
-    //% K+-normalize kernel
-    //k = k / norm( k(k>0) );
-    PDIntArray *pos_ks = [[k applyInt:^size_t(const double element) {
-        return element > 0;
-    }] find];
-    k = [k divide:[[k elementsWithIndices:pos_ks] norm]];
-    //% Compute pitch strength
-    //S = k' * NL;
-    PDRealArray *S = [[k transpose] matmult:NL];
     //
     //function erbs = hz2erbs(hz)
     //erbs = 6.44 * ( log2( 229 + hz ) - 7.84 );
