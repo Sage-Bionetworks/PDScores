@@ -48,11 +48,18 @@
         size_t newBytes = newSize * typeSize;
         _data = reallocf(_data, newBytes);
         if  (_data) {
-            int addedSize = (int)(newBytes - oldBytes);
+#define DEBUG_UNINITIALIZED_ARRAYS 0
+#if DEBUG_UNINITIALIZED_ARRAYS
+            size_t addedSize = newSize - _allocatedSize;
             if (addedSize > 0) {
-                // zero out the newly allocated part
-                memset(_data + oldBytes, 0, addedSize);
+                // garbage out the newly allocated part so it will cause problems if used before being set
+                double *p = (double *)(_data + _rows * _cols * typeSize);
+                double *pEnd = p + newBytes / sizeof(double);
+                while (p < pEnd) {
+                    *p++ = NAN;
+                }
             }
+#endif
             _allocatedSize = newSize;
         }
         
@@ -1196,7 +1203,7 @@ void addRowsFromColumn(double *destStart, const double *colStart, size_t rows)
 
     if (self.rows == 1 || self.cols == 1) {
         // create a square diagonal matrix from this vector
-        [diag setRows:length columns:length];
+        diag = zeros(length, length);
         srcStride = 1;
         destStride = length + 1;
     } else {

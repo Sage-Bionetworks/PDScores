@@ -117,7 +117,9 @@ void sp_hamming(double *outBuf, unsigned long windowSize)
 {
     // hann window is .5 - .5 cos(2πn/(N-1)), hamming is .54 - .46 cos(2πn/(N-1)) so we can just scale and offset
     // (also hanning function skips the zeroes at the ends of the hann window and we don't want it to do that here,
-    // hence this slightly funky calculation--n.b. we're assuming the buffer starts out zero-filled)
+    // hence this slightly funky calculation)
+    outBuf[0]= 0.0;
+    outBuf[windowSize - 1] = 0.0;
     sp_hanning(outBuf + 1, windowSize - 2);
     double scale = 0.46/0.5;
     double offset = 0.54 - 0.46;

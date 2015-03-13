@@ -17,7 +17,7 @@ PDRealArray *zeros(size_t rows, size_t columns)
 {
     PDRealArray *ra = [PDRealArray new];
     [ra setRows:rows columns:columns];
-    
+    memset(ra.data, 0, ra.allocatedSize * ra.typeSize);
     return ra;
 }
 
