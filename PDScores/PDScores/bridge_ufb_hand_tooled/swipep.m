@@ -507,10 +507,12 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
             //        PDIntArray *onesLRows_k = ones(1, L.rows - k.data[j] + 1);
             //        PDRealArray *nSubset = [n subarrayWithRowIndices:onesLRows_k columnIndices:colIdx];
             ////        PDRealArray *nSubset = [n subarrayWithRows:NSMakeRange(0, L.rows - k.data[j] + 1) columns:NSMakeRange(0, n.cols)];
-            PDRealArray *nSubset = repmat(n, L.rows - k.data[j] + 1, 1);
-            PDRealArray *NL = [L_k_j_end applyReal:^double(const double element, const double otherArrayElement) {
-                return element / otherArrayElement;
-            } withRealArray:nSubset];
+            PDRealArray *NL = [L_k_j_end divideRowsElementByElement:n];
+//            PDRealArray *nSubset = repmat(n, L.rows - k.data[j] + 1, 1);
+//            PDRealArray *NL = [L_k_j_end divideElementByElement:nSubset];
+//            PDRealArray *NL = [L_k_j_end applyReal:^double(const double element, const double otherArrayElement) {
+//                return element / otherArrayElement;
+//            } withRealArray:nSubset];
             //
             //    % Compute pitch strength
             //    S(j,:) = pitchStrengthOneCandidate( f(k(j):end), NL, pc(j) );

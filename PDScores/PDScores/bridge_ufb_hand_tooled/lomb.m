@@ -159,13 +159,9 @@ void lomb(PDRealArray *t, PDRealArray *h, double ofac, double hifac, PDRealArray
         }] sum];
         return ssqsum.data[0];
     } withRealArray:tau];
-    PDRealArray *numerator = [[cterm_diag_sum_sq applyReal:^double(const double element, const double otherArrayElement) {
-        return element / otherArrayElement;
-    } withRealArray:cterm_sq_sum] applyReal:^double(const double element, const double otherArrayElement) {
+    PDRealArray *numerator = [[cterm_diag_sum_sq divideElementByElement:cterm_sq_sum] applyReal:^double(const double element, const double otherArrayElement) {
         return element + otherArrayElement;
-    } withRealArray:[sterm_diag_sum_sq applyReal:^double(const double element, const double otherArrayElement) {
-        return element / otherArrayElement;
-    } withRealArray:sterm_sq_sum]];
+    } withRealArray:[sterm_diag_sum_sq divideElementByElement:sterm_sq_sum]];
     *P = [numerator divide:(2.0 * s2)];
 
     //%estimate of the number of independent frequencies

@@ -1280,6 +1280,58 @@ void doFftForColumn(DOUBLE_COMPLEX *outColStart, const double *colStart, size_t 
     return [self multiply:1.0 / denominator];
 }
 
+
+- (PDRealArray *)divideElementByElement:(PDRealArray *)denominators
+{
+    // sizes must match
+    if (denominators.rows != self.rows || denominators.cols != self.cols) {
+        return nil;
+    }
+    
+    PDRealArray *quotients = [PDRealArray new];
+    [quotients setRows:self.rows columns:self.cols];
+    
+    vDSP_vdivD(denominators.data, 1, self.data, 1, quotients.data, 1, self.rows * self.cols);
+    
+    return quotients;
+}
+
+- (PDRealArray *)divideRowsElementByElement:(PDRealArray *)denominators
+{
+    // sizes must match
+    if (denominators.rows != 1 || denominators.cols != self.cols) {
+        return nil;
+    }
+    
+    PDRealArray *quotients = [PDRealArray new];
+    [quotients setRows:self.rows columns:self.cols];
+    
+    if (self.rows > self.cols) {
+        // do it column by column
+        double *pCol = self.data;
+        size_t stride = self.rows;
+        double *pEnd = pCol + self.cols * stride;
+        double *pDenom = denominators.data;
+        double *pDest = quotients.data;
+        while (pCol < pEnd) {
+            vDSP_vsdivD(pCol, 1, pDenom++, pDest, 1, stride);
+            pCol += stride;
+            pDest += stride;
+        }
+    } else {
+        // do it row by row
+        double *pRow = self.data;
+        size_t stride = self.rows;
+        double *pEnd = pRow + stride;
+        double *pDest = quotients.data;
+        while (pRow < pEnd) {
+            vDSP_vdivD(denominators.data, 1, pRow++, stride, pDest++, stride, self.cols);
+        }
+    }
+    
+    return quotients;
+}
+
 - (PDRealArray *)under:(double)numerator
 {
     return [self applyReal:^double(const double element) {

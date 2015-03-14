@@ -115,6 +115,8 @@ typedef double (^applyIntArrayRealBlock)(const double element, const size_t othe
 - (PDRealArray *)matmult:(PDRealArray *)matrix;
 - (PDRealArray *)multiply:(double)factor;
 - (PDRealArray *)divide:(double)denominator;
+- (PDRealArray *)divideElementByElement:(PDRealArray *)denominators;
+- (PDRealArray *)divideRowsElementByElement:(PDRealArray *)denominators;
 - (PDRealArray *)under:(double)numerator;
 - (PDRealArray *)add:(double)addend;
 - (PDRealArray *)subtract:(double)subtrahend;
