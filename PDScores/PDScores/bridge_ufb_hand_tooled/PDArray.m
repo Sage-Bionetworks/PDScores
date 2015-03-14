@@ -1062,17 +1062,17 @@ void cumsumsForColumn(double *destStart, const double *colStart, size_t rows)
     return cumsum;
 }
 
-double sumForColumn(const double *colStart, size_t rows)
-{
-    const double *p = colStart;
-    const double *pEnd = p + rows;
-    double sum = 0.0;
-    while (p < pEnd) {
-        sum += *p++;
-    }
-    
-    return sum;
-}
+//double sumForColumn(const double *colStart, size_t rows)
+//{
+//    const double *p = colStart;
+//    const double *pEnd = p + rows;
+//    double sum = 0.0;
+//    while (p < pEnd) {
+//        sum += *p++;
+//    }
+//    
+//    return sum;
+//}
 
 - (PDRealArray *)sum
 {
@@ -1081,20 +1081,18 @@ double sumForColumn(const double *colStart, size_t rows)
     const double *p = self.data;
     const double *pEnd = p + self.rows * self.cols;
     double *pDest = sum.data;
+    size_t elements = self.rows;
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [sum setRows:1 columns:1];
-        while (p < pEnd) {
-            *pDest++ = sumForColumn(p, self.cols);
-            p += self.cols;
-        }
-    } else {
-        while (p < pEnd) {
-            *pDest++ = sumForColumn(p, self.rows);
-            p += self.rows;
-        }
+        elements = self.cols;
     }
-    
+    while (p < pEnd) {
+//        *pDest++ = sumForColumn(p, self.rows);
+        vDSP_sveD(p, 1, pDest++, elements);
+        p += self.rows;
+    }
+
     return sum;
 }
 
