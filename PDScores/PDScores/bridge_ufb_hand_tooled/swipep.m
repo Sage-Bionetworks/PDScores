@@ -456,10 +456,22 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
         NSRange fcols = NSMakeRange(0, 1);
         for (size_t j = 0; j < length_k - 1; ++j) {
             NSRange frows = NSMakeRange(k.data[j] - 1, f.rows - k.data[j] + 1);
-            PDRealArray *f_k_j_end = [f subarrayWithRows:frows columns:fcols];
-            k.data[j + 1] = k.data[j] - 1.0 + [[f_k_j_end applyInt:^size_t(const double element) {
-                return element > pc.data[j] / 4.0;
-            }] findFirst:1].data[0];
+            double *p = f.data + frows.location;
+            double *pEnd = p + frows.length;
+            int idx = 1;
+            double pcj_4 = pc.data[j] / 4.0;
+            while (p < pEnd) {
+                double fx = *p++;
+                if (fx > pcj_4) {
+                    break;
+                }
+                ++idx;
+            }
+            k.data[j + 1] = k.data[j] - 1.0 + idx;
+//            PDRealArray *f_k_j_end = [f subarrayWithRows:frows columns:fcols];
+//            k.data[j + 1] = k.data[j] - 1.0 + [[f_k_j_end applyInt:^size_t(const double element) {
+//                return element > pc.data[j] / 4.0;
+//            }] findFirst:1].data[0];
         }
         //k = k(2:end);
         k = [k subarrayWithRows:NSMakeRange(0, 1) columns:NSMakeRange(1, k.cols - 1)];
@@ -482,18 +494,37 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
             }
         }
         //for j = 1 : length(pc)
+        // do this here because it's more convenient to do it all at once before we use each row
+        //    % Normalize loudness
+        //    n(n==0) = Inf; % to make zero-loudness equal zero after normalization
+        [N applyReal:^double(const double element) {
+            double value = element;
+            if (value == 0.0) {
+                value = INFINITY;
+            }
+            return value;
+        }];
+        // precompute NL arrays for each value of k[j]--there's only a few
+        NSMutableDictionary *NLbyK = [NSMutableDictionary dictionary];
+        for (size_t j = 0; j < length_pc; ++j) {
+            PDRealArray *NLforkj = [NLbyK objectForKey:@(k.data[j])];
+            if (!NLforkj) {
+                NLforkj = [L divideRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) byRow:k.data[j] - 1 ofRealArray:N];
+                [NLbyK setObject:NLforkj forKey:@(k.data[j])];
+            }
+        }
         for (size_t j = 0; j < length_pc; ++j) {
             //    % Normalize loudness
             //    n = N(k(j),:);
-            PDRealArray *n = [N subarrayWithRows:NSMakeRange(k.data[j] - 1, 1) columns:NSMakeRange(0, N.cols)];
-            //    n(n==0) = Inf; % to make zero-loudness equal zero after normalization
-            [n applyReal:^double(const double element) {
-                double value = element;
-                if (value == 0.0) {
-                    value = INFINITY;
-                }
-                return value;
-            }];
+//            PDRealArray *n = [N subarrayWithRows:NSMakeRange(k.data[j] - 1, 1) columns:NSMakeRange(0, N.cols)];
+//            //    n(n==0) = Inf; % to make zero-loudness equal zero after normalization
+//            [n applyReal:^double(const double element) {
+//                double value = element;
+//                if (value == 0.0) {
+//                    value = INFINITY;
+//                }
+//                return value;
+//            }];
             //
             //%     NL = L(k(j):end,:) ./ repmat( n, size(L,1)-k(j)+1, 1);
             //
@@ -503,11 +534,12 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
             //        PDIntArray *colIdx = [[PDIntArray rowVectorFrom:1 to:n.cols] transpose];
             //%     NL = L(k(j):end,:) ./ n(rowIdx(:,ones(size(L,1)-k(j)+1,1)), colIdx(:,1));
             //    NL = L(k(j):end,:) ./ n(rowIdx(:,ones(size(L,1)-k(j)+1,1)), colIdx);
-            PDRealArray *L_k_j_end = [L subarrayWithRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) columns:NSMakeRange(0, L.cols)];
+//            PDRealArray *L_k_j_end = [L subarrayWithRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) columns:NSMakeRange(0, L.cols)];
             //        PDIntArray *onesLRows_k = ones(1, L.rows - k.data[j] + 1);
             //        PDRealArray *nSubset = [n subarrayWithRowIndices:onesLRows_k columnIndices:colIdx];
             ////        PDRealArray *nSubset = [n subarrayWithRows:NSMakeRange(0, L.rows - k.data[j] + 1) columns:NSMakeRange(0, n.cols)];
-            PDRealArray *NL = [L_k_j_end divideRowsElementByElement:n];
+            PDRealArray *NL = [NLbyK objectForKey:@(k.data[j])];
+//            PDRealArray *NL = [L divideRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) byRow:k.data[j] - 1 ofRealArray:N];
 //            PDRealArray *nSubset = repmat(n, L.rows - k.data[j] + 1, 1);
 //            PDRealArray *NL = [L_k_j_end divideElementByElement:nSubset];
 //            PDRealArray *NL = [L_k_j_end applyReal:^double(const double element, const double otherArrayElement) {
@@ -562,7 +594,7 @@ PDRealArray *pitchStrengthOneCandidate(PDRealArray *f, PDRealArray *NL, double p
                 return element < .25;
             }] find];
             //    k(p) = cos( 2*pi * q(p) );
-            [k setElementsWithIndices:p fromArray:[[[q elementsWithIndices:p] multiply:2.0 * M_PI] cos]];
+            [k setElementsWithIndices:p fromArray:[[[q elementsWithIndices:p] multiply:2.0] cospi]];
             //    % Valleys' weights
             //    v = .25 < a & a < .75;
             PDIntArray *v = [[a applyInt:^size_t(const double element) {

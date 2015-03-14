@@ -133,32 +133,76 @@ void lomb(PDRealArray *t, PDRealArray *h, double ofac, double hifac, PDRealArray
 //    }
     
     // see above about lean and fast
-    PDRealArray *cterm_diag_sum_sq = [[w applyReal:^double(const double wElement, const double tauElement) {
-        PDRealArray *cterm_diag_sum = [[t applyReal:^double(const double tElement, const double hElement) {
-            return cos(wElement *(tElement - tauElement)) * (hElement - mu);
-        } withRealArray:h] sum];
-        return cterm_diag_sum.data[0];
-    } withRealArray:tau] square];
-    PDRealArray *sterm_diag_sum_sq = [[w applyReal:^double(const double wElement, const double tauElement) {
-        PDRealArray *sterm_diag_sum = [[t applyReal:^double(const double tElement, const double hElement) {
-            return sin(wElement *(tElement - tauElement)) * (hElement - mu);
-        } withRealArray:h] sum];
-        return sterm_diag_sum.data[0];
-    } withRealArray:tau] square];
-    PDRealArray *cterm_sq_sum = [w applyReal:^double(const double wElement, const double tauElement) {
-        PDRealArray *csqsum = [[t applyReal:^double(const double tElement) {
-            double costerm = cos(wElement *(tElement - tauElement));
-            return costerm * costerm;
-        }] sum];
-        return csqsum.data[0];
-    } withRealArray:tau];
-    PDRealArray *sterm_sq_sum = [w applyReal:^double(const double wElement, const double tauElement) {
-        PDRealArray *ssqsum = [[t applyReal:^double(const double tElement) {
-            double sinterm = sin(wElement *(tElement - tauElement));
-            return sinterm * sinterm;
-        }] sum];
-        return ssqsum.data[0];
-    } withRealArray:tau];
+    PDRealArray *cterm_diag_sum_sq = [PDRealArray new];
+    [cterm_diag_sum_sq setRows:w.rows columns:w.cols];
+    PDRealArray *sterm_diag_sum_sq = [PDRealArray new];
+    [sterm_diag_sum_sq setRows:w.rows columns:w.cols];
+    PDRealArray *cterm_sq_sum = [PDRealArray new];
+    [cterm_sq_sum setRows:w.rows columns:w.cols];
+    PDRealArray *sterm_sq_sum = [PDRealArray new];
+    [sterm_sq_sum setRows:w.rows columns:w.cols];
+
+    const double *pW = w.data;
+    const double *pTau = tau.data;
+    const double *pWEnd = pW + w.rows * w.cols;
+    double *pcdssDest = cterm_diag_sum_sq.data;
+    double *psdssDest = sterm_diag_sum_sq.data;
+    double *pcssDest = cterm_sq_sum.data;
+    double *psssDest = sterm_sq_sum.data;
+    while (pW < pWEnd) {
+        double wElement = *pW++;
+        double tauElement = *pTau++;
+        const double *pT = t.data;
+        const double *pH = h.data;
+        const double *pTEnd = pT + t.rows * t.cols;
+        double cterm_diag_sum = 0.0;
+        double sterm_diag_sum = 0.0;
+        double css = 0.0;
+        double sss = 0.0;
+        while (pT < pTEnd) {
+            double tElement = *pT++;
+            double hElement = *pH++;
+            double wt_tau = wElement *(tElement - tauElement);
+            double coswt_tau = cos(wt_tau);
+            double sinwt_tau = sin(wt_tau);
+            double h_mu = hElement - mu;
+            cterm_diag_sum += coswt_tau * h_mu;
+            sterm_diag_sum += sinwt_tau * h_mu;
+            css += coswt_tau * coswt_tau;
+            sss += sinwt_tau * sinwt_tau;
+        }
+        *pcdssDest++ = cterm_diag_sum * cterm_diag_sum;
+        *psdssDest++ = sterm_diag_sum * sterm_diag_sum;
+        *pcssDest++ = css;
+        *psssDest++ = sss;
+    }
+
+//    PDRealArray *cterm_diag_sum_sq = [[w applyReal:^double(const double wElement, const double tauElement) {
+//        PDRealArray *cterm_diag_sum = [[t applyReal:^double(const double tElement, const double hElement) {
+//            return cos(wElement *(tElement - tauElement)) * (hElement - mu);
+//        } withRealArray:h] sum];
+//        return cterm_diag_sum.data[0];
+//    } withRealArray:tau] square];
+//    PDRealArray *sterm_diag_sum_sq = [[w applyReal:^double(const double wElement, const double tauElement) {
+//        PDRealArray *sterm_diag_sum = [[t applyReal:^double(const double tElement, const double hElement) {
+//            return sin(wElement *(tElement - tauElement)) * (hElement - mu);
+//        } withRealArray:h] sum];
+//        return sterm_diag_sum.data[0];
+//    } withRealArray:tau] square];
+//    PDRealArray *cterm_sq_sum = [w applyReal:^double(const double wElement, const double tauElement) {
+//        PDRealArray *csqsum = [[t applyReal:^double(const double tElement) {
+//            double costerm = cos(wElement *(tElement - tauElement));
+//            return costerm * costerm;
+//        }] sum];
+//        return csqsum.data[0];
+//    } withRealArray:tau];
+//    PDRealArray *sterm_sq_sum = [w applyReal:^double(const double wElement, const double tauElement) {
+//        PDRealArray *ssqsum = [[t applyReal:^double(const double tElement) {
+//            double sinterm = sin(wElement *(tElement - tauElement));
+//            return sinterm * sinterm;
+//        }] sum];
+//        return ssqsum.data[0];
+//    } withRealArray:tau];
     PDRealArray *numerator = [[cterm_diag_sum_sq divideElementByElement:cterm_sq_sum] applyReal:^double(const double element, const double otherArrayElement) {
         return element + otherArrayElement;
     } withRealArray:[sterm_diag_sum_sq divideElementByElement:sterm_sq_sum]];

@@ -102,7 +102,11 @@ typedef double (^applyIntArrayRealBlock)(const double element, const size_t othe
 - (PDRealArray *)square;
 - (PDRealArray *)sqrt;
 - (PDRealArray *)sin;
+- (PDRealArray *)sinpi;
+- (PDRealArray *)sin:(applyRealBlock)block;
 - (PDRealArray *)cos;
+- (PDRealArray *)cospi;
+- (PDRealArray *)cos:(applyRealBlock)block;
 - (PDRealArray *)atan2:(PDRealArray *)x;
 - (PDRealArray *)log;
 - (PDRealArray *)log2;
@@ -116,7 +120,7 @@ typedef double (^applyIntArrayRealBlock)(const double element, const size_t othe
 - (PDRealArray *)multiply:(double)factor;
 - (PDRealArray *)divide:(double)denominator;
 - (PDRealArray *)divideElementByElement:(PDRealArray *)denominators;
-- (PDRealArray *)divideRowsElementByElement:(PDRealArray *)denominators;
+- (PDRealArray *)divideRows:(NSRange)rows byRow:(size_t)row ofRealArray:(PDRealArray *)denominators;
 - (PDRealArray *)under:(double)numerator;
 - (PDRealArray *)add:(double)addend;
 - (PDRealArray *)subtract:(double)subtrahend;
