@@ -320,12 +320,14 @@ void swipep(PDRealArray *x, double fs, double plim[2], double dt, double dlog2p,
                 L = [[Linterp applyReal:^double(const double element) {
                     return isnan(element) || element < 0.0 ? 0.0 : element;
                 }] sqrt];
+                X = nil;
             }
             //    % Compute pitch strength
             //    Si = pitchStrengthAllCandidates( fERBs, L, pc(j) );
             PDRealArray *Si;
             @autoreleasepool {
                 Si = pitchStrengthAllCandidates(fERBs, L, [pc elementsWithIndices:j]);
+                L = nil;
             }
             //    % Interpolate pitch strength at desired times
             //    if size(Si,2) > 1
@@ -478,20 +480,28 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
         //% Create loudness normalization matrix
         //N = sqrt( flipud( cumsum( flipud(L.*L) ) ) );
 //        PDRealArray *Nslow = [[[[[L  square] flipud] cumsum] flipud] sqrt]; // uses way too much peak memory
-        PDRealArray *N = [L copy];
-        // square-flipud-cumsum-flipud-sqrt in place, in one pass
-        for (size_t col = 0; col < N.cols; ++col) {
-            double *pCol = N.data + col * N.rows;
-            double *pBottom = pCol + N.rows - 1;
-            double prevfsumfsq = *pBottom * *pBottom;
-            *pBottom = sqrt(prevfsumfsq); // square-sqrt (this one not affected by flipud-cumsum-flipud)
-            while (--pBottom >= pCol) {
-                double value = *pBottom;
-                value *= value; // square
-                value += prevfsumfsq; // flipud-cumsum-flipud
-                prevfsumfsq = value;
-                *pBottom = sqrt(value); // sqrt
+        PDRealArray *N;
+        @autoreleasepool {
+            N = [L copy];
+            // square-flipud-cumsum-flipud-sqrt in place, in one pass
+            for (size_t col = 0; col < N.cols; ++col) {
+                double *pCol = N.data + col * N.rows;
+                double *pBottom = pCol + N.rows - 1;
+                double prevfsumfsq = *pBottom * *pBottom;
+                *pBottom = sqrt(prevfsumfsq); // square-sqrt (this one not affected by flipud-cumsum-flipud)
+                while (--pBottom >= pCol) {
+                    double value = *pBottom;
+                    value *= value; // square
+                    value += prevfsumfsq; // flipud-cumsum-flipud
+                    prevfsumfsq = value;
+                    *pBottom = sqrt(value); // sqrt
+                }
             }
+            
+            // only keep around the rows of N we're actually gonna end up using
+            double maxRowIdx = [k max].data[0];
+            N = [N subarrayWithRows:NSMakeRange(0, maxRowIdx) columns:NSMakeRange(0, N.cols)];
+            
         }
         //for j = 1 : length(pc)
         // do this here because it's more convenient to do it all at once before we use each row
@@ -505,14 +515,17 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
             return value;
         }];
         // precompute NL arrays for each value of k[j]--there's only a few
-        NSMutableDictionary *NLbyK = [NSMutableDictionary dictionary];
-        for (size_t j = 0; j < length_pc; ++j) {
-            PDRealArray *NLforkj = [NLbyK objectForKey:@(k.data[j])];
-            if (!NLforkj) {
-                NLforkj = [L divideRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) byRow:k.data[j] - 1 ofRealArray:N];
-                [NLbyK setObject:NLforkj forKey:@(k.data[j])];
-            }
-        }
+        // on second thought, they're huge so even a few is too many at once
+//        NSMutableDictionary *NLbyK = [NSMutableDictionary dictionary];
+//        for (size_t j = 0; j < length_pc; ++j) {
+//            PDRealArray *NLforkj = [NLbyK objectForKey:@(k.data[j])];
+//            if (!NLforkj) {
+//                NLforkj = [L divideRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) byRow:k.data[j] - 1 ofRealArray:N];
+//                [NLbyK setObject:NLforkj forKey:@(k.data[j])];
+//            }
+//        }
+        PDRealArray *NL = nil;
+        double this_k_j = -1; // force a compute of NL first time through
         for (size_t j = 0; j < length_pc; ++j) {
             //    % Normalize loudness
             //    n = N(k(j),:);
@@ -538,7 +551,11 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
             //        PDIntArray *onesLRows_k = ones(1, L.rows - k.data[j] + 1);
             //        PDRealArray *nSubset = [n subarrayWithRowIndices:onesLRows_k columnIndices:colIdx];
             ////        PDRealArray *nSubset = [n subarrayWithRows:NSMakeRange(0, L.rows - k.data[j] + 1) columns:NSMakeRange(0, n.cols)];
-            PDRealArray *NL = [NLbyK objectForKey:@(k.data[j])];
+            // only recompute NL when it changes
+            if (k.data[j] != this_k_j) {
+                this_k_j = k.data[j];
+                NL = [L divideRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) byRow:k.data[j] - 1 ofRealArray:N];
+            }
 //            PDRealArray *NL = [L divideRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) byRow:k.data[j] - 1 ofRealArray:N];
 //            PDRealArray *nSubset = repmat(n, L.rows - k.data[j] + 1, 1);
 //            PDRealArray *NL = [L_k_j_end divideElementByElement:nSubset];
