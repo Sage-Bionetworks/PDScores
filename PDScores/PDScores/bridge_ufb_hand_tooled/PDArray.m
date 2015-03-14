@@ -1138,10 +1138,44 @@ void addRowsFromColumn(double *destStart, const double *colStart, size_t rows)
     }];
 }
 
+- (PDRealArray *)sinpi
+{
+    PDRealArray *sinpi = [PDRealArray new];
+    [sinpi setRows:self.rows columns:self.cols];
+    int elements = (int)(self.rows * self.cols);
+    vvsinpi(sinpi.data, self.data, &elements);
+    
+    return sinpi;
+}
+
+- (PDRealArray *)sin:(applyRealBlock)block
+{
+    return [self applyReal:^double(const double element) {
+        return sin(block(element));
+    }];
+}
+
 - (PDRealArray *)cos
 {
     return [self applyReal:^double(const double element) {
         return cos(element);
+    }];
+}
+
+- (PDRealArray *)cospi
+{
+    PDRealArray *cospi = [PDRealArray new];
+    [cospi setRows:self.rows columns:self.cols];
+    int elements = (int)(self.rows * self.cols);
+    vvcospi(cospi.data, self.data, &elements);
+    
+    return cospi;
+}
+
+- (PDRealArray *)cos:(applyRealBlock)block
+{
+    return [self applyReal:^double(const double element) {
+        return cos(block(element));
     }];
 }
 
@@ -1268,14 +1302,20 @@ void doFftForColumn(DOUBLE_COMPLEX *outColStart, const double *colStart, size_t 
 
 - (PDRealArray *)multiply:(double)factor
 {
-    return [self applyReal:^double(const double element) {
-        return element * factor;
-    }];
+    PDRealArray *product = [PDRealArray new];
+    [product setRows:self.rows columns:self.cols];
+    
+    vDSP_vsmulD(self.data, 1, &factor, product.data, 1, self.rows * self.cols);
+    return product;
 }
 
 - (PDRealArray *)divide:(double)denominator
 {
-    return [self multiply:1.0 / denominator];
+    PDRealArray *quotient = [PDRealArray new];
+    [quotient setRows:self.rows columns:self.cols];
+    
+    vDSP_vsdivD(self.data, 1, &denominator, quotient.data, 1, self.rows * self.cols);
+    return quotient;
 }
 
 
@@ -1294,36 +1334,43 @@ void doFftForColumn(DOUBLE_COMPLEX *outColStart, const double *colStart, size_t 
     return quotients;
 }
 
-- (PDRealArray *)divideRowsElementByElement:(PDRealArray *)denominators
+- (PDRealArray *)divideRows:(NSRange)rows byRow:(size_t)row ofRealArray:(PDRealArray *)denominators
 {
-    // sizes must match
-    if (denominators.rows != 1 || denominators.cols != self.cols) {
+    // widths must match
+    if (denominators.cols != self.cols) {
         return nil;
     }
     
     PDRealArray *quotients = [PDRealArray new];
-    [quotients setRows:self.rows columns:self.cols];
+    [quotients setRows:rows.length columns:self.cols];
     
-    if (self.rows > self.cols) {
+    // row is C zero-based index, not matlab one-based (to match NSRange convention)
+    double *denomRow = denominators.data + row;
+    size_t denomStride = denominators.rows;
+    
+    if (rows.length > self.cols) {
         // do it column by column
-        double *pCol = self.data;
+        double *pCol = self.data + rows.location;
         size_t stride = self.rows;
+        size_t destStride = rows.length;
         double *pEnd = pCol + self.cols * stride;
-        double *pDenom = denominators.data;
+        double *pDenom = denomRow;
         double *pDest = quotients.data;
         while (pCol < pEnd) {
-            vDSP_vsdivD(pCol, 1, pDenom++, pDest, 1, stride);
+            vDSP_vsdivD(pCol, 1, pDenom, pDest, 1, destStride);
             pCol += stride;
-            pDest += stride;
+            pDenom += denomStride;
+            pDest += destStride;
         }
     } else {
         // do it row by row
-        double *pRow = self.data;
+        double *pRow = self.data + rows.location;
         size_t stride = self.rows;
-        double *pEnd = pRow + stride;
+        size_t destStride = rows.length;
+        double *pEnd = pRow + destStride;
         double *pDest = quotients.data;
         while (pRow < pEnd) {
-            vDSP_vdivD(denominators.data, 1, pRow++, stride, pDest++, stride, self.cols);
+            vDSP_vdivD(denomRow, denomStride, pRow++, stride, pDest++, destStride, self.cols);
         }
     }
     
