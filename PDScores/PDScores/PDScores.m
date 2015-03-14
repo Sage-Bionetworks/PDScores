@@ -7,13 +7,6 @@
 //
 
 #import "PDScores.h"
-#import "bridge_ufb_types.h"
-#import "features_bga.h"
-#import "features_bpa.h"
-#import "features_bta.h"
-#import "features_bvav2.h"
-#import "features_ufb.h"
-#import "bridge_ufb_initialize.h"
 #import "bridge_ufb_hand_tooled.h"
 @import AudioToolbox;
 @import CoreMotion;
@@ -63,11 +56,6 @@ const double kNormalizedMinimum = 10.0;
 
 @implementation PDScores
 
-+ (void)initialize
-{
-    bridge_ufb_initialize();
-}
-
 + (double)normalizedScoreFromScore:(double)score range:(const double[2])range
 {
     double newRange = (range[1] == 100.0) ? 90.0 : 80.0;
@@ -99,15 +87,10 @@ const double kNormalizedMinimum = 10.0;
 + (double)scoreFromGaitTest:(NSArray *)gaitData
 {
     // format the gait data for the MATLAB code
-    emxArray_real_T gaitX;
-    int sizeOfGait[2] = {(int)[gaitData count], 4};
-    gaitX.size = sizeOfGait;
-//    gaitX.data = malloc(sizeof(double) * sizeOfGait[0] * sizeOfGait[1]);
     PDRealArray *gait = [PDRealArray new];
     size_t rows = [gaitData count];
     size_t cols = 4;
     [gait setRows:rows columns:cols];
-    gaitX.data = gait.data; // share it
     double *pT = gait.data;
     double *pX = pT + rows;
     double *pY = pX + rows;
@@ -121,47 +104,14 @@ const double kNormalizedMinimum = 10.0;
     }
     
     // get the features array
-    double ftX[7];
-    features_bgaX(&gaitX, ftX);
     PDRealArray *ft;
     features_bga(gait, &ft);
     for (int i = 0; i < 7; ++i) {
-//        if (isnan(ftX[i]))
         if (isnan(ft.data[i]))
             return NAN;
     }
 
-    static emxArray_real_T ftvec;
-    static int sizeOfFtvec[2] = {1, 7};
-    static emxArray_real_T wvecX;
-    static int sizeOfWvec[2] = {7, 1};
-    static emxArray_real_T ilogX;
-    static int sizeOfIlog[2] = {1, 1};
-    static double ilogData[1] = {2};
-    static emxArray_real_T ftminX;
-    static int sizeOfFtmin[2] = {7, 1};
-    static emxArray_real_T ftmaxX;
-    static int sizeOfFtmax[2] = {7, 1};
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        ftvec.size = sizeOfFtvec;
-        wvecX.size = sizeOfWvec;
-        wvecX.data = wvecData + 13;
-        ilogX.size = sizeOfIlog;
-        ilogX.data = ilogData;
-        ftminX.size = sizeOfFtmin;
-        ftminX.data = ftminData + 13;
-        ftmaxX.size = sizeOfFtmax;
-        ftmaxX.data = ftmaxData + 13;
-    });
-    
-    
-    
-    ftvec.data = ftX;
-    double rawScoreX = features_ufbX(&ftvec, &wvecX, &ilogX, &ftminX, &ftmaxX, fbmin, fbmax);
-    double scoreX = [self normalizedScoreFromScore:rawScoreX range:gaitRange];
-    
+    // generate a score
     static PDRealArray *wvec, *ftmin, *ftmax;
     static PDIntArray *ilog;
     static dispatch_once_t onceToken2;
@@ -264,16 +214,8 @@ const double kNormalizedMinimum = 10.0;
     }
     
     // convert to emxArray_real_T for use with MATLAB converted code
-    emxArray_real_T audioX;
-    int sizeOfAudio[2] = {(int)numFrames, 1};
-    audioX.size = sizeOfAudio;
-    audioX.numDimensions = 1;
-    audioX.canFreeData = true;
-    audioX.allocatedSize = (int)(sizeof(double) * numFrames);
-//    audioX.data = malloc(audio.allocatedSize);
     PDRealArray *audio = [PDRealArray new];
     [audio setRows:numFrames columns:1];
-    audioX.data = audio.data; // sharing is nice
     float *pSrc = bufferList->mBuffers[0].mData;
     float *pSrcEnd = pSrc + numFrames;
     double *pDst = audio.data;
@@ -289,13 +231,10 @@ const double kNormalizedMinimum = 10.0;
     bufferList = NULL;
     
     // get the features array
-    double ftX[13];
     double srate = fileFormat.mSampleRate;
-    features_bvav2X(&audioX, srate, ftX);
     PDRealArray *ft;
     features_bvav2(audio, srate, &ft);
     for (int i = 0; i < 13; ++i) {
-//        if (isnan(ft[i]))
         if (isnan(ft.data[i]))
             return NAN;
     }
@@ -304,35 +243,6 @@ const double kNormalizedMinimum = 10.0;
     audio = nil;
     
     // generate a score
-    static emxArray_real_T ftvec;
-    static int sizeOfFtvec[2] = {1, 13};
-    static emxArray_real_T wvecX;
-    static int sizeOfWvec[2] = {13, 1};
-    static emxArray_real_T ilogX;
-    static int sizeOfIlog[2] = {1, 7};
-    static double ilogData[7] = {2, 3, 4, 10, 11, 12, 13};
-    static emxArray_real_T ftminX;
-    static int sizeOfFtmin[2] = {13, 1};
-    static emxArray_real_T ftmaxX;
-    static int sizeOfFtmax[2] = {13, 1};
-
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        ftvec.size = sizeOfFtvec;
-        wvecX.size = sizeOfWvec;
-        wvecX.data = wvecData;
-        ilogX.size = sizeOfIlog;
-        ilogX.data = ilogData;
-        ftminX.size = sizeOfFtmin;
-        ftminX.data = ftminData;
-        ftmaxX.size = sizeOfFtmax;
-        ftmaxX.data = ftmaxData;
-    });
-    
-    ftvec.data = ftX;
-    double rawScoreX = features_ufbX(&ftvec, &wvecX, &ilogX, &ftminX, &ftmaxX, fbmin, fbmax);
-    double scoreX = [self normalizedScoreFromScore:rawScoreX range:phonationRange];
-
     static PDRealArray *wvec, *ftmin, *ftmax;
     static PDIntArray *ilog;
     static size_t ilogIntData[7] = {2, 3, 4, 10, 11, 12, 13};
@@ -365,15 +275,8 @@ const double kNormalizedMinimum = 10.0;
 + (double)scoreFromPostureTest:(NSArray *)postureData
 {
     // format the posture data for the MATLAB code
-    // --old style
-    emxArray_real_T postureX;
-    int sizeOfPosture[2] = {(int)[postureData count], 4};
-    postureX.size = sizeOfPosture;
-//    postureX.data = malloc(sizeof(double) * sizeOfPosture[0] * sizeOfPosture[1]);
-    // --new style
     PDRealArray *posture = [PDRealArray new];
     [posture setRows:[postureData count] columns:4];
-    postureX.data = posture.data; // let's share the data
     double *pT = posture.data;
     double *pX = pT + posture.rows;
     double *pY = pX + posture.rows;
@@ -387,46 +290,14 @@ const double kNormalizedMinimum = 10.0;
     }
     
     // get the features array
-    double ftX[3];
-    features_bpaX(&postureX, ftX);
     PDRealArray *ft;
     features_bpa(posture, &ft);
     for (int i = 0; i < 3; ++i) {
-//        if (isnan(ft[i]))
         if (isnan(ft.data[i]))
             return NAN;
     }
 
-    static emxArray_real_T ftvec;
-    static int sizeOfFtvec[2] = {1, 3};
-    static emxArray_real_T wvecX;
-    static int sizeOfWvec[2] = {3, 1};
-    static emxArray_real_T ilogX;
-    static int sizeOfIlog[2] = {1, 2};
-    static double ilogData[2] = {1, 2};
-    static emxArray_real_T ftminX;
-    static int sizeOfFtmin[2] = {3, 1};
-    static emxArray_real_T ftmaxX;
-    static int sizeOfFtmax[2] = {3, 1};
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        ftvec.size = sizeOfFtvec;
-        wvecX.size = sizeOfWvec;
-        wvecX.data = wvecData + 20;
-        ilogX.size = sizeOfIlog;
-        ilogX.data = ilogData;
-        ftminX.size = sizeOfFtmin;
-        ftminX.data = ftminData + 20;
-        ftmaxX.size = sizeOfFtmax;
-        ftmaxX.data = ftmaxData + 20;
-    });
-    
-//    ftvec.data = ft;
-    ftvec.data = ftX;
-    double rawScoreX = features_ufbX(&ftvec, &wvecX, &ilogX, &ftminX, &ftmaxX, fbmin, fbmax);
-    double scoreX = [self normalizedScoreFromScore:rawScoreX range:postureRange];
-    
+    // generate a score
     static PDRealArray *wvec, *ftmin, *ftmax;
     static PDIntArray *ilog;
     static dispatch_once_t onceToken2;
@@ -458,17 +329,13 @@ const double kNormalizedMinimum = 10.0;
 + (double)scoreFromTappingTest:(NSArray *)tappingData
 {
     // format the tapping data for the MATLAB code
-    emxArray_real_T tappingX;
-    int sizeOfTapping[2] = {(int)[tappingData count], 3};
-    tappingX.size = sizeOfTapping;
-//    tapping.data = malloc(sizeof(double) * sizeOfTapping[0] * sizeOfTapping[1]);
     PDRealArray *tapping = [PDRealArray new];
-    [tapping setRows:[tappingData count] columns:3];
-    tappingX.data = tapping.data; // share it
+    size_t tappingRows = [tappingData count];
+    [tapping setRows:tappingRows columns:3];
     double *pT = tapping.data;
-    double *pX = pT + sizeOfTapping[0];
-    double *pY = pX + sizeOfTapping[0];
-    for (int i = 0; i < sizeOfTapping[0]; ++i) {
+    double *pX = pT + tappingRows;
+    double *pY = pX + tappingRows;
+    for (int i = 0; i < tappingRows; ++i) {
         NSDictionary *tap = [tappingData objectAtIndex:i];
         NSString *tapCoord = [tap objectForKey:@"TapCoordinate"];
         NSCharacterSet *curlyBraces = [NSCharacterSet characterSetWithCharactersInString:@"{}"];
@@ -481,45 +348,14 @@ const double kNormalizedMinimum = 10.0;
     }
     
     // get the features array
-    double ftX[2];
-    features_btaX(&tappingX, ftX);
     PDRealArray *ft;
     features_bta(tapping, &ft);
     for (int i = 0; i < 2; ++i) {
-//        if (isnan(ft[i]))
         if (isnan(ft.data[i]))
             return NAN;
     }
     
-    static emxArray_real_T ftvec;
-    static int sizeOfFtvec[2] = {1, 2};
-    static emxArray_real_T wvecX;
-    static int sizeOfWvec[2] = {2, 1};
-    static emxArray_real_T ilogX;
-    static int sizeOfIlog[2] = {1, 2};
-    static double ilogData[2] = {1, 2};
-    static emxArray_real_T ftminX;
-    static int sizeOfFtmin[2] = {2, 1};
-    static emxArray_real_T ftmaxX;
-    static int sizeOfFtmax[2] = {2, 1};
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        ftvec.size = sizeOfFtvec;
-        wvecX.size = sizeOfWvec;
-        wvecX.data = wvecData + 23;
-        ilogX.size = sizeOfIlog;
-        ilogX.data = ilogData;
-        ftminX.size = sizeOfFtmin;
-        ftminX.data = ftminData + 23;
-        ftmaxX.size = sizeOfFtmax;
-        ftmaxX.data = ftmaxData + 23;
-    });
-    
-    ftvec.data = ftX;
-    double rawScoreX = features_ufbX(&ftvec, &wvecX, &ilogX, &ftminX, &ftmaxX, fbmin, fbmax);
-    double scoreX = [self normalizedScoreFromScore:rawScoreX range:tappingRange];
-    
+    // generate a score
     static PDRealArray *wvec, *ftmin, *ftmax;
     static PDIntArray *ilog;
     static dispatch_once_t onceToken2;
