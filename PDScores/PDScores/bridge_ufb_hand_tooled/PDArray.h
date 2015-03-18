@@ -22,7 +22,6 @@ typedef double (^applyIntArrayRealBlock)(const double element, const size_t othe
 
 @interface PDArray : NSObject
 
-@property (nonatomic, assign) void *data;
 @property (nonatomic, assign) size_t rows;
 @property (nonatomic, assign) size_t cols;
 @property (nonatomic, assign) size_t allocatedSize;
@@ -80,10 +79,8 @@ typedef double (^applyIntArrayRealBlock)(const double element, const size_t othe
 + (PDRealArray *)rowVectorWithStart:(double)start step:(double)step cap:(double)cap;
 - (PDRealArray *)applyReal:(applyRealBlock)block;
 - (PDRealArray *)applyReal:(applyRealArrayBlock)block withRealArray:(PDRealArray *)array;
-- (PDRealArray *)applyReal:(applyIntArrayRealBlock)block withIntArray:(PDIntArray *)array;
 - (PDIntArray *)applyInt:(applyRealIntBlock)block;
 - (PDIntArray *)applyInt:(applyRealArrayIntBlock)block withRealArray:(PDRealArray *)array;
-//- (PDRealArray *)elementsWithIndices:(PDIntArray *)indexArray;
 - (PDRealArray *)abs;
 - (PDRealArray *)round;
 - (PDRealArray *)min;

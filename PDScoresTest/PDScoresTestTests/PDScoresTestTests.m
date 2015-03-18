@@ -15,6 +15,21 @@
 #import "bridge_ufb_hand_tooled.h"
 #import "signalprocessing.h"
 
+@interface PDArray(with_data)
+
+@property (nonatomic, readonly) void *data;
+
+@end
+
+@implementation PDArray(with_data)
+
+- (void *)data
+{
+    return (void *)[(id)self bytes];
+}
+
+@end
+
 ///*static*/ void pitchStrengthAllCandidatesX(const emxArray_real_T *f, const
 //                                           emxArray_real_T *L, const emxArray_real_T *pc, emxArray_real_T *S);
 ///*static*/ void pitchStrengthOneCandidateX(const emxArray_real_T *f, const
@@ -204,7 +219,7 @@ extern PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, P
     NSMutableArray *compare = [NSMutableArray arrayWithCapacity:sizeMine];
     NSMutableArray *imCompare = [NSMutableArray arrayWithCapacity:sizeMine];
     
-    XCTAssert(sizeMine == sizeMatlab, @"Failure: sizes of %@ differ: mine is %ux%u, matlabs is %ux%u", varName, myOutput.rows, myOutput.cols, matlabsOutput.rows, matlabsOutput.cols);
+    XCTAssert(sizeMine == sizeMatlab, @"Failure: sizes of %@ differ: mine is %zux%zu, matlabs is %zux%zu", varName, myOutput.rows, myOutput.cols, matlabsOutput.rows, matlabsOutput.cols);
     if (sizeMatlab != sizeMine) {
         return NO;
     }
@@ -326,13 +341,13 @@ extern PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, P
         NSString *varInterp1LinearName = [NSString stringWithFormat:@"interp1linear%d", pow2];
         NSString *vartName = @"tForPitchStrength";
         NSString *vartiName = [NSString stringWithFormat:@"specgramti(%d)", pow2];
-        PDRealArray *fERBs = [self createMatlabMatrixForVarName:varfERBsName];
-        PDRealArray *L = [self createMatlabMatrixForVarName:varLName];
-        PDRealArray *pc = [self createMatlabMatrixForVarName:varpcName];
-        PDRealArray *Si = [self createMatlabMatrixForVarName:varSiName];
-        PDRealArray *interp1linear = [self createMatlabMatrixForVarName:varInterp1LinearName];
-        PDRealArray *t = [self createMatlabMatrixForVarName:vartName];
-        PDRealArray *ti = [self createMatlabMatrixForVarName:vartiName];
+        PDRealArray *fERBs = (PDRealArray *)[self createMatlabMatrixForVarName:varfERBsName];
+        PDRealArray *L = (PDRealArray *)[self createMatlabMatrixForVarName:varLName];
+        PDRealArray *pc = (PDRealArray *)[self createMatlabMatrixForVarName:varpcName];
+        PDRealArray *Si = (PDRealArray *)[self createMatlabMatrixForVarName:varSiName];
+        PDRealArray *interp1linear = (PDRealArray *)[self createMatlabMatrixForVarName:varInterp1LinearName];
+        PDRealArray *t = (PDRealArray *)[self createMatlabMatrixForVarName:vartName];
+        PDRealArray *ti = (PDRealArray *)[self createMatlabMatrixForVarName:vartiName];
         
         PDRealArray *mySi = pitchStrengthAllCandidates(fERBs, L, pc);
         
@@ -425,7 +440,7 @@ extern PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, P
     
     for (int ex = 9; ex < 14; ++ex) {
         int windowSize = 1 << ex;
-        int halfWindow = windowSize / 2;
+//        int halfWindow = windowSize / 2;
         int hopSize = windowSize / 2;
         
 //        int myHanningSizes[2] = {windowSize, 1};

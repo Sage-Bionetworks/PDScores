@@ -101,7 +101,7 @@ void features_bvav2(PDRealArray *audio, double srate, PDRealArray **ft)
     double ampdt = 0.05;
     double ampwin = round(ampdt * srate);
     PDRealArray *abuf = buffer(audiotrim, ampwin, 0);
-    PDRealArray *l1amp = [[abuf abs] mean];
+//    PDRealArray *l1amp = [[abuf abs] mean];
     PDRealArray *l2amp = [[[abuf square] mean] sqrt];
 
     //% Two shimmer estimates

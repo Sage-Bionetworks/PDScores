@@ -36,13 +36,13 @@ void features_bta(PDRealArray *tap, PDRealArray **ft)
     //tapx = tap(:,2);
     PDRealArray *tapx = [tap subarrayWithRows:tapRows columns:NSMakeRange(1, 1)];
     //tapy = tap(:,3);
-    PDRealArray *tapy = [tap subarrayWithRows:tapRows columns:NSMakeRange(2, 1)];
+//    PDRealArray *tapy = [tap subarrayWithRows:tapRows columns:NSMakeRange(2, 1)];
     //tapx = tapx-mean(tapx);
     double tapxmean = [tapx mean].data[0];
     tapx = [tapx subtract:tapxmean];
     //tapy = tapy-mean(tapy);
-    double tapymean = [tapy mean].data[0];
-    tapy = [tapy subtract:tapymean];
+//    double tapymean = [tapy mean].data[0];
+//    tapy = [tapy subtract:tapymean];
 
     //% Find left/right finger 'depress' events
     //dx = diff(tapx);

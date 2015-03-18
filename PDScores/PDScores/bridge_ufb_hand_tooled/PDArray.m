@@ -13,6 +13,12 @@
 
 #pragma mark - PDArray
 
+@interface PDArray ()
+
+    @property (nonatomic, assign) char *bytes;
+
+@end
+
 @implementation PDArray
 
 - (instancetype)init
@@ -21,7 +27,7 @@
         _rows = 0;
         _cols = 0;
         _allocatedSize = 0;
-        _data = NULL;
+        _bytes = NULL;
     }
 
     return self;
@@ -29,7 +35,7 @@
 
 - (size_t)typeSize
 {
-    return 0; // subclasses *must* override
+    return 1; // subclasses *must* override
 }
 
 - (BOOL)setRows:(size_t)rows columns:(size_t)columns
@@ -44,16 +50,21 @@
             newSize <<= 1;
         }
         size_t typeSize = self.typeSize;
-        size_t oldBytes = _allocatedSize * typeSize;
         size_t newBytes = newSize * typeSize;
-        _data = reallocf(_data, newBytes);
-        if  (_data) {
+        if (newBytes) {
+            _bytes = reallocf(_bytes, newBytes);
+        } else if (_bytes) {
+            free(_bytes);
+            _bytes = NULL;
+        }
+        
+        if  (_bytes) {
 #define DEBUG_UNINITIALIZED_ARRAYS 0
 #if DEBUG_UNINITIALIZED_ARRAYS
             size_t addedSize = newSize - _allocatedSize;
             if (addedSize > 0) {
                 // garbage out the newly allocated part so it will cause problems if used before being set
-                double *p = (double *)(_data + _rows * _cols * typeSize);
+                double *p = (double *)(_bytes + _rows * _cols * typeSize);
                 double *pEnd = p + newBytes / sizeof(double);
                 while (p < pEnd) {
                     *p++ = NAN;
@@ -61,19 +72,21 @@
             }
 #endif
             _allocatedSize = newSize;
+        } else {
+            _allocatedSize = 0;
         }
         
-        if (!_data) {
+        if (!_bytes) {
             NSLog(@"Failed to allocate %lu bytes for %@", newBytes, NSStringFromClass([self class]));
         }
     }
     
-    if (_data) {
+    if (_bytes) {
         _rows = rows;
         _cols = columns;
     }
     
-    return (_data != NULL);
+    return (_bytes != NULL);
 }
 
 - (BOOL)isVector
@@ -97,11 +110,11 @@
     
     size_t offsetToNew = _rows * _cols * self.typeSize;
     BOOL canDo = [self setRows:totalSize columns:1];
-    char *p = (char *)_data + offsetToNew;
+    char *p = (char *)_bytes + offsetToNew;
     if (canDo) {
         for (PDArray *array in arrays) {
             size_t addedBytes = array.rows * array.cols * array.typeSize;
-            memcpy(p, (char *)array.data, addedBytes);
+            memcpy(p, (char *)array.bytes, addedBytes);
             p += addedBytes;
         }
         _rows = totalSize;
@@ -141,7 +154,7 @@
 {
     PDArray *copy = [[self class] new];
     [copy setRows:_rows columns:_cols];
-    memcpy(copy.data, _data, _rows * _cols * self.typeSize);
+    memcpy(copy.bytes, _bytes, _rows * _cols * self.typeSize);
     
     return copy;
 }
@@ -150,10 +163,10 @@
 {
     PDArray *subarray = [[self class] new];
     [subarray setRows:rows.length columns:columns.length];
-    char *pDest = (char *)subarray.data;
+    char *pDest = (char *)subarray.bytes;
     size_t destStride = subarray.rows * subarray.typeSize;
     size_t endCol = columns.length + columns.location;
-    char *p = (char *)_data + self.typeSize * (_rows * columns.location + rows.location);
+    char *p = (char *)_bytes + self.typeSize * (_rows * columns.location + rows.location);
     size_t srcStride = self.typeSize * self.rows;
     size_t colHeight = self.typeSize * rows.length;
     for (size_t col = columns.location; col < endCol; ++col) {
@@ -171,7 +184,7 @@
     size_t rowsSize = rows.rows * rows.cols;
     size_t colsSize = columns.rows * columns.cols;
     [subarray setRows:rowsSize columns:colsSize];
-    char *pDest = (char *)subarray.data;
+    char *pDest = (char *)subarray.bytes;
     
     const size_t *pColIdxs = columns.data;
     size_t typeSize = self.typeSize;
@@ -182,7 +195,7 @@
         
         for (size_t row = 0; row < rowsSize; ++row) {
             size_t rowIdx = *pRowIdxs++ - 1; // because Matlab uses quaint one-based indexing
-            char *pSrc = (char *)_data + (colIdx * _rows + rowIdx) * typeSize;
+            char *pSrc = (char *)_bytes + (colIdx * _rows + rowIdx) * typeSize;
             blit(pDest, pSrc, typeSize);
             pDest += typeSize;
         }
@@ -207,9 +220,9 @@
     
     size_t endOfCols = columns.location + columns.length;
     size_t arrayStride = rows.length * self.typeSize;
-    const char *pSrc = array.data;
+    const char *pSrc = array.bytes;
     for (size_t column = columns.location; column < endOfCols; ++column) {
-        char *pDest = self.data + (column * self.rows + rows.location) * self.typeSize;
+        char *pDest = _bytes + (column * _rows + rows.location) * self.typeSize;
         blit(pDest, pSrc, arrayStride);
         pSrc += arrayStride;
     }
@@ -232,7 +245,7 @@
     
     const size_t *pColIdxs = columns.data;
     size_t typeSize = self.typeSize;
-    const char *pSrc = array.data;
+    const char *pSrc = array.bytes;
     
     for (size_t col = 0; col < colsSize; ++col) {
         size_t colIdx = *pColIdxs++ - 1;
@@ -240,7 +253,7 @@
         
         for (size_t row = 0; row < rowsSize; ++row) {
             size_t rowIdx = *pRowIdxs++ - 1;
-            char *pDest = (char *)_data + (colIdx * _rows + rowIdx) * typeSize;
+            char *pDest = (char *)_bytes + (colIdx * _rows + rowIdx) * typeSize;
             blit(pDest, pSrc, typeSize);
             pSrc += typeSize;
         }
@@ -255,13 +268,13 @@
     size_t totals = _rows * _cols;
     size_t typeSize = self.typeSize;
     [found setRows:totals columns:1];
-    char *p = _data;
+    char *p = _bytes;
     char *pEnd = p + totals * typeSize;
     size_t *pDest = found.data;
     size_t numFound = 0;
     while (p < pEnd) {
         if (![self isZero:p]) {
-            *pDest++ = (p - (char *)_data) / typeSize + 1;
+            *pDest++ = (p - (char *)_bytes) / typeSize + 1;
             ++numFound;
         }
         p += typeSize;
@@ -278,13 +291,13 @@
     
     size_t totals = _rows * _cols;
     size_t typeSize = self.typeSize;
-    char *p = _data;
+    char *p = _bytes;
     char *pEnd = p + totals * typeSize;
     size_t *pDest = found.data;
     size_t numFound = 0;
     while (p < pEnd && numFound < howMany) {
         if (![self isZero:p]) {
-            *pDest++ = (p - (char *)_data) / typeSize + 1;
+            *pDest++ = (p - (char *)_bytes) / typeSize + 1;
             ++numFound;
         }
         p += typeSize;
@@ -301,13 +314,13 @@
     
     size_t totals = _rows * _cols;
     size_t typeSize = self.typeSize;
-    char *pEnd = _data ;
+    char *pEnd = _bytes ;
     char *p = pEnd + (totals - 1) * typeSize;
     size_t *pDest = found.data;
     size_t numFound = 0;
     while (p >= pEnd && numFound < howMany) {
         if (![self isZero:p]) {
-            *pDest++ = (p - (char *)_data) / typeSize + 1;
+            *pDest++ = (p - (char *)_bytes) / typeSize + 1;
             ++numFound;
         }
         p -= typeSize;
@@ -329,8 +342,8 @@
     
     const size_t *pIdx = indexArray.data;
     const size_t *pEnd = pIdx + rows;
-    const char *source = self.data;
-    char *pDest = elements.data;
+    const char *source = _bytes;
+    char *pDest = elements.bytes;
     size_t destStride = elements.typeSize;
     while (pIdx < pEnd) {
         size_t index = *pIdx++ - 1;
@@ -361,7 +374,7 @@
     }
     
     size_t stride = self.typeSize;
-    const char *pSrc = array.data;
+    const char *pSrc = array.bytes;
     const size_t *pIdx = indexArray.data;
     const size_t *endIdx = pIdx + indexArray.rows * indexArray.cols;
     const size_t mySize = _rows * _cols;
@@ -371,7 +384,7 @@
             // just skip out-of-bounds indices
             continue;
         }
-        blit(self.data + index * stride, pSrc, stride);
+        blit(_bytes + index * stride, pSrc, stride);
         pSrc += stride;
     }
 }
@@ -390,13 +403,13 @@ static inline void blit(char *dest, const char *src, size_t count)
     [transpose setRows:_cols columns:_rows];
     if (_rows == 1 || _cols == 1) {
         // it's just a vector--copy it and we're done
-        memcpy(transpose.data, _data, _rows * _cols * self.typeSize);
+        memcpy(transpose.bytes, _bytes, _rows * _cols * self.typeSize);
     } else {
         size_t typeSize = self.typeSize;
         size_t tColStride = transpose.rows * typeSize;
-        const char *pSrc = _data;
+        const char *pSrc = _bytes;
         const char *pEnd = pSrc + _rows * _cols * typeSize;
-        char *rowStart = transpose.data;
+        char *rowStart = transpose.bytes;
         char *pDest = rowStart;
         while (pSrc < pEnd) {
             for (size_t srcRow = 0; srcRow < _rows; ++srcRow) {
@@ -434,8 +447,8 @@ void flipCol(char *outCol, const char *inCol, size_t rows, size_t stride)
     PDArray *flipud = [[self class] new];
     [flipud setRows:_rows columns:_cols];
     size_t stride = _rows * self.typeSize;
-    char *pIn = _data;
-    char *pOut = flipud.data;
+    char *pIn = _bytes;
+    char *pOut = flipud.bytes;
     for (size_t col = 0; col < _cols; ++col) {
         flipCol(pOut, pIn, _rows, self.typeSize);
         pIn += stride;
@@ -454,8 +467,7 @@ void flipCol(char *outCol, const char *inCol, size_t rows, size_t stride)
 {
     // only free it if we actually allocated it
     if (_allocatedSize) {
-        free(_data);
-        _data = NULL;
+        free(_bytes);
     }
 }
 
@@ -472,7 +484,7 @@ void flipCol(char *outCol, const char *inCol, size_t rows, size_t stride)
 
 - (DSPDoubleComplex *)data
 {
-    return (DSPDoubleComplex *)super.data;
+    return (DSPDoubleComplex *)self.bytes;
 }
 
 - (PDRealArray *)abs
@@ -530,7 +542,7 @@ void flipCol(char *outCol, const char *inCol, size_t rows, size_t stride)
 
 - (double *)data
 {
-    return (double *)super.data;
+    return (double *)self.bytes;
 }
 
 - (PDRealArray *)applyReal:(applyRealBlock)block
@@ -596,28 +608,6 @@ void flipCol(char *outCol, const char *inCol, size_t rows, size_t stride)
     }
     return applied;
 }
-
-//- (PDRealArray *)elementsWithIndices:(PDIntArray *)indexArray
-//{
-//    PDRealArray *elements = [PDRealArray new];
-//    size_t rows = indexArray.rows;
-//    size_t cols = 1;
-//    if (rows == 1) {
-//        rows = indexArray.cols;
-//    }
-//    [elements setRows:rows columns:cols];
-//    
-//    const size_t *pIdx = indexArray.data;
-//    const size_t *pEnd = pIdx + rows;
-//    const double *source = self.data;
-//    double *pDest = elements.data;
-//    while (pIdx < pEnd) {
-//        size_t index = *pIdx++;
-//        *pDest++ = source[index];
-//    }
-//    
-//    return elements;
-//}
 
 - (PDRealArray *)abs
 {
@@ -1062,18 +1052,6 @@ void cumsumsForColumn(double *destStart, const double *colStart, size_t rows)
     return cumsum;
 }
 
-//double sumForColumn(const double *colStart, size_t rows)
-//{
-//    const double *p = colStart;
-//    const double *pEnd = p + rows;
-//    double sum = 0.0;
-//    while (p < pEnd) {
-//        sum += *p++;
-//    }
-//    
-//    return sum;
-//}
-
 - (PDRealArray *)sum
 {
     PDRealArray *sum = [PDRealArray new];
@@ -1088,7 +1066,6 @@ void cumsumsForColumn(double *destStart, const double *colStart, size_t rows)
         elements = self.cols;
     }
     while (p < pEnd) {
-//        *pDest++ = sumForColumn(p, self.rows);
         vDSP_sveD(p, 1, pDest++, elements);
         p += self.rows;
     }
@@ -1419,7 +1396,9 @@ void doFftForColumn(DOUBLE_COMPLEX *outColStart, const double *colStart, size_t 
 {
     PDIntArray *rowVector = [PDIntArray new];
     size_t cols = end - start + 1;
-    [rowVector setRows:1 columns:cols];
+    if (![rowVector setRows:1 columns:cols]) {
+        return nil;
+    }
     size_t *p = rowVector.data;
     size_t *pEnd = p + cols;
     size_t value = start;
@@ -1433,6 +1412,11 @@ void doFftForColumn(DOUBLE_COMPLEX *outColStart, const double *colStart, size_t 
 - (size_t)typeSize
 {
     return sizeof(size_t);
+}
+
+- (size_t *)data
+{
+    return (size_t *)self.bytes;
 }
 
 - (BOOL)isZero:(void *)valPtr

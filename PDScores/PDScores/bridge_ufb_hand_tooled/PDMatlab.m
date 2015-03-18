@@ -409,7 +409,7 @@ inline static double interpSpline(double a, double b, double c, double d, double
     return value;
 }
 
-void tridiag(double *A, double *B, double *C, double *D, int len)
+void tridiag(double *A, double *B, double *C, double *D, size_t len)
 {
     int i;
     double b, *F;
@@ -429,14 +429,14 @@ void tridiag(double *A, double *B, double *C, double *D, int len)
     }
     
     // back substitution
-    for (i = len - 2; i >= 0; --i) {
+    for (i = (int)len - 2; i >= 0; --i) {
         D[i] -= (D[i + 1] * F[i + 1]);
     }
     
     free(F);
 }
 
-void getYD(double *X, double *Y, double *YD, int len)
+void getYD(const double *X, const double *Y, double *YD, size_t len)
 {
     int i;
     double h0, h1, r0, r1, *A, *B, *C;
@@ -484,7 +484,7 @@ void getYD(double *X, double *Y, double *YD, int len)
 void interpSplineForColumn(double *outColumn, const double *inColumnX, const double *inColumnY, const double *inQueryPts, size_t sampleRows, size_t queryRows)
 {
     int i, j;
-    double *YD, A0, A1, A2, A3, dx, dy, p1, p2, p3;
+    double *YD, A0 = 0.0, A1 = 0.0, A2 = 0.0, A3 = 0.0, dx, dy, p1 = 0.0, p2 = 0.0, p3;
     
     // compute 1st derivatives at each point -> YD
     YD = (double *)calloc(sampleRows, sizeof(double));
@@ -521,118 +521,7 @@ void interpSplineForColumn(double *outColumn, const double *inColumnX, const dou
     free(YD);
 }
 
-/*
-void interpSplineForColumn(double *outColumn, const double *inColumnX, const double *inColumnY, const double *inQueryPts, size_t sampleRows, size_t queryRows)
-{
-    // compute splines. NOTE this is a natural spline, not a Not-A-Knot spline as MATLAB uses. The only difference is the
-    // end conditions, but I couldn't find an algorithm for computing it.
-    size_t n = sampleRows - 1;
-
-    PDRealArray *a = [PDRealArray new];
-    a.rows = n + 1;
-    a.cols = 1;
-    a.data = (double *)inColumnY;
-    
-    PDRealArray *b = zeros(n, 1);
-    PDRealArray *d = zeros(n, 1);
-    PDRealArray *h = zeros(n, 1);
-//    double *ph = h.data;
-//    double *phEnd = ph + n - 1;
-//    const double *pX = inColumnX;
-//    while (ph < phEnd) {
-//        *ph++ = *pX + *(pX + 1);
-//        ++pX;
-//    }
-    const double *pX = inColumnX;
-    double *ph = h.data;
-    for (int i = 0; i < n; ++i) {
-        ph[i] = pX[i + 1] - pX[i];
-    }
-    PDRealArray *alpha = zeros(n, 1);
-//    double *pAlpha = alpha.data + 1;
-//    double *pAlphaEnd = alpha.data + n - 1;
-//    ph = h.data + 1;
-//    const double *pa = a.data + 1;
-//    while (pAlpha < pAlphaEnd) {
-//        *pAlpha++ = 3.0 * ((*(pa + 1) - *pa) / *ph - (*pa - *(pa-1)) / *(ph - 1));
-//        ++ph;
-//        ++pa;
-//    }
-    double *pAlpha = alpha.data;
-    const double *pa = a.data;
-    for (int i = 1; i < n; ++i) {
-        pAlpha[i] = 3.0 * ((pa[i + 1] - pa[i]) / ph[i] - (pa[i] - pa[i - 1] / ph[i - 1]));
-    }
-    PDRealArray *c = zeros(n + 1, 1);
-    PDRealArray *l = zeros(n + 1, 1);
-    PDRealArray *mu = zeros(n + 1, 1);
-    PDRealArray *z = zeros(n + 1, 1);
-    double *pl = l.data;
-    *pl = 1.0;
-    pX = inColumnX;
-    ph = h.data;
-    double *pmu = mu.data;
-    double *pz = z.data;
-    pAlpha = alpha.data;
-    size_t iprev = 0;
-    size_t inext = 2;
-    for (NSInteger i = 1; i < n; ++i) {
-        pl[i] = 2.0 * (pX[inext] - pX[iprev]) - ph[iprev] * pmu[iprev];
-        pmu[i] = ph[i] / pl[i];
-        pz[i] = (pAlpha[i] - ph[iprev] * pz[iprev]) / pl[i];
-        
-        ++iprev;
-        ++inext;
-    }
-    
-    pl[n] = 1.0;
-    pa = a.data;
-    double *pc = c.data;
-    double *pb = b.data;
-    double *pd = d.data;
-    NSInteger jnext = n;
-    for (NSInteger j = n - 1; j >= 0; --j, --jnext) {
-        pc[j] = pz[j] - pmu[j] * pc[jnext];
-        pb[j] = (pa[jnext] - pa[j]) / ph[j] - ph[j] * (pc[jnext] + 2.0 * pc[j]) / 3.0;
-        pd[j] = (pc[jnext] - pc[j]) / (3.0 * ph[j]);
-    }
-    
-    // OK, now that we've computed the splines for this data, use them to generate the interpolated points.
-    
-    double *pOut = outColumn;
-    const double *pQ = inQueryPts;
-    const double *pEndQ = pQ + queryRows;
-    const double *pY = inColumnY;
-    const double *pEndX = pX + sampleRows;
-
-    // *pQ is guaranteed to be >= inColumnX[0] and <= inColumnX[end]
-    // edge condition:
-    while (pQ < pEndQ) {
-        while (*(pX + 1) < *pQ && pX < pEndX) {
-            ++pX;
-            ++pY;
-            ++pa;
-            ++pb;
-            ++pc;
-            ++pd;
-        }
-//        if (*pQ == *pX) {
-//            *pOut++ = *pY;
-//        } else if (*pQ == *(pX + 1)) {
-//            // landed on one--no need to interpolate
-//            *pOut++ = *(pY + 1);
-////            pOut+= outStride;
-//        } else {
-            // we are here
-            *pOut++ = interpSpline(*pa, *pb, *pc, *pd, *pX, *pQ);
-//            pOut += outStride;
-//        }
-        ++pQ;
-    }
-}
- */
-
-void interpLinearForColumn(double *outColumn, const double *inColumnX, const double *inColumnY, const double *inQueryPts, size_t sampleRows, size_t queryRows/*, size_t outStride*/)
+void interpLinearForColumn(double *outColumn, const double *inColumnX, const double *inColumnY, const double *inQueryPts, size_t sampleRows, size_t queryRows)
 {
     double *pOut = outColumn;
     const double *pX = inColumnX;
@@ -650,17 +539,15 @@ void interpLinearForColumn(double *outColumn, const double *inColumnX, const dou
         if (*pQ == *pX) {
             // landed on one--no need to interpolate
             *pOut++ = *pY;
-//            pOut += outStride;
         } else {
             // we passed it
             *pOut++ = interpLinear(*(pX - 1), *pX, *(pY - 1), *pY, *pQ);
-//            pOut += outStride;
         }
         ++pQ;
     }
 }
 
-void interpForColumn(double *outColumn, const double *inColumnX, const double *inColumnY, const double *inQueryPts, size_t sampleRows, size_t queryRows, /*size_t outStride,*/ double extrap, PDInterp1Method method)
+void interpForColumn(double *outColumn, const double *inColumnX, const double *inColumnY, const double *inQueryPts, size_t sampleRows, size_t queryRows, double extrap, PDInterp1Method method)
 {
     // assume the input x and query pts are both in monotonically increasing order
     double *pOut = outColumn;
@@ -673,7 +560,6 @@ void interpForColumn(double *outColumn, const double *inColumnX, const double *i
     // fill in any out-of-range-below with extrapolation value
     while (*pQ < rangeLo && pQ < pEndQ) {
         *pOut++ = extrap;
-//        pOut += outStride;
         ++pQ;
         --interpRows;
     }
@@ -684,7 +570,6 @@ void interpForColumn(double *outColumn, const double *inColumnX, const double *i
     double *pOutHi = outColumn + queryRows - 1;
     while (*pQHi > rangeHi && pQHi >= pQHiEnd) {
         *pOutHi-- = extrap;
-//        pOutHi -= outStride;
         --pQHi;
         --interpRows;
     }
@@ -708,7 +593,6 @@ PDRealArray *interp1(PDRealArray *x, PDRealArray *v, PDRealArray *xq, PDInterp1M
     
     [interp setRows:querySize columns:cols];
     size_t sampleSizes = v.rows;
-    size_t outStride = cols;
     size_t stride = sampleSizes;
     
     double *pOut = interp.data;
@@ -717,7 +601,7 @@ PDRealArray *interp1(PDRealArray *x, PDRealArray *v, PDRealArray *xq, PDInterp1M
     const double *pYEnd = pY + v.rows * v.cols;
     const double *pQ = xq.data;
     while (pY < pYEnd) {
-        interpForColumn(pOut, pX, pY, pQ, sampleSizes, querySize, /*outStride,*/ extrapolation, method);
+        interpForColumn(pOut, pX, pY, pQ, sampleSizes, querySize, extrapolation, method);
 //        ++pOut; // going down the rows of the first column as the starting point for output
         pOut += querySize;
         pY += stride;

@@ -215,7 +215,7 @@ const double kNormalizedMinimum = 10.0;
     
     // convert to emxArray_real_T for use with MATLAB converted code
     PDRealArray *audio = [PDRealArray new];
-    [audio setRows:numFrames columns:1];
+    [audio setRows:(size_t)numFrames columns:1];
     float *pSrc = bufferList->mBuffers[0].mData;
     float *pSrcEnd = pSrc + numFrames;
     double *pDst = audio.data;

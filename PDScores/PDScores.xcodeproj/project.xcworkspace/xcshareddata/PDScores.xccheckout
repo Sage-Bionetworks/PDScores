@@ -5,16 +5,16 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>9FCE59E8-F31D-411D-BD84-9B6D914C1EC5</string>
+	<string>D6ED72FC-0336-4CD8-AFAD-C11D34916086</string>
 	<key>IDESourceControlProjectName</key>
-	<string>PDScoresTest</string>
+	<string>PDScores</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>8D47159E2CFF2CEA0338F4A906554A655BEE0AD5</key>
 		<string>github.com:Sage-Bionetworks/PDScores.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>PDScoresTest/PDScoresTest.xcodeproj</string>
+	<string>PDScores/PDScores.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>8D47159E2CFF2CEA0338F4A906554A655BEE0AD5</key>
