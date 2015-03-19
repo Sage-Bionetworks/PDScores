@@ -21,15 +21,6 @@
 
 @end
 
-@implementation PDArray(with_data)
-
-- (void *)data
-{
-    return (void *)[(id)self bytes];
-}
-
-@end
-
 ///*static*/ void pitchStrengthAllCandidatesX(const emxArray_real_T *f, const
 //                                           emxArray_real_T *L, const emxArray_real_T *pc, emxArray_real_T *S);
 ///*static*/ void pitchStrengthOneCandidateX(const emxArray_real_T *f, const
