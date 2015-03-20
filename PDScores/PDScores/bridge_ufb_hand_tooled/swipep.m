@@ -387,54 +387,56 @@ void swipep(PDRealArray *x, double fs, double plim[2], double dt, double dlog2p,
     *s = NaN(S.cols, 1);
     //for j = 1 : size(S,2)
     for (size_t j = 0; j < S.cols; ++j) {
-    //    [ s(j), i ] = max( S(:,j), [], 1 );
-        NSRange Srows = NSMakeRange(0, S.rows);
-        NSRange Sjcol = NSMakeRange(j, 1);
-        PDIntArray *i;
-        PDRealArray *S_j = [S subarrayWithRows:Srows columns:Sjcol];
-        (*s).data[j] = [S_j maxAndIndices:&i].data[0];
-    //    if s(j) < sTHR, continue, end
-        if ((*s).data[j] < sTHR) {
-            continue;
-        }
-    //    if i == 1 || i == length(pc)
-        if (i.data[0] == 1 || i.data[0] == length_pc) {
-    //        p(j) = pc(i);
-            (*p).data[j] = pc.data[i.data[0] - 1];
-    //    else
-        } else {
-    //        I = i-1 : i+1;
-            PDIntArray *I = [PDIntArray rowVectorFrom:i.data[0]-1 to:i.data[0]+1];
-            // Turns out this can be done without all the element-by-element inversions (i.e faster)
-            // and also without the subtractions (i.e. more accurately). Unfortunately then it differs from Matlab's output
-            // from the original code by up to 5 parts in 10^-9. "Improved" code left in, commented out, for reference...
-    //        tc = 1 ./ pc(I);
-            PDRealArray *tc = [[pc elementsWithIndices:I] oneOverX];
-//            PDRealArray *tc = [pc elementsWithIndices:I];
-    //        ntc = ( tc/tc(2) - 1 ) * 2*pi;
-            PDRealArray *ntc = [[[tc divide:tc.data[1]] subtract:1.0] multiply:2.0 * M_PI];
-//            PDRealArray *ntc = [[tc under:tc.data[1]] multiply:2.0 * M_PI];
-    //        c = polyfit( ntc, S(I,j), 2 );
-            PDRealArray *c = polyfit(ntc, [S_j elementsWithIndices:I], 2);
-            // OK, this whole section appears to be finding the local maximum of a parabola by evaluating it over a hundred
-            // points per semitone and taking the maximum result. Much simpler, faster, and more precise and accurate would be
-            // to simply evaluate the polynomial (c(0)x^2 + c(1)x + c(2)) at the point where the first derivative is 0, i.e.
-            // -c(1)/(2 * c(0)) since we know by construction we've got a local maximum and not a minimum. In other words,
-            // the s(j) we're looking for is in fact polyval(c, -c(1)/(2 * c(0))) and no need to go searching for it.
-            // However, in the interest of maintaining as close equivalence with the original as possible (since the scoring
-            // weights etc. are hand-tuned to that calculation) and the results differ ever so slightly, we'll stick with this.
-    //        ftc = 1 ./ 2.^[ log2(pc(I(1))): 1/12/100: log2(pc(I(3))) ];
-            PDRealArray *ftc = [[[PDRealArray rowVectorWithStart:log2(pc.data[I.data[0] - 1]) step:1./12./100. cap:log2(pc.data[I.data[2] - 1])] exp2] oneOverX];
-//            PDRealArray *ftc = [[PDRealArray rowVectorWithStart:log2(pc.data[I.data[0] - 1]) step:1./12./100. cap:log2(pc.data[I.data[2] - 1])] exp2];
-    //        nftc = ( ftc/tc(2) - 1 ) * 2*pi;
-            PDRealArray *nftc = [[[ftc divide:tc.data[1]] subtract:1.] multiply:2. * M_PI];
-//            PDRealArray *nftc = [[ftc under:tc.data[1]] multiply:2. * M_PI];
-    //        [s(j) k] = max( polyval( c, nftc ) );
-            PDIntArray *k;
-            (*s).data[j] = [polyval(c, nftc) maxAndIndices:&k].data[0];
-    //        p(j) = 2 ^ ( log2(pc(I(1))) + (k-1)/12/100 );
-            (*p).data[j] = exp2( log2(pc.data[I.data[0] - 1]) + (k.data[0] - 1.)/12./100.);
-    //    end
+        @autoreleasepool {
+            //    [ s(j), i ] = max( S(:,j), [], 1 );
+            NSRange Srows = NSMakeRange(0, S.rows);
+            NSRange Sjcol = NSMakeRange(j, 1);
+            PDIntArray *i;
+            PDRealArray *S_j = [S subarrayWithRows:Srows columns:Sjcol];
+            (*s).data[j] = [S_j maxAndIndices:&i].data[0];
+            //    if s(j) < sTHR, continue, end
+            if ((*s).data[j] < sTHR) {
+                continue;
+            }
+            //    if i == 1 || i == length(pc)
+            if (i.data[0] == 1 || i.data[0] == length_pc) {
+                //        p(j) = pc(i);
+                (*p).data[j] = pc.data[i.data[0] - 1];
+                //    else
+            } else {
+                //        I = i-1 : i+1;
+                PDIntArray *I = [PDIntArray rowVectorFrom:i.data[0]-1 to:i.data[0]+1];
+                // Turns out this can be done without all the element-by-element inversions (i.e faster)
+                // and also without the subtractions (i.e. more accurately). Unfortunately then it differs from Matlab's output
+                // from the original code by up to 5 parts in 10^-9. "Improved" code left in, commented out, for reference...
+                //        tc = 1 ./ pc(I);
+                PDRealArray *tc = [[pc elementsWithIndices:I] oneOverX];
+//                PDRealArray *tc = [pc elementsWithIndices:I];
+                //        ntc = ( tc/tc(2) - 1 ) * 2*pi;
+                PDRealArray *ntc = [[[tc divide:tc.data[1]] subtract:1.0] multiply:2.0 * M_PI];
+//                PDRealArray *ntc = [[tc under:tc.data[1]] multiply:2.0 * M_PI];
+                //        c = polyfit( ntc, S(I,j), 2 );
+                PDRealArray *c = polyfit(ntc, [S_j elementsWithIndices:I], 2);
+                // OK, this whole section appears to be finding the local maximum of a parabola by evaluating it over a hundred
+                // points per semitone and taking the maximum result. Much simpler, faster, and more precise and accurate would be
+                // to simply evaluate the polynomial (c(0)x^2 + c(1)x + c(2)) at the point where the first derivative is 0, i.e.
+                // -c(1)/(2 * c(0)) since we know by construction we've got a local maximum and not a minimum. In other words,
+                // the s(j) we're looking for is in fact polyval(c, -c(1)/(2 * c(0))) and no need to go searching for it.
+                // However, in the interest of maintaining as close equivalence with the original as possible (since the scoring
+                // weights etc. are hand-tuned to that calculation) and the results differ ever so slightly, we'll stick with this.
+                //        ftc = 1 ./ 2.^[ log2(pc(I(1))): 1/12/100: log2(pc(I(3))) ];
+                PDRealArray *ftc = [[[PDRealArray rowVectorWithStart:log2(pc.data[I.data[0] - 1]) step:1./12./100. cap:log2(pc.data[I.data[2] - 1])] exp2] oneOverX];
+//                PDRealArray *ftc = [[PDRealArray rowVectorWithStart:log2(pc.data[I.data[0] - 1]) step:1./12./100. cap:log2(pc.data[I.data[2] - 1])] exp2];
+                //        nftc = ( ftc/tc(2) - 1 ) * 2*pi;
+                PDRealArray *nftc = [[[ftc divide:tc.data[1]] subtract:1.] multiply:2. * M_PI];
+//                PDRealArray *nftc = [[ftc under:tc.data[1]] multiply:2. * M_PI];
+                //        [s(j) k] = max( polyval( c, nftc ) );
+                PDIntArray *k;
+                (*s).data[j] = [polyval(c, nftc) maxAndIndices:&k].data[0];
+                //        p(j) = 2 ^ ( log2(pc(I(1))) + (k-1)/12/100 );
+                (*p).data[j] = exp2( log2(pc.data[I.data[0] - 1]) + (k.data[0] - 1.)/12./100.);
+                //    end
+            }
         }
     //end
     }
@@ -499,21 +501,23 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
             }
             
             // only keep around the rows of N we're actually gonna end up using
-            double maxRowIdx = [k max].data[0];
+            PDRealArray *kmax = [k max];
+            double maxRowIdx = kmax.data[0];
             N = [N subarrayWithRows:NSMakeRange(0, maxRowIdx) columns:NSMakeRange(0, N.cols)];
             
-        }
-        //for j = 1 : length(pc)
-        // do this here because it's more convenient to do it all at once before we use each row
-        //    % Normalize loudness
-        //    n(n==0) = Inf; % to make zero-loudness equal zero after normalization
-        [N applyReal:^double(const double element) {
-            double value = element;
-            if (value == 0.0) {
-                value = INFINITY;
-            }
-            return value;
-        }];
+            //for j = 1 : length(pc)
+            // do this here because it's more convenient to do it all at once before we use each row
+            //    % Normalize loudness
+            //    n(n==0) = Inf; % to make zero-loudness equal zero after normalization
+            N = [N applyReal:^double(const double element) {
+                double value = element;
+                if (value == 0.0) {
+                    value = INFINITY;
+                }
+                return value;
+            }];
+       }
+        
         // precompute NL arrays for each value of k[j]--there's only a few
         // on second thought, they're huge so even a few is too many at once
 //        NSMutableDictionary *NLbyK = [NSMutableDictionary dictionary];
@@ -552,23 +556,25 @@ PDRealArray *pitchStrengthAllCandidates(PDRealArray *f, PDRealArray *L, PDRealAr
             //        PDRealArray *nSubset = [n subarrayWithRowIndices:onesLRows_k columnIndices:colIdx];
             ////        PDRealArray *nSubset = [n subarrayWithRows:NSMakeRange(0, L.rows - k.data[j] + 1) columns:NSMakeRange(0, n.cols)];
             // only recompute NL when it changes
-            if (k.data[j] != this_k_j) {
-                this_k_j = k.data[j];
-                NL = [L divideRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) byRow:k.data[j] - 1 ofRealArray:N];
-            }
+            @autoreleasepool {
+                if (k.data[j] != this_k_j) {
+                    this_k_j = k.data[j];
+                    NL = [L divideRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) byRow:k.data[j] - 1 ofRealArray:N];
+                }
 //            PDRealArray *NL = [L divideRows:NSMakeRange(k.data[j] - 1, L.rows - k.data[j] + 1) byRow:k.data[j] - 1 ofRealArray:N];
 //            PDRealArray *nSubset = repmat(n, L.rows - k.data[j] + 1, 1);
 //            PDRealArray *NL = [L_k_j_end divideElementByElement:nSubset];
 //            PDRealArray *NL = [L_k_j_end applyReal:^double(const double element, const double otherArrayElement) {
 //                return element / otherArrayElement;
 //            } withRealArray:nSubset];
-            //
-            //    % Compute pitch strength
-            //    S(j,:) = pitchStrengthOneCandidate( f(k(j):end), NL, pc(j) );
-            NSRange jRow = NSMakeRange(j, 1);
-            NSRange Scols = NSMakeRange(0, S.cols);
-            PDRealArray *psoc = pitchStrengthOneCandidate([f subarrayWithRows:NSMakeRange(k.data[j] - 1, f.rows - k.data[j] + 1) columns:fcols], NL, pc.data[j]);
-            [S setSubarrayRows:jRow columns:Scols fromArray:psoc];
+                //
+                //    % Compute pitch strength
+                //    S(j,:) = pitchStrengthOneCandidate( f(k(j):end), NL, pc(j) );
+                NSRange jRow = NSMakeRange(j, 1);
+                NSRange Scols = NSMakeRange(0, S.cols);
+                PDRealArray *psoc = pitchStrengthOneCandidate([f subarrayWithRows:NSMakeRange(k.data[j] - 1, f.rows - k.data[j] + 1) columns:fcols], NL, pc.data[j]);
+                [S setSubarrayRows:jRow columns:Scols fromArray:psoc];
+            }
             //end
         }
     }

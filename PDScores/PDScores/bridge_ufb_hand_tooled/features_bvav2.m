@@ -50,6 +50,9 @@ void features_bvav2(PDRealArray *audio, double srate, PDRealArray **ft)
     //audiotrim = audio(istart:iend);
     PDRealArray *audiotrim = [audio elementsWithIndices:[PDIntArray rowVectorFrom:istart to:iend]];
 
+    // release the memory held by audio, since it's a lot and we don't need it anymore
+    [audio setRows:0 columns:0];
+    
     //N = length(audiotrim);
     N = MAX(audiotrim.rows, audiotrim.cols);
     //T = N/srate;

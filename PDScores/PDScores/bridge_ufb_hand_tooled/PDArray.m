@@ -38,55 +38,80 @@
     return 1; // subclasses *must* override
 }
 
+- (void)reallocToSize:(size_t)newSize
+{
+    size_t typeSize = self.typeSize;
+    size_t newBytes = newSize * typeSize;
+    _data = reallocf(_data, newBytes);
+    
+    if (_data) {
+#define DEBUG_UNINITIALIZED_ARRAYS 0
+#if DEBUG_UNINITIALIZED_ARRAYS
+        size_t addedSize = newSize - _allocatedSize;
+        if (addedSize > 0) {
+            // garbage out the newly allocated part so it will cause problems if used before being set
+            double *p = (double *)(_data + _rows * _cols * typeSize);
+            double *pEnd = p + newBytes / sizeof(double);
+            while (p < pEnd) {
+                *p++ = NAN;
+            }
+        }
+#endif
+        _allocatedSize = newSize;
+    } else {
+        _allocatedSize = 0;
+    }
+    
+    if (newSize && !_data) {
+        NSLog(@"Failed to allocate %lu bytes for %@", newBytes, NSStringFromClass([self class]));
+    }
+}
+
 - (BOOL)setRows:(size_t)rows columns:(size_t)columns
 {
     size_t required = rows * columns;
-    if (_allocatedSize < required) {
-        size_t newSize = _allocatedSize * 2;
-        if (!newSize) {
-            newSize = 1;
-        }
-        while (newSize < required) {
-            newSize <<= 1;
-        }
-        size_t typeSize = self.typeSize;
-        size_t newBytes = newSize * typeSize;
-        if (newBytes) {
-            _data = reallocf(_data, newBytes);
-        } else if (_data) {
+    
+    // if we didn't allocate _data, don't mess with it; the caller had just better know what they're doing
+    BOOL ours = !_data || _allocatedSize;
+    
+    if (!required) {
+        if (_data && _allocatedSize) {
             free(_data);
-            _data = NULL;
         }
-        
-        if  (_data) {
-#define DEBUG_UNINITIALIZED_ARRAYS 0
-#if DEBUG_UNINITIALIZED_ARRAYS
-            size_t addedSize = newSize - _allocatedSize;
-            if (addedSize > 0) {
-                // garbage out the newly allocated part so it will cause problems if used before being set
-                double *p = (double *)(_data + _rows * _cols * typeSize);
-                double *pEnd = p + newBytes / sizeof(double);
-                while (p < pEnd) {
-                    *p++ = NAN;
-                }
+        _data = NULL;
+    } else if (ours) {
+        // minimum allocation granularity is 16 bytes
+        size_t minSize = 16 / self.typeSize;
+        required = MAX(minSize, required);
+        if (_allocatedSize < required) {
+            size_t newSize = _allocatedSize << 1;
+            if (!newSize) {
+                newSize = minSize;
             }
-#endif
-            _allocatedSize = newSize;
-        } else {
-            _allocatedSize = 0;
-        }
-        
-        if (!_data) {
-            NSLog(@"Failed to allocate %lu bytes for %@", newBytes, NSStringFromClass([self class]));
+            while (newSize < required) {
+                newSize <<= 1;
+            }
+            
+            [self reallocToSize:newSize];
+        } else if (_allocatedSize >> 1 >= required) {
+            size_t newSize = _allocatedSize >> 1;
+            while (newSize > required) {
+                newSize >>= 1;
+            }
+            if (newSize < required) {
+                newSize <<= 1;
+            }
+            
+            [self reallocToSize:newSize];
         }
     }
     
-    if (_data) {
+    if (_data || !required) {
         _rows = rows;
         _cols = columns;
     }
     
-    return (_data != NULL);
+    return (_data || !required);
 }
 
 - (BOOL)isVector
@@ -670,6 +695,7 @@ double minForColumn(const double *colStart, size_t rows, size_t *index)
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [min setRows:1 columns:1];
+        pDest = min.data; // in case reallocf() moved it
         while (p < pEnd) {
             *pDest++ = minForColumn(p, self.cols, NULL);
             p += self.cols;
@@ -697,6 +723,7 @@ double minForColumn(const double *colStart, size_t rows, size_t *index)
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [min setRows:1 columns:1];
+        pDest = min.data; // in case reallocf() moved it
         while (p < pEnd) {
             *pDest++ = minForColumn(p, self.cols, pIDest++);
             p += self.cols;
@@ -750,6 +777,7 @@ double maxForColumn(const double *colStart, size_t rows, size_t *index)
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [max setRows:1 columns:1];
+        pDest = max.data; // in case reallocf() moved it
         while (p < pEnd) {
             *pDest++ = maxForColumn(p, self.cols, NULL);
             p += self.cols;
@@ -777,6 +805,7 @@ double maxForColumn(const double *colStart, size_t rows, size_t *index)
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [max setRows:1 columns:1];
+        pDest = max.data; // in case reallocf() moved it
         while (p < pEnd) {
             *pDest++ = maxForColumn(p, self.cols, pIDest++);
             p += self.cols;
@@ -821,6 +850,7 @@ double meanForColumn(const double *colStart, size_t rows)
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [mean setRows:1 columns:1];
+        pDest = mean.data; // in case reallocf() moved it
         while (p < pEnd) {
             *pDest++ = meanForColumn(p, self.cols);
             p += self.cols;
@@ -884,6 +914,7 @@ double medianForColumn(const double *colStart, size_t rows)
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [median setRows:1 columns:1];
+        pDest = median.data; // in case reallocf() moved it
         while (p < pEnd) {
             *pDest++ = medianForColumn(p, self.cols);
             p += self.cols;
@@ -954,6 +985,7 @@ double varForColumn(const double *colStart, size_t rows)
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [var setRows:1 columns:1];
+        pDest = var.data; // in case reallocf() moved it
         while (p < pEnd) {
             *pDest++ = varForColumn(p, self.cols);
             p += self.cols;
@@ -1057,6 +1089,7 @@ void cumsumsForColumn(double *destStart, const double *colStart, size_t rows)
     if (self.rows == 1) {
         // pretend it's a column vector by swapping indices
         [sum setRows:1 columns:1];
+        pDest = sum.data; // in case reallocf() moved it
         elements = self.cols;
     }
     while (p < pEnd) {
