@@ -3,7 +3,7 @@
 //  PDScores
 //
 //  Created by Erin Mounts on 2/9/15.
-//  Copyright (c) 2015 Sage Bionetworks. All rights reserved.
+//  (CC BY-SA 3.0) Sage Bionetworks, 2015.
 //
 
 #import "signalprocessing.h"

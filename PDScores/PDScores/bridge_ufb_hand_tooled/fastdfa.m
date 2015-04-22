@@ -21,6 +21,7 @@
 //% Nonlinear, biophysically-informed speech pathology detection
 //% in Proceedings of ICASSP 2006, IEEE Publishers: Toulouse, France.
 //
+// Objective-C port (CC BY-SA 3.0) Sage Bionetworks, 2015.
 
 #import "bridge_ufb_hand_tooled.h"
 #import "fastdfa_core_nomex.h"
