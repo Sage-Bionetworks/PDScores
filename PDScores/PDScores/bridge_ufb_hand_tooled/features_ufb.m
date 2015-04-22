@@ -12,6 +12,7 @@
 //%  fbnorm - normalized user feedback value
 //%
 //% (CC BY-SA 3.0) Max Little, 2014
+// Objective-C port (CC BY-SA 3.0) Sage Bionetworks, 2015.
 
 #import "bridge_ufb_hand_tooled.h"
 
