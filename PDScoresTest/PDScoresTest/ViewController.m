@@ -41,7 +41,8 @@
 - (void)scoreGaitAndPosture
 {
     NSURL *gpFileURL = [[NSBundle mainBundle] URLForResource:@"gait-posture" withExtension:@"json"];
-    NSData *jsonData = [NSData dataWithContentsOfURL:gpFileURL];
+    NSData *jsonData;
+    jsonData = [NSData dataWithContentsOfURL:gpFileURL];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:NULL];
     jsonData = nil;
     NSArray *keys = [json allKeys];
@@ -53,6 +54,7 @@
     NSDictionary *postData = [json objectForKey:[postKeys firstObject]];
     NSArray *gaitItems = [gaitData objectForKey:@"items"];
     NSArray *postItems = [postData objectForKey:@"items"];
+    json = nil;
     _gaitScore = [PDScores scoreFromGaitTest:gaitItems];
     _postureScore = [PDScores scoreFromPostureTest:postItems];
     dispatch_async(dispatch_get_main_queue(), ^{
