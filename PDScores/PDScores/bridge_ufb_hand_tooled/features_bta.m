@@ -50,7 +50,7 @@ void features_bta(PDRealArray *tap, PDRealArray **ft)
     PDRealArray *dx = [tapx diff];
     //i = (abs(dx) > 20);
     PDIntArray *i = [dx applyInt:^size_t(const double element) {
-        return abs(element) > 20;
+        return fabs(element) > 20;
     }];
     //ttx = t(i);
     PDRealArray *ttx = [t elementsWithIndices:[i find]];
@@ -67,6 +67,6 @@ void features_bta(PDRealArray *tap, PDRealArray **ft)
 
     //% Output tapping test feature vector
     //ft = [tapdt tapiqr];
-    (*ft).data[0] = tapdt.data[0];
-    (*ft).data[1] = tapiqr.data[0];
+    (*ft).data[0] = tapdt.data ? tapdt.data[0] : NAN;
+    (*ft).data[1] = tapiqr.data ? tapiqr.data[0] : NAN;
 }
