@@ -106,11 +106,16 @@ const double kNormalizedMinimum = 10.0;
     // get the features array
     PDRealArray *ft;
     features_bga(gait, &ft);
+    
     for (int i = 0; i < 7; ++i) {
         if (isnan(ft.data[i]))
             return NAN;
     }
+    
+    // for mPower 1.3, just return f0, the dominant gait frequency
+    return ft.data[4];
 
+    /*
     // generate a score
     static PDRealArray *wvec, *ftmin, *ftmax;
     static PDIntArray *ilog;
@@ -137,6 +142,7 @@ const double kNormalizedMinimum = 10.0;
     double score = [self normalizedScoreFromScore:rawScore range:gaitRange];
 
     return score;
+     */
 }
 
 + (double)scoreFromPhonationTest:(NSURL *)phonationAudioFile
@@ -234,6 +240,10 @@ const double kNormalizedMinimum = 10.0;
     double srate = fileFormat.mSampleRate;
     PDRealArray *ft;
     features_bvav2(audio, srate, &ft);
+    
+    // for mPower 1.3, just return f0, the median fundamental frequency
+    return ft.data[0];
+    /*
     for (int i = 0; i < 13; ++i) {
         if (isnan(ft.data[i]))
             return NAN;
@@ -270,6 +280,7 @@ const double kNormalizedMinimum = 10.0;
     double score = [self normalizedScoreFromScore:rawScore range:phonationRange];
 
     return score;
+     */
 }
 
 + (double)scoreFromPostureTest:(NSArray *)postureData
